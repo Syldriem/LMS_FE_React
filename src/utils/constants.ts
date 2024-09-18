@@ -1,2 +1,2 @@
 export const TOKENS = "tokens";
-export const BASE_URL = "https://localhost:7286/api";
+export const BASE_URL = "http://localhost:5058/api";

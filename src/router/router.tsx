@@ -14,7 +14,7 @@ export const router = createBrowserRouter(
         path="/"
       ></Route> */}
       <Route element={<RequireAuth children={<StartPage />} />} path="/">
-        <Route element={<Companies />} index />
+       <Route element={<Companies />} index />
       </Route>
       <Route element={<LoginPage />} path="/login" />
     </>
