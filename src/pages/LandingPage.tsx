@@ -1,0 +1,13 @@
+import { ReactElement } from "react";
+import { Outlet } from "react-router-dom";
+import { LoginStatusChip } from "../components/LogoutBtn";
+
+export function LandingPage(): ReactElement {
+  return (
+    <main id="landing-page" className="g-container">
+      <h1 className="header">User Role Page</h1>
+      <LoginStatusChip />
+      <Outlet />
+    </main>
+  );
+}

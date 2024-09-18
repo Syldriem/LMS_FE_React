@@ -21,24 +21,27 @@ export function LoginPage(): ReactElement {
 
   return (
     <main id="login-page" className="g-container">
+      <h1 className="h1">University LMS Login</h1>
       <form className="login-form" onSubmit={handleOnSubmit}>
         <fieldset>
-          <legend>Login</legend>
-          <label htmlFor="username">Username</label>
+          <label className="lbl" htmlFor="username">Email</label>
           <input
             id="username"
             onChange={(e) => setUsername(e.target.value)}
             type="text"
             value={username}
           />
-          <label htmlFor="password">Password</label>
+          <label className="lbl" htmlFor="password">Password</label>
           <input
             id="password"
             onChange={(e) => setPassword(e.target.value)}
             type="password"
             value={password}
           />
-          <button type="submit">Submit</button>
+          <button className="sign_in" type="submit">
+            Sign In
+          </button>
+          <a className="forgot" href="">Forgot password?</a>
         </fieldset>
       </form>
     </main>

@@ -1,13 +1,11 @@
 @import url("./LoginPage.css");
-@import url("./LoginStatusChip.css");
+@import url("./LogoutBtn.css");
+@import url("./LandingPage.css");
 
 * {
   box-sizing: border-box;
+  font-family: Inter;
   margin: 0;
-}
-
-body {
-  padding-top: 2rem;
 }
 
 .g-container {

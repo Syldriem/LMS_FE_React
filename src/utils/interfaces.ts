@@ -15,3 +15,21 @@ export interface ICompany {
   address: string;
   employees: any[];
 }
+
+// export interface ICourses {
+//   id: string;
+//   name: string;
+// }
+
+// export interface IModules{
+
+//   id: string;
+//   name: string;
+//   activities: any[];
+
+// }
+
+// export interface IStudent {
+//   id: string;
+//   name: string;
+// }
