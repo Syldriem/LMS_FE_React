@@ -16,20 +16,29 @@ export interface ICompany {
   employees: any[];
 }
 
-// export interface ICourses {
-//   id: string;
-//   name: string;
-// }
+export interface ICourses {
+  Id: string;
+  name: string;
+  start: Date;
+  modules: IModules[];
+  
+}
 
-// export interface IModules{
+export interface IModules{
 
-//   id: string;
-//   name: string;
-//   activities: any[];
+  id: string;
+  name: string;
+  description: string;
+  activities: any[];
+  start: string;
+  end: string;
 
-// }
+}
 
-// export interface IStudent {
-//   id: string;
-//   name: string;
-// }
+export interface IUser {
+  id: string;
+  userName: string;
+  role: string;
+  email: string;
+  courseID: string;
+}
