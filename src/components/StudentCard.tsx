@@ -1,17 +1,31 @@
 import { ReactElement } from "react";
+
 import "../css/StudentCard.css"
 
-export function StudentCard(): ReactElement {
 
+interface IStudentListProps {
+    students: any[];
+  }
+
+export function StudentCard({ students }: IStudentListProps): ReactElement {
+
+    console.log(students);
     
     return (
-        <span className="card-st">
-            <p className="title-card-src">Student Name</p>
+        <div>
+        {students ? (
+        students.map((u) => (
+        <span key={u.id} className="card-st">
+            <p className="title-card-src">{u.userName}</p>
             <div className="desc">
                 <p className="cat-lbl">E-mail:</p>
-                <p className="spec-lbl">mail@exmpel</p>
+                <p className="spec-lbl">{u.email}</p>
             </div>
-            
-        </span>  
+        </span>
+        ))
+        ) : (
+        <p>No Users</p>
+        )}
+        </div> 
     );
 }
