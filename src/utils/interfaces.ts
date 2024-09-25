@@ -42,3 +42,13 @@ export interface IUser {
   email: string;
   courseID: string;
 }
+
+export interface IActivity {
+  id: string;
+  name: string;
+  description: string;
+  activityType: string;
+  start: string;
+  end: string;
+  moduleID: string;
+}

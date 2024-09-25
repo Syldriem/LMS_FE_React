@@ -8,11 +8,9 @@ interface IStudentListProps {
   }
 
 export function StudentCard({ students }: IStudentListProps): ReactElement {
-
-    console.log(students);
     
     return (
-        <div>
+       <>
         {students ? (
         students.map((u) => (
         <span key={u.id} className="card-st">
@@ -26,6 +24,6 @@ export function StudentCard({ students }: IStudentListProps): ReactElement {
         ) : (
         <p>No Users</p>
         )}
-        </div> 
+    </>  
     );
 }

@@ -2,7 +2,7 @@ import { ReactElement, useContext } from "react";
 import { ModuleCard } from "../components/ModuleCard";
 import { StudentCard } from "../components/StudentCard";
 import "../css/MyCoursePage.css"
-import { ApiDataContext } from "../context/ApidataProvider";
+import { ApiDataContext } from "../context/ApiDataProvider"
 
 export function MyCoursePage() : ReactElement {
 
@@ -12,7 +12,7 @@ export function MyCoursePage() : ReactElement {
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
     
-    const filteredUsers = filterUsersByCourseAndRole('8cff3840-cc81-4791-f588-08dcdb164444', 'Student');
+    const filteredUsers = filterUsersByCourseAndRole('db843cae-a03a-4f63-df10-08dcdba00c1e', 'Student');
 
 
 
@@ -26,11 +26,11 @@ export function MyCoursePage() : ReactElement {
             <div className="section-container">
                 <section className="module-section">
                     <p className="sub-tit">Modules List</p>
-                    <ModuleCard modules={courses[0].modules}/>
+                    <ModuleCard key={courses[0].Id}  modules={courses[0].modules}/>
                 </section>
                 <section className="students-section">
                     <p className="sub-tit">Students List</p>
-                    <StudentCard students={filteredUsers} />
+                    <StudentCard key="1" students={filteredUsers} />
                 </section>
             </div>
         </main>

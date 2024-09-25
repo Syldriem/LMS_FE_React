@@ -2,6 +2,7 @@ import { createBrowserRouter, createRoutesFromElements, Route } from "react-rout
 import { Companies, RequireAuth } from "../components";
 import { LoginPage, /*LandingPage*/ } from "../pages";
 import { MyCoursePage } from "../pages/MyCoursePage";
+import { ActivityListPage } from "../pages/ActivityListPage";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,6 +24,7 @@ export const router = createBrowserRouter(
        <Route element={<Companies />} index />
       </Route>
       <Route element={<LoginPage />} path="/login" />
+      <Route element={<ActivityListPage activitiesList={[]} />} path="/actlist" />
     </>
   )
 );
