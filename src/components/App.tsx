@@ -1,17 +1,19 @@
 import { RouterProvider } from "react-router-dom";
 import { AuthProvider } from "../context/authProvider";
 import { router } from "../router";
-import { ApiDataProvider } from "../context/ApidataProvider";
+import { ApiDataProvider } from "../context/ApiDataProvider";
 // import { LoginStatusChip } from "./LoginStatusChip";
 
 export function App() {
   
   return (
+    <>
     <AuthProvider>
-      <ApiDataProvider>
+    <ApiDataProvider>
       <RouterProvider router={router} />
       {/* <LoginStatusChip /> */}
-      </ApiDataProvider>
+    </ApiDataProvider>
     </AuthProvider>
+    </>
   );
 }

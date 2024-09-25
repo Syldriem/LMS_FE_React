@@ -1,38 +1,86 @@
-import { ReactElement, useContext } from "react";
-import { ModuleCard } from "../components/ModuleCard";
-import { StudentCard } from "../components/StudentCard";
-import "../css/MyCoursePage.css";
-import { ApiDataContext } from "../context/ApiDataProvider";
+import { useContext, useEffect, useState } from "react";
+import { StudentCard } from '../components/StudentCard';
+import { ModuleCard } from '../components/ModuleCard';
+import { ApiDataContext  } from "../context/ApiDataProvider"; 
+import { useAuthContext, useFetchWithToken } from "../hooks";
+import { BASE_URL, hasTokenExpired, ICourses, IUser } from "../utils";
+import { LogoutBtn } from "../components";
+import '../css/MyCoursePage.css'
+import { useNavigate } from "react-router-dom";
+export function MyCoursePage() {
+    const { user } = useContext(ApiDataContext);
+    const { isLoggedIn } = useAuthContext();
+    const navigate = useNavigate();
 
-export function MyCoursePage(): ReactElement {
-  const { filterUsersByCourseAndRole, courses, loading, error } =
-    useContext(ApiDataContext);
-  //const [selectedRole] = useState<string>();
+    const {data: users, requestFunc: requestFuncUser} = useFetchWithToken<IUser[]>(
+        `${BASE_URL}/users`,{
+            method: 'GET',
+            headers: {
+                'Content-Type' : 'application/json',
+            },
+        }
+    )
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+    const {data: course, isLoading, error, requestFunc: requestFuncCourse} = useFetchWithToken<ICourses>(
+        `${BASE_URL}/courses/${user.id}`,{
+            method: 'GET',
+            headers: {
+                'Content-Type' : 'application/json',
+            },
+        }
+    )
 
-  const filteredUsers = filterUsersByCourseAndRole(
-    "8cff3840-cc81-4791-f588-08dcdb164444",
-    "Student"
-  );
+    //console.log(course?.Id);
 
-  return (
-    <main className="home-section">
-      <p className="title">{courses[0].name}</p>
-      <div className="doc-btn-contanier">
-        <button className="btn-layout">Documents</button>
-      </div>
-      <div className="section-container">
-        <section className="module-section">
-          <p className="sub-tit">Modules List</p>
-          <ModuleCard modules={courses[0].modules} />
-        </section>
-        <section className="students-section">
-          <p className="sub-tit">Students List</p>
-          <StudentCard students={filteredUsers} />
-        </section>
-      </div>
-    </main>
-  );
+
+    //if (isLoading) return <p>Loading...</p>;
+    //if (error) return <p>Error: {error.message}</p>;
+
+    useEffect (() => {
+        requestFuncUser();
+        requestFuncCourse();
+        if (isLoggedIn===true) {
+            navigate("/mycoursepage"); 
+          } else {
+            navigate("/login"); 
+          }
+        }, [isLoggedIn, navigate]);
+
+    
+
+    //const modules = courses.flatMap(course => course.modules);
+
+    return (
+        <main className="home-section">
+        <p className="title">{course?.name}</p>
+        <div className="doc-btn-contanier">
+          <button className="btn-layout">Documents</button>
+        </div>
+        <div className="section-container">
+          <section className="module-section">
+            <p className="sub-tit">Modules List</p>
+            {course?.modules.map((module)=>(
+                <ModuleCard key={module?.id} module = {module} 
+            />
+
+            ))}
+            
+          </section>
+          <section key={user.id}  className="students-section">
+            <p key={user.id} className="sub-tit">Students List</p>
+            {users && users.map((user) => (
+                <StudentCard 
+                key={user.id} 
+                student={{ 
+                id: user.id, 
+                userName: user.userName, 
+                email: user.email 
+            }}/>
+        ))}
+          </section>
+
+          <LogoutBtn></LogoutBtn>
+        </div>
+      </main>
+    );
 }

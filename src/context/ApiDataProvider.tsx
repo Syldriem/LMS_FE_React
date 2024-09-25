@@ -1,17 +1,29 @@
-import { createContext, useState, useEffect, ReactNode } from 'react';
-import { BASE_URL, IUser, ICourses } from '../utils'
+import { createContext, useState, useEffect, ReactNode, useContext } from 'react';
+import { BASE_URL, IUser, ICourses, IUserLoggedIn, hasTokenExpired } from '../utils';
+import { useAuthContext } from '../hooks';
+import { jwtDecode } from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
 
 interface IApiData {
+    user: IUserLoggedIn;
     users: IUser[];
-    courses: ICourses[];
-    filterUsersByCourseAndRole: (courseId: string, role: string) => IUser[];
+    courses?: ICourses[];
     loading: boolean;
     error: string | null;
-  }
+}
 
-  interface ApiDataProviderProps {
+interface JwtPayload {
+  exp: number;
+  iat: number;
+  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"?: string;
+  "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"?: string;
+  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"?: string;
+  [key: string]: any; // Index signature
+}
+
+interface ApiDataProviderProps {
     children: ReactNode;
-  }
+}
 
 export const ApiDataContext = createContext<IApiData>({} as IApiData);
 
@@ -20,40 +32,26 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     const [courses, setCourses] = useState<ICourses[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    var user: IUserLoggedIn = {};
 
+    
+    
+    const { tokens,isLoggedIn } = useAuthContext();
 
-  useEffect(() => {
+    console.log(isLoggedIn);
 
-    const fetchData = async () => {
-      try {
-        setLoading(true);
+    if(isLoggedIn===true){
+    const decode = jwtDecode<JwtPayload>(tokens?.accessToken!);
+    const id = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]
+    const name = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]
+    const role = decode["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+  
+    user = { id, name, role };
+  }
 
-        const userResponse = await fetch(`${BASE_URL}/users`);
-        const courseResponse = await fetch(`${BASE_URL}/courses`);
-
-        const usersData: IUser[] = await userResponse.json();
-        const coursesData: ICourses[] = await courseResponse.json();
-
-        setUsers(usersData);
-        setCourses(coursesData);
-      } catch (error: any) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const filterUsersByCourseAndRole = (courseId: string, role: string): IUser[] => {
-    return users.filter((user) => user.courseID === courseId && user.role === role);
-  };
-
-  return (
-    <ApiDataContext.Provider value={{filterUsersByCourseAndRole, users, courses, loading, error }}>
-      {children}
-    </ApiDataContext.Provider>
-  );
-
+    return (
+        <ApiDataContext.Provider value={{ user, users, loading, error }}>
+            {children}
+        </ApiDataContext.Provider>
+    );
 };

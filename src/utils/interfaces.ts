@@ -1,4 +1,5 @@
 export interface IAuthContext {
+  tokens: ITokens | null;
   isLoggedIn: boolean;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
@@ -17,6 +18,7 @@ export interface ICompany {
 }
 
 export interface ICourses {
+  course: IModules;
   Id: string;
   name: string;
   start: Date;
@@ -25,11 +27,10 @@ export interface ICourses {
 }
 
 export interface IModules{
-
-  id: string;
+  id: string,
   name: string;
   description: string;
-  activities: any[];
+  //activities: any[];
   start: string;
   end: string;
 
@@ -41,4 +42,10 @@ export interface IUser {
   role: string;
   email: string;
   courseID: string;
+}
+
+export interface IUserLoggedIn {
+  id?: string;
+  name?: string;
+  role?: string;
 }

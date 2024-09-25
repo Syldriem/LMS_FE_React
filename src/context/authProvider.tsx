@@ -1,17 +1,22 @@
 import { createContext, ReactElement, ReactNode, useEffect, useState } from "react";
-import { CustomError, IAuthContext, ITokens, loginReq, TOKENS } from "../utils";
+import { CustomError, hasTokenExpired, IAuthContext, ITokens, IUser, IUserLoggedIn, loginReq, TOKENS } from "../utils";
 import { useLocalStorage } from "usehooks-ts";
+import { jwtDecode } from "jwt-decode";
 
 interface IAuthProviderProps {
   children: ReactNode;
 }
+
+
 
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 export function AuthProvider({ children }: IAuthProviderProps): ReactElement {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [tokens, setTokens, clearTokens] = useLocalStorage<ITokens | null>(TOKENS, null);
-  const values: IAuthContext = { isLoggedIn, login, logout };
+  
+  const values: IAuthContext = { tokens, isLoggedIn, login, logout };
+
 
   async function login(username: string, password: string) {
     try {
@@ -26,6 +31,7 @@ export function AuthProvider({ children }: IAuthProviderProps): ReactElement {
 
   function logout() {
     clearTokens();
+    setIsLoggedIn(false);
   }
 
   useEffect(() => {
