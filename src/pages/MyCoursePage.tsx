@@ -21,30 +21,33 @@ export function MyCoursePage() {
         }
     )
 
-    const {data: course, isLoading, error, requestFunc: requestFuncCourse} = useFetchWithToken<ICourses>(
-        `${BASE_URL}/courses/${user.id}`,{
+    const { data: course, requestFunc: requestFuncCourse } = useFetchWithToken<ICourses>(
+        `${BASE_URL}/courses/${user?.id}`, 
+        {
             method: 'GET',
             headers: {
-                'Content-Type' : 'application/json',
+                'Content-Type': 'application/json',
             },
         }
-    )
+    );
 
-    //console.log(course?.Id);
+    useEffect(() => {
+        if (!isLoggedIn) {
+            navigate("/login");
+            return; 
+        }
 
+        if (!users) {
+            requestFuncUser();
+        }
 
-    //if (isLoading) return <p>Loading...</p>;
-    //if (error) return <p>Error: {error.message}</p>;
-
-    useEffect (() => {
-        requestFuncUser();
-        requestFuncCourse();
-        if (isLoggedIn===true) {
-            navigate("/mycoursepage"); 
-          } else {
-            navigate("/login"); 
-          }
-        }, [isLoggedIn, navigate]);
+        if (user?.id && !course) {
+            requestFuncCourse();
+        } else if (!user) {
+            console.error("User ID is undefined");
+        }
+    }, [isLoggedIn, navigate, user, users, course, requestFuncUser, requestFuncCourse]);
+    
 
     
 
