@@ -8,79 +8,52 @@ import { LogoutBtn } from "../components";
 import '../css/MyCoursePage.css'
 import { useNavigate } from "react-router-dom";
 export function MyCoursePage() {
-    const { user } = useContext(ApiDataContext);
+    const { user, users, courses } = useContext(ApiDataContext);
     const { isLoggedIn } = useAuthContext();
     const navigate = useNavigate();
 
-    const {data: users, requestFunc: requestFuncUser} = useFetchWithToken<IUser[]>(
-        `${BASE_URL}/users`,{
-            method: 'GET',
-            headers: {
-                'Content-Type' : 'application/json',
-            },
-        }
-    )
-
-    const { data: course, requestFunc: requestFuncCourse } = useFetchWithToken<ICourses>(
-        `${BASE_URL}/courses/${user?.id}`, 
-        {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }
-    );
-
     useEffect(() => {
         if (!isLoggedIn) {
+            console.log("Test")
             navigate("/login");
-            return; 
         }
-
-        if (!users) {
-            requestFuncUser();
-        }
-
-        if (user?.id && !course) {
-            requestFuncCourse();
-        } else if (!user) {
-            console.error("User ID is undefined");
-        }
-    }, [isLoggedIn, navigate, user, users, course, requestFuncUser, requestFuncCourse]);
-    
-
-    
-
-    //const modules = courses.flatMap(course => course.modules);
+    }, [isLoggedIn, navigate]);
 
     return (
         <main className="home-section">
-        <p className="title">{course?.name}</p>
+        <p className="title">{courses?.name}</p>
         <div className="doc-btn-contanier">
           <button className="btn-layout">Documents</button>
         </div>
         <div className="section-container">
           <section className="module-section">
             <p className="sub-tit">Modules List</p>
-            {course?.modules.map((module)=>(
-                <ModuleCard key={module?.id} module = {module} 
-            />
-
-            ))}
+            {courses && courses.modules && courses.modules.length > 0 ? (
+            courses.modules.map((module) => (
+                <ModuleCard key={module.id} module={module} />
+            ))
+        )    : (
+            <p>No modules available.</p>
+            )}
             
           </section>
-          <section key={user.id}  className="students-section">
-            <p key={user.id} className="sub-tit">Students List</p>
-            {users && users.map((user) => (
-                <StudentCard 
-                key={user.id} 
-                student={{ 
-                id: user.id, 
-                userName: user.userName, 
-                email: user.email 
-            }}/>
-        ))}
-          </section>
+          <section key={user?.id} className="students-section">
+            <p className="sub-tit">Students List</p>
+            {users && users.length > 0 ? (
+                users.map((user) => (
+                    <StudentCard 
+                        key={user.id} 
+                        student={{ 
+                            id: user.id, 
+                            userName: user.userName, 
+                            email: user.email 
+                        }}
+                    />
+                ))
+            ) : (
+                <p>No students available.</p>
+            )}
+        </section>
 
           <LogoutBtn></LogoutBtn>
         </div>

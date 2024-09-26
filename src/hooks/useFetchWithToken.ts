@@ -13,7 +13,7 @@ interface IUseFetchWithTokenReturn<T> {
   data: T | null;
   error: CustomError | null;
   isLoading: boolean;
-  requestFunc: () => void;
+  requestFunc: () => Promise<void>; // Ensure it returns a Promise
 }
 
 export function useFetchWithToken<T>(
@@ -25,63 +25,52 @@ export function useFetchWithToken<T>(
   const [tokens, setTokens] = useLocalStorage<ITokens | null>(TOKENS, null);
   const [error, setError] = useState<CustomError | null>(null);
 
-  // This function is generated based on the parameters to the useFetchWithToken and it's used internally by the requestFunc.
-  async function generatedFetch<T>(accessToken: string): Promise<T> {
+  // Fetch function that handles the API call
+  async function generatedFetch(accessToken: string): Promise<T> {
     const requestInit: RequestInit = addTokenToRequestInit(accessToken, options);
     const response: Response = await fetch(url, requestInit);
 
-    if (response.ok === false) {
+    if (!response.ok) {
       throw new CustomError(response.status, response.statusText);
     }
 
-    return (await response.json()) as T;
+    return response.json() as Promise<T>;
   }
 
+  // Main request function
   async function requestFunc() {
-    setError(null);
-    setIsLoading(true);
+    setError(null);  // Reset error state
+    setIsLoading(true);  // Set loading state to true
 
-    const tokenIsExpired: boolean = hasTokenExpired(tokens!.accessToken);
+    try {
+      // Check if tokens are available
+      if (!tokens?.accessToken) {
+        throw new CustomError(401, "Access token is missing.");
+      }
 
-    if (tokenIsExpired) {
-      // Ask api to refresh token before fetching the data.
-      console.log("Token is expired:", tokenIsExpired);
+      // Check if the token is expired
+      const tokenIsExpired = hasTokenExpired(tokens.accessToken);
 
-      await refreshTokens(tokens!.accessToken, tokens!.refreshToken)
-        .then(async (refreshedTokens) => {
-          setTokens(refreshedTokens);
-          return await generatedFetch<T>(refreshedTokens.accessToken);
-        })
-        .then((data) => {
-          if (data) {
-            setData(data);
-          }
-        })
-        .catch((error) => {
-          if (error instanceof CustomError) {
-            setError(error);
-          }
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    } else {
-      // Just fetch the data right away
+      let accessToken = tokens.accessToken;
 
-      await generatedFetch<T>(tokens!.accessToken)
-        .then((data) => {
-          if (data) {
-            setData(data);
-          }
-        })
-        .catch((error) => {
-          if (error instanceof CustomError) {
-            setError(error);
-          }
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
+      // Refresh tokens if expired
+      if (tokenIsExpired) {
+        console.log("Token is expired, refreshing...");
+        const refreshedTokens = await refreshTokens(tokens.accessToken, tokens.refreshToken);
+        setTokens(refreshedTokens);
+        accessToken = refreshedTokens.accessToken;
+      }
+
+      // Fetch data using the (possibly refreshed) access token
+      const data = await generatedFetch(accessToken);
+      setData(data);
+    } catch (err) {
+      // Handle errors: differentiate between CustomError and unexpected errors
+      const customError = err instanceof CustomError ? err : new CustomError(500, "Failed to fetch data.");
+      setError(customError);
+      console.error("Error occurred:", customError);
+    } finally {
+      setIsLoading(false);  // Reset loading state
     }
   }
 
