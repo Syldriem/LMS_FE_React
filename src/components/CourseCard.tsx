@@ -59,12 +59,12 @@ export function CourseCard(): ReactElement {
         </section>
 
         <div className="btn-container">
-          <button className="course-btn-layout" onClick={handleOnExpand}>
+          {/* <button className="course-btn-layout" onClick={handleOnExpand}>
             Expand
-          </button>
-          <button className="course-btn-layout" onClick={handleOnListStudents}>
+          </button> */}
+          {/* <button className="course-btn-layout" onClick={handleOnListStudents}>
             List Students
-          </button>
+          </button> */}
         </div>
       </section>
     );

@@ -23,21 +23,21 @@ export function TeacherPage(): ReactElement {
       <header className="header-container">
         <div className="navbar-container">
           <div className="navbar">
-            <a className="style active" href="#courses">
+            {/* <a className="style active" href="#courses">
               Courses
-            </a>
-            <a className="style" href="#users">
+            </a> */}
+            {/* <a className="style" href="#users">
               User Admin
-            </a>
+            </a> */}
           </div>
           <LogoutBtn />
         </div>
       </header>
 
       <div className="course-btn-container">
-        <button className="course-btn-layout" onClick={handleOnAddCourse}>
+        {/* <button className="course-btn-layout" onClick={handleOnAddCourse}>
           Add Course
-        </button>
+        </button> */}
       </div>
 
       <h1 className="sub-title">Course List</h1>
@@ -52,12 +52,12 @@ export function TeacherPage(): ReactElement {
         <div className="coursecard-container">
           <CourseCard />
         </div>
-        <div className="coursecard-container">
+        {/* <div className="coursecard-container">
           <CourseCard />
         </div>
         <div className="coursecard-container">
           <CourseCard />
-        </div>
+        </div> */}
       </section>
     </main>
   );
