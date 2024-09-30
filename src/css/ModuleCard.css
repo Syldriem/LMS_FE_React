@@ -5,7 +5,8 @@
     border: 0;
     position: relative;
     width: 90%;
-    min-width: 250px;
+    /* width: 1200px; */
+    min-width: 600px;
     height: 200px;
     background-color: whitesmoke;
     margin-bottom: 1rem;

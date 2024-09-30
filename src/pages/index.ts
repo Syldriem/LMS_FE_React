@@ -1,2 +1,4 @@
 export * from "./LoginPage";
-export * from "./LandingPage";
+export * from "./MyCoursePage";
+export * from "./TeacherPage";
+export * from "./Unauthorized";

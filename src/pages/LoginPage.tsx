@@ -7,25 +7,39 @@ import { RenderLoginPage } from "./render/RenderLoginPage";
 export function LoginPage(): ReactElement {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { isLoggedIn, login } = useAuthContext();
-
+  const { isLoggedIn, login, userRole } = useAuthContext();
   const navigate = useNavigate();
 
-  //const tokenIsExpired: boolean = hasTokenExpired(tokens!.accessToken);
+  console.log("Log-in page started");
 
-  useEffect(() => {
-    if (isLoggedIn === true) {
-      navigate("/mycoursepage");
-    } else {
-      navigate("/login");
+  if (isLoggedIn) {
+    switch (userRole.toLowerCase()) {
+      case "teacher":
+        return <Navigate to="/teacherpage" replace />;
+      case "student":
+        return <Navigate to="/mycoursepage" replace />;
+      default:
+        return <Navigate to="/unauthorized" replace />;
     }
-  }, [isLoggedIn, navigate]);
+  }
 
   const handleOnSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     await login(username, password);
-  };
 
+    switch (userRole.toLowerCase()) {
+      case "teacher":
+        navigate("/teacherpage");
+        break;
+      case "student":
+        navigate("/mycoursepage");
+        break;
+      default:
+        navigate("/unauthorized");
+        break;
+    }  
+  };
+  
   return (
     <RenderLoginPage
       handleOnSubmit={handleOnSubmit}
@@ -34,5 +48,6 @@ export function LoginPage(): ReactElement {
       setUsername={setUsername}
       username={username}
     />
+
   );
 }

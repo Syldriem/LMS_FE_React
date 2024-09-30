@@ -9,11 +9,13 @@ export function LogoutBtn(): ReactElement {
 
   
   return (
-    <div id="login-status-chip">
-      <div className="tooltip">
+    <div>
+         
+      {isLoggedIn ? 
+      (<div className="logout-tip">
         <button className="logout-btn" onClick={logout}>
           <span className="material-symbols-outlined">logout</span>
-          <span className="tooltiptext">Click to Log-out</span>
+          <span className="tiptext">Click to Log-out</span>
         </button>
       </div>
     </div>

@@ -1,0 +1,118 @@
+.active{
+    background-color: lightblue;
+    border-radius: 10px;
+    color: gray;
+}
+
+.coursecard-container{
+    display: flex;
+    flex: 1;
+    min-width: 600px;
+   
+}
+
+/* .course-section{
+
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+} */
+
+
+.doc-btn-container{
+    margin-bottom: 3rem;
+    justify-content: left;
+    width: 1040px;
+    margin-left: 5px;
+    min-width: 300;
+}
+
+.header-container{
+    align-items: center;
+    display:flex;
+    flex-direction: row;
+}
+
+.main-container{
+    
+    display: flex;
+    flex-direction: column;
+    /* height: 100vh; */
+    
+}
+
+.navbar{
+    display: flex;
+    
+}
+
+.navbar-container{
+    display: flex;
+    
+}
+
+.section-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    padding-left : 5rem;
+    padding-right : 4rem;
+    width: 100%;
+}
+
+/* .section-container .module-section {
+    width: 40%;
+    height: 90%;
+    margin-left: 5%;
+    justify-content: baseline;
+}
+
+.section-container .students-section {
+    width: 40%;
+    height: 90%;
+    margin-right: 5%;
+    margin-left: 10%;
+    justify-content: baseline;
+} */
+
+.style{
+    font-size: 1.5rem;
+    margin: 1.5rem;
+    padding: 0.7rem;
+    text-decoration: none;
+}
+
+.sub-title{
+    font-weight:800;
+    font-size: 2.3rem;
+    margin-bottom: 1.6rem;
+    text-align: center;
+    width:100%
+}
+
+
+.teacher {
+    
+    font-weight:bolder;
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    padding: 0.7rem;
+    text-align: left;
+}
+
+.teacher-login{
+    
+    font-weight:bolder;
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    padding: 0.7rem;
+    text-align: left;
+    background-color: darkgreen;
+}
+
+
+
+

@@ -1,19 +1,34 @@
-import { createBrowserRouter, createRoutesFromElements, Route, Router, Routes } from "react-router-dom";
-import { Companies, RequireAuth } from "../components";
-import { LandingPage, LoginPage, /*LandingPage*/ } from "../pages";
-import { MyCoursePage } from "../pages/MyCoursePage";
+import { createBrowserRouter, createRoutesFromElements, Navigate, Route, } from "react-router-dom";
+import { RequireAuth } from "../components";
+import { LoginPage, TeacherPage, MyCoursePage, Unauthorized } from "../pages";
 
-export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <LoginPage />,
-  },
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/mycoursepage",
-    element: <MyCoursePage />
-  }
-]);
+
+
+export const router = createBrowserRouter(
+  createRoutesFromElements(
+    <>
+      <Route path="/login" element={<LoginPage />} />
+
+      <Route
+        path="/"
+        element={<Navigate to="/unauthorized" replace />} />
+
+      <Route
+        element={<RequireAuth children={<TeacherPage />} />}
+        path="/teacherpage"
+      ></Route>
+
+      <Route
+        element={<RequireAuth children={<MyCoursePage />} />}
+        path="/mycoursepage"
+      ></Route>
+
+      <Route
+        element={<RequireAuth children={<Unauthorized />} />}
+        path="/unauthorized"
+      />
+
+      
+    </>
+  )
+);

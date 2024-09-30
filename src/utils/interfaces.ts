@@ -1,8 +1,12 @@
+import { JwtPayload } from "jwt-decode";
+
+
 export interface IAuthContext {
   tokens: ITokens | null;
   isLoggedIn: boolean;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
+  userRole: string;
 }
 
 export interface ITokens {
@@ -10,11 +14,12 @@ export interface ITokens {
   refreshToken: string;
 }
 
-export interface ICompany {
-  id: string;
-  name: string;
-  address: string;
-  employees: any[];
+
+export interface ITokenObjectExtensions extends JwtPayload {
+  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name": string;
+  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier": string;
+  "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": string;
+
 }
 
 export interface ICourses {
