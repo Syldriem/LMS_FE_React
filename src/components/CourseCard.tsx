@@ -1,25 +1,38 @@
 import { MouseEventHandler, ReactElement } from "react";
 import "../css/index.css";
+import { ICourses } from "../utils";
 
+interface ICourseProps {
+  course: ICourses;
+}
+export function CourseCard({ course }: ICourseProps): ReactElement {
+  const handleOnExpand: MouseEventHandler<HTMLButtonElement> = (): void => {};
+  const handleOnListStudents: MouseEventHandler<
+    HTMLButtonElement
+  > = (): void => {};
 
+  return (
+    <section className="course-card-src">
+      <h2 className="title-card">{course.name}</h2>
+      <h4 className="module-card">Module List</h4>
+      <section className="info-display">
+        <div className="course-modules">
+          {course && course.modules && course.modules.length > 0 ? (
+            course.modules.map((module) => (
+              <div className="desc">
+                <p className="cat-lbl">{module.name}</p>
+                <p className="cat-lbl">{module.description}</p>
+              </div>
+            ))
+          ) : (
+            <p>No modules available.</p>
+          )}
+        </div>
+      </section>
+    </section>
+  );
 
-
-
-export function CourseCard(): ReactElement {
-
-
-    const handleOnExpand: MouseEventHandler<HTMLButtonElement> = (): void => {};
-    const handleOnListStudents: MouseEventHandler<
-      HTMLButtonElement
-    > = (): void => {};
-    
-    
-    
-    
-    
-    
-    
-    
+  /*
     return (
       <section className="course-card-src">
         <h2 className="title-card">Infinity Stones</h2>
@@ -68,4 +81,5 @@ export function CourseCard(): ReactElement {
         </div>
       </section>
     );
+    */
 }
