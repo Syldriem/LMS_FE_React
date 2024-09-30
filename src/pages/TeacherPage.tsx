@@ -11,7 +11,7 @@ console.log("Teacher page entered");
 const handleOnAddCourse: MouseEventHandler<HTMLButtonElement> = (): void => {
 
     console.log("into address function");
-    <AddCourse/>;
+    {/*<AddCourse/>;*/}
 
 
 
@@ -43,7 +43,7 @@ const handleOnAddCourse: MouseEventHandler<HTMLButtonElement> = (): void => {
         {/* <div className="teacher-container">
           <h4 className="teacher">Teachers-name: is logged in</h4>
         </div> */}
-        <div className="course-btn-container" onClick={handleOnAddCourse}>
+        <div className="course-btn-container">
           <button className="course-btn-layout">Add Course</button>
         </div>
         <h1 className="sub-title">Course List</h1>
