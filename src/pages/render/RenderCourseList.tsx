@@ -7,11 +7,13 @@ export function RenderCourseList() {
     <>
       <h1 className="sub-title">Course List</h1>
 
-      <section className="section-container">
-        <div className="coursecard-container">
+      <section className="container">
+        <div className="row">
           {courses && courses.length > 0 ? (
             courses.map((course) => (
-              <CourseCard key={course.Id} course={course} />
+              <div className="col-sm">
+                <CourseCard key={course.Id} course={course} />
+              </div>
             ))
           ) : (
             <div>no courses</div>
