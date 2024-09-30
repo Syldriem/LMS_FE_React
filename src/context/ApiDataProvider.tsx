@@ -19,6 +19,8 @@ interface IApiData {
   courses: ICourses[] | null;
   loading: boolean;
   error: string | null;
+  getCourseById: () => Promise<void>;
+  setCourse: React.Dispatch<React.SetStateAction<ICourses | null>>;
 }
 
 interface JwtPayload {
@@ -64,6 +66,23 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     }
 
     return response.json();
+  };
+
+  const getCourseById = async () => {
+    if (!user) return;
+
+    try {
+      const coursesData = await fetchWithToken(
+        `${BASE_URL}/courses/getCourseById${course?.Id}`
+      );
+      setCourse(coursesData);
+    } catch (err) {
+      if (err instanceof CustomError) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred while fetching courses.");
+      }
+    }
   };
 
   const fetchAllCourses = async () => {
@@ -150,7 +169,16 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
 
   return (
     <ApiDataContext.Provider
-      value={{ user, users, course, courses, loading, error }}
+      value={{
+        user,
+        users,
+        course,
+        courses,
+        loading,
+        error,
+        getCourseById,
+        setCourse,
+      }}
     >
       {children}
     </ApiDataContext.Provider>

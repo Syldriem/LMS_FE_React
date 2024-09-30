@@ -13,15 +13,13 @@ export function CourseCard({ course }: ICourseProps): ReactElement {
   const handleOnListStudents: MouseEventHandler<
     HTMLButtonElement
   > = (): void => {};
-  const NavToCourseDetailsPage = () => {
-    // TODO: update courseDTO to include Id so that we can use it to make getCourseById request
-    // for when we click on the course card.
-    // TODO: Make Teacher version of mycoursepage AKA course details page => render courses' modules and courses' students
-    navigate("/coursedetails");
-  };
+  // TODO: update courseDTO to include Id so that we can use it to make getCourseById request
+  // for when we click on the course card.
+  // TODO: Make Teacher version of mycoursepage AKA course details page => render courses' modules and courses' students
+  // TODO:
 
   return (
-    <section className="course-card-src" onClick={NavToCourseDetailsPage}>
+    <section className="course-card-src">
       <h2 className="title-card">{course.name}</h2>
       <h4 className="module-card">Module List</h4>
       <section className="info-display">

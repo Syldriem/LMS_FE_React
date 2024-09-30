@@ -1,10 +1,28 @@
+import { useEffect } from "react";
 import { ModuleCard, StudentCard } from "../../components";
 import { Header } from "../../components/header";
 import { useApiContext } from "../../hooks/useApiDataContext";
+import { useAuthContext, useFetchWithToken } from "../../hooks";
+import { BASE_URL, CustomError } from "../../utils";
+import { useNavigate } from "react-router-dom";
 
 export function RenderCourseDetails() {
-  const { course, users } = useApiContext();
+  const { course, users, getCourseById } = useApiContext();
   // TODO: GetCourseById
+  const { isLoggedIn } = useAuthContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+    const getCourse = async () => {
+      await getCourseById();
+    };
+    getCourse();
+  }, [isLoggedIn, navigate]);
+  console.log(course);
+
   return (
     <>
       <Header />
