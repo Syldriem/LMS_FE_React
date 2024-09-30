@@ -16,17 +16,11 @@ export function ModuleCard({ module }: IModuleProps): ReactElement {
   const onActivityBtnClick = (moduleID : string) => {
 
     console.log("here the module id is:", moduleID);
-    //nav(`/activitylist/${moduleID}`);
     let width = (screen.width - 800) / 2;
-    console.log("x position = ", width);
     var dis = `status=no, width=600, height=600, left=${width}, top=0`
     window.open(`/activitylist/${moduleID}`, 'modulelist', dis);
   }
 
-
-  
-
-  console.log(module);
 
   return (
     <div>
