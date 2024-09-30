@@ -5,8 +5,7 @@
     border: 0;
     position: relative;
     width: 90%;
-    /* width: 1200px; */
-    min-width: 600px;
+    min-width: 250px;
     height: 200px;
     background-color: whitesmoke;
     margin-bottom: 1rem;
@@ -16,9 +15,6 @@
     flex-direction: column;
     justify-content: Left;
 }
-
-
-
 .title-card-src {
     margin: 5px;
     font-weight: 800;
@@ -26,25 +22,21 @@
     font-style: normal;
     text-align: left;
 }
-
 .desc{
     display: flex;
     align-items: center;
     align-items: left;
     margin-bottom: 8px;
 }
-
 .cat-lbl{
     margin-left: 5px;
     margin-right: 10px;
     font-weight: bold;
 }
-
 spec-lbl{
    margin-right: 5px;
    font-weight: lighter;
 }
-
 .btn-container{
     margin-top: 1rem;
     margin-left: 5px;
@@ -52,7 +44,6 @@ spec-lbl{
     display: flex;
     justify-content: space-between;
 }
-
 .btn-layout {
     height: 30px;
     width: 120px;
