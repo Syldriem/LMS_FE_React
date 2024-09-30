@@ -1,18 +1,27 @@
 import { MouseEventHandler, ReactElement } from "react";
 import "../css/index.css";
 import { ICourses } from "../utils";
+import { MyCoursePage } from "../pages";
+import { useNavigate } from "react-router-dom";
 
 interface ICourseProps {
   course: ICourses;
 }
 export function CourseCard({ course }: ICourseProps): ReactElement {
+  const navigate = useNavigate();
   const handleOnExpand: MouseEventHandler<HTMLButtonElement> = (): void => {};
   const handleOnListStudents: MouseEventHandler<
     HTMLButtonElement
   > = (): void => {};
+  const NavToCourseDetailsPage = () => {
+    // TODO: update courseDTO to include Id so that we can use it to make getCourseById request
+    // for when we click on the course card.
+    // TODO: Make Teacher version of mycoursepage AKA course details page => render courses' modules and courses' students
+    navigate("/coursedetails");
+  };
 
   return (
-    <section className="course-card-src">
+    <section className="course-card-src" onClick={NavToCourseDetailsPage}>
       <h2 className="title-card">{course.name}</h2>
       <h4 className="module-card">Module List</h4>
       <section className="info-display">
