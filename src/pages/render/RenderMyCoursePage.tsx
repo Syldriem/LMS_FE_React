@@ -18,7 +18,7 @@ export function RenderMyCoursePage({
     <main className="home-section">
       <p className="title">{courses?.name}</p>
       <div className="doc-btn-contanier">
-        <button className="btn-layout">Documents</button>
+        {/*<button className="btn-layout">Documents</button>*/}
       </div>
       <div className="section-container">
         <section className="module-section">
