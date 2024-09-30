@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import "../css/StudentCard.css"
+import "../css/index.css";
 
 export function StudentCard(): ReactElement {
 

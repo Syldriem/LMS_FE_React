@@ -50,6 +50,7 @@ export function useFetchWithToken<T>(
       await refreshTokens(tokens!.accessToken, tokens!.refreshToken)
         .then(async (refreshedTokens) => {
           setTokens(refreshedTokens);
+          // return  refreshTokens;
           return await generatedFetch<T>(refreshedTokens.accessToken);
         })
         .then((data) => {

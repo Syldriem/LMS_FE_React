@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import "../css/ModuleCard.css"
+import "../css/index.css";
 
 export function ModuleCard(): ReactElement {
 

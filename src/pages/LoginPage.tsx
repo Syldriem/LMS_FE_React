@@ -5,18 +5,37 @@ import { Navigate, useNavigate } from "react-router-dom";
 export function LoginPage(): ReactElement {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { isLoggedIn, login } = useAuthContext();
+  const { isLoggedIn, login, userRole } = useAuthContext();
   const navigate = useNavigate();
 
+  console.log("Log-in page started");
+
   if (isLoggedIn) {
-    return <Navigate to="/" replace />;
+    switch (userRole.toLowerCase()) {
+      case "teacher":
+        return <Navigate to="/teacherpage" replace />;
+      case "student":
+        return <Navigate to="/mycoursepage" replace />;
+      default:
+        return <Navigate to="/unauthorized" replace />;
+    }
   }
 
   const handleOnSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
     await login(username, password);
-    navigate("/");
+    switch (userRole.toLowerCase()) {
+      case "teacher":
+        navigate("/teacherpage");
+        break;
+      case "student":
+        navigate("/mycoursepage");
+        break;
+      default:
+        navigate("/unauthorized");
+        break;
+    }  
   };
 
   return (
@@ -24,7 +43,7 @@ export function LoginPage(): ReactElement {
       <h1 className="h1">University LMS Login</h1>
       <form className="login-form" onSubmit={handleOnSubmit}>
         <fieldset>
-          <label className="lbl" htmlFor="username">Email</label>
+          <label className="lbl" htmlFor="username">Username</label>
           <input
             id="username"
             onChange={(e) => setUsername(e.target.value)}

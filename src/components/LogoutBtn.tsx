@@ -6,13 +6,13 @@ export function LogoutBtn(): ReactElement {
   const { isLoggedIn, logout } = useAuthContext();
 
   return (
-    <div id="login-status-chip">
+    <div>
          
       {isLoggedIn ? 
-      (<div className="tooltip">
+      (<div className="logout-tip">
         <button className="logout-btn" onClick={logout}>
           <span className="material-symbols-outlined">logout</span>
-          <span className="tooltiptext">Click to Log-out</span>
+          <span className="tiptext">Click to Log-out</span>
         </button>
       </div>) : (<LoginPage/>)}
     </div>
