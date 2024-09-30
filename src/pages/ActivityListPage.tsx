@@ -21,6 +21,7 @@ export function ActivityListPage() : ReactElement {
 
     return(
         <>
+            <p className="sub-tit"></p>
             {activitiesList.map((act => (
                 <ActivityCard key={act.id} activity={act} />
             )))}

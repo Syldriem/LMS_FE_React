@@ -55,36 +55,39 @@ export function MyCoursePage() {
     //const modules = courses.flatMap(course => course.modules);
 
     return (
-        <main className="home-section">
-        <p className="title">{course?.name}</p>
-        <div className="doc-btn-contanier">
-          <button className="btn-layout">Documents</button>
-        </div>
-        <div className="section-container">
-          <section className="module-section">
-            <p className="sub-tit">Modules List</p>
-            {course?.modules.map((module)=>(
-                <ModuleCard key={module?.id} module = {module} 
-            />
+        <>
+            <main className="home-section">
+            <p className="title">{course?.name}</p>
+            <div className="doc-btn-contanier">
+            <button className="btn-layout">Documents</button>
+            </div>
+            <div className="section-container">
+            <section className="module-section">
+                <p className="sub-tit">Modules List</p>
+                {course?.modules.map((module)=>(
+                    <ModuleCard key={module?.id} module = {module} 
+                />
 
+                ))}
+                
+            </section>
+            <section key={user.id}  className="students-section">
+                <p key={user.id} className="sub-tit">Students List</p>
+                {users && users.map((user) => (
+                    <StudentCard 
+                    key={user.id} 
+                    student={{ 
+                    id: user.id, 
+                    userName: user.userName, 
+                    email: user.email 
+                }}/>
             ))}
-            
-          </section>
-          <section key={user.id}  className="students-section">
-            <p key={user.id} className="sub-tit">Students List</p>
-            {users && users.map((user) => (
-                <StudentCard 
-                key={user.id} 
-                student={{ 
-                id: user.id, 
-                userName: user.userName, 
-                email: user.email 
-            }}/>
-        ))}
-          </section>
+            </section>
 
-          <LogoutBtn></LogoutBtn>
-        </div>
-      </main>
+            <LogoutBtn></LogoutBtn>
+            </div>
+        </main>
+    </>
+   
     );
 }
