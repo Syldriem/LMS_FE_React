@@ -11,7 +11,7 @@ export const router = createBrowserRouter(
 
       <Route
         path="/"
-        element={<Navigate to="/unauthorized" replace />} />
+        element={<Navigate to="/login" replace />} />
 
       <Route
         element={<RequireAuth children={<TeacherPage />} />}
