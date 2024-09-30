@@ -14,7 +14,6 @@ export function AuthProvider({ children }: IAuthProviderProps): ReactElement {
     TOKENS,
     null
   );
-  const [userRole, setUserRole] = useState<string>("Guest");
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   
   const values: IAuthContext = {
@@ -72,7 +71,7 @@ export function AuthProvider({ children }: IAuthProviderProps): ReactElement {
     handleTokenExpiry();
   }, [tokens]);
   
-  useEffect(() => {
+  /*useEffect(() => {
     if (tokens) {
       const role = roleJsonFromToken(tokens?.accessToken);
       setUserRole(role);
@@ -81,10 +80,8 @@ export function AuthProvider({ children }: IAuthProviderProps): ReactElement {
       setUserRole("No access token available");
     }
     [tokens, userRole];
-  });
-  
-    console.log(
-      "In authcontext the userRole is now set to :",values.userRole,". The log-status is set to :",values.isLoggedIn,".");
+  });*/
+
     
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;

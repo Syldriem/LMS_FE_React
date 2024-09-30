@@ -6,7 +6,6 @@ export interface IAuthContext {
   isLoggedIn: boolean;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
-  userRole: string;
 }
 
 export interface ITokens {
@@ -50,7 +49,7 @@ export interface IUser {
 }
 
 export interface IUserLoggedIn {
-  id?: string;
-  name?: string;
-  role?: string;
+  id: string;
+  name: string;
+  role: string;
 }

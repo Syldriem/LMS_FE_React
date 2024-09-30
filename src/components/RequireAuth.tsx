@@ -1,6 +1,7 @@
 import { ReactElement, useEffect } from "react";
 import { useAuthContext } from "../hooks";
 import { Navigate } from "react-router-dom";
+import { useApiContext } from "../hooks/useApiDataContext";
 
 interface IRequireAuthProps {
   children: ReactElement;
@@ -10,38 +11,39 @@ interface IRequireAuthProps {
 export function RequireAuth({ children }: IRequireAuthProps): ReactElement {
   
   console.log("selecting the page to render in RequireAuth component");
-  const { isLoggedIn, userRole } = useAuthContext();
+  const { isLoggedIn } = useAuthContext();
+  const {user} = useApiContext();
 
  
   useEffect(() => {
-    if (userRole) {
+    if (user?.role) {
       console.log("roleType updated/changed");
     }
-    [userRole];
+    [user?.role];
   });
 
   console.log(
     "logged-in: ",
     isLoggedIn,
     " my authContext userRole is: ",
-    userRole
+    user?.role
   );
 
-  if (isLoggedIn === false) {
+  /*if (isLoggedIn === false) {
     return <Navigate to="/login" replace />;
-  }
+  }*/
 
-  if ((userRole ?? "").toLowerCase() === "teacher") {
+  if ((user?.role ?? "").toLowerCase() === "teacher") {
     console.log("I'm a teacher");
     return children;
   }
 
-  if ((userRole ?? "").toLowerCase() === "student") {
+  if ((user?.role ?? "").toLowerCase() === "student") {
     console.log("I'm a student");
     return children;
   }
 
-  if ((userRole ?? "").toLowerCase() === "guest") {
+  if ((user?.role ?? "").toLowerCase() === "guest") {
     console.log("I'm an imposter");
     return <Navigate to="/unauthorized" replace />;
   }

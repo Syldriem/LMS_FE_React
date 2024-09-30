@@ -3,17 +3,19 @@ import { useAuthContext } from "../hooks";
 import { Navigate, useNavigate } from "react-router-dom";
 import { hasTokenExpired } from "../utils";
 import { RenderLoginPage } from "./render/RenderLoginPage";
+import { useApiContext } from "../hooks/useApiDataContext";
 
 export function LoginPage(): ReactElement {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { isLoggedIn, login, userRole } = useAuthContext();
+  const { isLoggedIn, login } = useAuthContext();
+  const {user} = useApiContext();
   const navigate = useNavigate();
 
   console.log("Log-in page started");
 
-  if (isLoggedIn) {
-    switch (userRole.toLowerCase()) {
+  if (isLoggedIn && user) {
+    switch (user.role.toLowerCase()) {
       case "teacher":
         return <Navigate to="/teacherpage" replace />;
       case "student":
@@ -26,8 +28,8 @@ export function LoginPage(): ReactElement {
   const handleOnSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     await login(username, password);
-
-    switch (userRole.toLowerCase()) {
+    if(user){
+    switch (user.role.toLowerCase()) {
       case "teacher":
         navigate("/teacherpage");
         break;
@@ -38,6 +40,7 @@ export function LoginPage(): ReactElement {
         navigate("/unauthorized");
         break;
     }  
+  }
   };
   
   return (

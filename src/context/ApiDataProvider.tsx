@@ -87,9 +87,9 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     useEffect(() => {
         if (tokens) {
             const decode = jwtDecode<JwtPayload>(tokens.accessToken);
-            const id = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
-            const name = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
-            const role = decode["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+            const id = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]!;
+            const name = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]!;
+            const role = decode["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]!;
         
             setUser({ id, name, role });
         }
