@@ -16,15 +16,6 @@ const handleOnAddCourse: MouseEventHandler<HTMLButtonElement> = (): void => {
 
 
 }; 
-
-
-
-
-
-
-
-
-
     return (
       <main className="main-container">
         <header className="header-container">

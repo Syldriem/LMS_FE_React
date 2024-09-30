@@ -15,7 +15,7 @@ export function LoginPage(): ReactElement {
   console.log("Log-in page started");
 
   if (isLoggedIn && user) {
-    switch (user.role.toLowerCase()) {
+    switch (user.role) {
       case "teacher":
         return <Navigate to="/teacherpage" replace />;
       case "student":
@@ -29,7 +29,7 @@ export function LoginPage(): ReactElement {
     e.preventDefault();
     await login(username, password);
     if(user){
-    switch (user.role.toLowerCase()) {
+    switch (user.role) {
       case "teacher":
         navigate("/teacherpage");
         break;
