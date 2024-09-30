@@ -1,19 +1,28 @@
-import { createContext, useState, useEffect, ReactNode } from 'react';
-import { BASE_URL, IUser, ICourses, IActivity } from '../utils'
+import { createContext, useState, useEffect, ReactNode, useContext } from 'react';
+import { BASE_URL, IUser, ICourses, IUserLoggedIn, hasTokenExpired } from '../utils';
+import { useAuthContext } from '../hooks';
+import { jwtDecode } from 'jwt-decode';
 
 export interface IApiData {
+    user: IUserLoggedIn;
     users: IUser[];
-    courses: ICourses[];
-    filterUsersByCourseAndRole: (courseId: string, role: string) => IUser[];
+    courses?: ICourses[];
     loading: boolean;
     error: string | null;
-    activity : IActivity[];
-    onActivityListOpen : (moduleId: string) => void;
-  }
+}
 
-  interface ApiDataProviderProps {
+interface JwtPayload {
+  exp: number;
+  iat: number;
+  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"?: string;
+  "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"?: string;
+  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"?: string;
+  [key: string]: any; // Index signature
+}
+
+interface ApiDataProviderProps {
     children: ReactNode;
-  }
+}
 
 export const ApiDataContext = createContext<IApiData>({} as IApiData);
 
@@ -22,63 +31,25 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     const [courses, setCourses] = useState<ICourses[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [activity, setActivity] = useState<IActivity[]>([]);
-
-
-  useEffect(() => {
-
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-
-        const userResponse = await fetch(`${BASE_URL}/users`);
-        const courseResponse = await fetch(`${BASE_URL}/courses`);
-
-        const usersData: IUser[] = await userResponse.json();
-        const coursesData: ICourses[] = await courseResponse.json();
-
-        setUsers(usersData);
-        setCourses(coursesData);
-      } catch (error: any) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const onActivityListOpen = (moduleId : string) => {
-    setTimeout(() => {
-      fetchActivities(moduleId).then((act) => {
-        setActivity([...act]);
-      })
-    }, 1000);
-  }
-
-  const filterUsersByCourseAndRole = (courseId: string, role: string): IUser[] => {
-    return users.filter((user) => user.courseID === courseId && user.role === role);
-  };
-
-
-  return (
-    <ApiDataContext.Provider value={{filterUsersByCourseAndRole, users, courses, loading, error, activity, onActivityListOpen}}>
-      {children}
-    </ApiDataContext.Provider>
-  );
-
-};
-
-async function fetchActivities(moduleId: string) {
-  try {
-    const response = await fetch("http://localhost:5058/api/activities/" + moduleId);
-    const list = await response.json();
+    var user: IUserLoggedIn = {};
     
+    
+    const { tokens,isLoggedIn } = useAuthContext();
 
-    return list;
-  } catch (error) {
-    console.log(error);
-    return;
+    console.log(isLoggedIn);
+
+    if(isLoggedIn===true){
+    const decode = jwtDecode<JwtPayload>(tokens?.accessToken!);
+    const id = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]
+    const name = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]
+    const role = decode["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+  
+    user = { id, name, role };
   }
-}
+
+    return (
+        <ApiDataContext.Provider value={{ user, users, loading, error }}>
+            {children}
+        </ApiDataContext.Provider>
+    );
+};

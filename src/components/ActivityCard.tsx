@@ -9,14 +9,17 @@ interface IActivityProps {
 
 
 export function ActivityCard({ activity } : IActivityProps) : ReactElement {
+
+    
     return (
         <span className="card-base">
             <p className="title-card-src">{activity.name}</p>
             <div className="desc">
+                <p className="cat-lbl">Description:</p>
                 <p className="spec-lbl">{activity.description}</p>
             </div>
             <div className="desc">
-                <p className="cat-lbl">Activity Type</p>
+                <p className="cat-lbl">Activity Type:</p>
                 <p className="spec-lbl">{activity.activityType}</p>
             </div>
             <div className="desc">
