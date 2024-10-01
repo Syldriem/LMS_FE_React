@@ -53,3 +53,11 @@ export interface IUserLoggedIn {
   name: string;
   role: string;
 }
+export interface IActivity{
+  id: string;
+  name: string;
+  description: string;
+  start: string;
+  end: string;
+  activityType: string;
+}

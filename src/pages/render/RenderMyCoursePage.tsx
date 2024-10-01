@@ -4,28 +4,28 @@ import { LogoutBtn } from "../../components/LogoutBtn";
 import { ModuleCard } from "../../components/ModuleCard";
 import { StudentCard } from "../../components/StudentCard";
 interface renderMyCoursePageProps {
-  courses: ICourses | null;
+  course: ICourses | null;
   users: IUser[] | null;
   user: IUserLoggedIn | null;
 }
 
 export function RenderMyCoursePage({
-  courses,
+  course,
   users,
   user,
 }: renderMyCoursePageProps): ReactElement {
   return (
     <main className="home-section">
-      <p className="title">{courses?.name}</p>
+      <p className="title">{course?.name}</p>
       <div className="doc-btn-contanier">
         {/*<button className="btn-layout">Documents</button>*/}
       </div>
       <div className="section-container">
         <section className="module-section">
           <p className="sub-tit">Modules List</p>
-          {courses && courses.modules && courses.modules.length > 0 ? (
-            courses.modules.map((module) => (
-              <ModuleCard key={module.id} module={module} />
+          {course && course.modules && course.modules.length > 0 ? (
+            course.modules.map((module) => (
+              <ModuleCard key={module.id} module={module}  />
             ))
           ) : (
             <p>No modules available.</p>

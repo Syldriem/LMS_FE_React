@@ -5,7 +5,7 @@ import "../css/MyCoursePage.css";
 import { useNavigate } from "react-router-dom";
 import { RenderMyCoursePage } from "./render/RenderMyCoursePage";
 export function MyCoursePage() {
-  const { user, users, courses } = useContext(ApiDataContext);
+  const { user, users, course } = useContext(ApiDataContext);
   const { isLoggedIn } = useAuthContext();
   const navigate = useNavigate();
 
@@ -16,5 +16,5 @@ export function MyCoursePage() {
     }
   }, [isLoggedIn, navigate]);
 
-  return <RenderMyCoursePage courses={courses} user={user} users={users} />;
+  return <RenderMyCoursePage course={course} user={user} users={users} />;
 }
