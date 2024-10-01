@@ -24,7 +24,7 @@ export function ModuleCard({ module }: IModuleProps): ReactElement {
           <p className="spec-lbl">{module?.end}</p>
         </div>
         <div className="btn-container">
-          <button className="btn-layout">Activities</button>
+          {/*<button className="btn-layout">Activities</button>*/}
           {/*<button className="btn-layout">Documents</button>*/}
         </div>
       </span>

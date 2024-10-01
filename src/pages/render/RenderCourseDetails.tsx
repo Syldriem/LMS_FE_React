@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { ModuleCard, StudentCard } from "../../components";
+import { LogoutBtn, ModuleCard, StudentCard } from "../../components";
 import { Header } from "../../components/header";
 import { useApiContext } from "../../hooks/useApiDataContext";
 import { useAuthContext, useFetchWithToken } from "../../hooks";
@@ -25,7 +25,7 @@ export function RenderCourseDetails() {
 
   return (
     <>
-      <Header />
+      {/*<Header />*/}
       <main className="home-section">
         <p className="title">{course?.name}</p>
         <div className="doc-btn-contanier">
@@ -43,6 +43,7 @@ export function RenderCourseDetails() {
             )}
           </section>
           <section className="students-section">
+            {/*
             <p className="sub-tit">Students List</p>
             {users && users.length > 0 ? (
               users.map((user) => (
@@ -57,9 +58,10 @@ export function RenderCourseDetails() {
               ))
             ) : (
               <p>No students available.</p>
-            )}
+            )}*/}
           </section>
         </div>
+        <LogoutBtn />
       </main>
     </>
   );
