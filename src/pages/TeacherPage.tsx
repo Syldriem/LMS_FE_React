@@ -5,7 +5,6 @@ import { useAuthContext } from "../hooks";
 import { useNavigate } from "react-router-dom";
 import { useApiContext } from "../hooks/useApiDataContext";
 import { RenderCourseList } from "./render/RenderCourseList";
-import { Header } from "../components/header";
 
 export function TeacherPage(): ReactElement {
   const { isLoggedIn } = useAuthContext();
