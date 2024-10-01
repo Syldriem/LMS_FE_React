@@ -6,7 +6,7 @@ import { StudentCard } from "../../components/StudentCard";
 interface renderMyCoursePageProps {
   course: ICourses | null;
   users: IUser[] | null;
-  user: IUserLoggedIn | null;
+  user: IUser | null;
 }
 
 export function RenderMyCoursePage({
