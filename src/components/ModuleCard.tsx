@@ -2,7 +2,6 @@ import { ReactElement, useState } from "react";
 import "../css/ModuleCard.css";
 import { IModules } from "../utils";
 import { useNavigate } from "react-router-dom";
-import Popup from 'reactjs-popup';
 import { ActivityListPage } from "../pages/ActivityListPage";
 
 interface IModuleProps {
@@ -39,13 +38,9 @@ export function ModuleCard({ module }: IModuleProps): ReactElement {
           <p className="spec-lbl">{module?.end}</p>
         </div>
         <div className="btn-container">
-          {/*<button className="btn-layout">Activities</button>*/}
-          {/*<button className="btn-layout">Documents</button>*/}
-        </div>
-        <div className="btn-container">
             <button className="btn-layout" onClick={() => onActivityBtnClick(module!.id)}>Activities</button>
             <button className="btn-layout">Documents</button>
-          </div>
+        </div>
       </span>
     </div>
   );

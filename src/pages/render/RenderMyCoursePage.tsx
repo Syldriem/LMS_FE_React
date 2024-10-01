@@ -25,7 +25,7 @@ export function RenderMyCoursePage({
           <p className="sub-tit">Modules List</p>
           {course && course.modules && course.modules.length > 0 ? (
             course.modules.map((module) => (
-              <ModuleCard key={module.id} module={module} />
+              <ModuleCard key={module.id} module={module}  />
             ))
           ) : (
             <p>No modules available.</p>

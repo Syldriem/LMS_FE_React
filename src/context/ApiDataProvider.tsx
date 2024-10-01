@@ -85,6 +85,23 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     }
   };
 
+  const getActivityById = async () => {
+    if (!user) return;
+
+    try {
+      const coursesData = await fetchWithToken(
+        `${BASE_URL}/activities/moduleid/${course?.Id}`
+      );
+      setCourse(coursesData);
+    } catch (err) {
+      if (err instanceof CustomError) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred while fetching courses.");
+      }
+    }
+  };
+
   const fetchAllCourses = async () => {
     try {
       const courseData = await fetchWithToken(`${BASE_URL}/courses`);

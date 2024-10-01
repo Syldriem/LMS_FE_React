@@ -1,7 +1,8 @@
 import { ReactElement, useEffect, useState } from "react";
-import { IActivity } from "../utils";
+import { BASE_URL, IActivity } from "../utils";
 import { ActivityCard } from "../components/ActivityCard";
 import { useParams } from "react-router-dom";
+import { fetchWithToken } from "../context/FetchWithToken";
 
 
 export function ActivityListPage() : ReactElement {
@@ -11,34 +12,32 @@ export function ActivityListPage() : ReactElement {
 
     
     useEffect(()=> {
-        setTimeout(() => {
-            fetchActivitiesByModuleId(moduleId!).then((list: IActivity[]) => {
-                setActivityList(list);
-            }) 
-        }, 1000);
-    }, [activitiesList]);
+            fetchActivitiesByModuleId(moduleId!);
+    }, [fetchActivitiesByModuleId(moduleId!)]);
 
+    async function fetchActivitiesByModuleId(moduleId:string) {
+        try {
+            const response =  await fetchWithToken(`${BASE_URL}/activities/moduleid/${moduleId}`);
+            setActivityList(response);
+            //const lists = await response.json();
+        
+            //return lists;
+          } catch (error) {
+            console.log(error);
+            return;
+          }
+    }
 
     return(
         <>
             <p className="sub-tit"></p>
-            {activitiesList.map((act => (
-                <ActivityCard key={act.id} activity={act} />
-            )))}
+            {activitiesList && activitiesList.length > 0 ? (
+            activitiesList.map((activity) => (
+                <ActivityCard key={activity.id} activity={activity} />
+            ))
+          ) : (
+            <p>No activities available.</p>
+          )}
         </>
     );
-}
-
-async function fetchActivitiesByModuleId(moduleId:string) {
-    try {
-        const response = await fetch(
-          "http://localhost:5058/api/activities/moduleid/" + moduleId
-        );
-        const lists = await response.json();
-    
-        return lists;
-      } catch (error) {
-        console.log(error);
-        return;
-      }
 }
