@@ -81,12 +81,9 @@ export function CourseCard({ course }: ICourseProps): ReactElement {
         <div className="btn-container">
           {/* <button className="course-btn-layout" onClick={handleOnExpand}>
             Expand
-          </button> */}
-          {/* <button className="course-btn-layout" onClick={handleOnListStudents}>
-            List Students
-          </button> */}
-        </div>
-      </section>
-    );
-    */
+          </button> */
+
+
+
 }
+ 
