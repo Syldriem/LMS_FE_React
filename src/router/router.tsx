@@ -12,6 +12,7 @@ import {
   Unauthorized,
   CourseDetails,
 } from "../pages";
+import { ActivityListPage } from "../pages/ActivityListPage";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +34,10 @@ export const router = createBrowserRouter(
       <Route
         element={<RequireAuth children={<Unauthorized />} />}
         path="/unauthorized"
+      />
+        <Route
+        element={<RequireAuth children={<ActivityListPage />} />}
+        path="/activitylist/:moduleId"
       />
     </>
   )
