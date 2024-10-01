@@ -1,0 +1,111 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #ccc;
+}
+
+
+.tabs {
+    display: flex;
+}
+
+.tab {
+    padding: 10px 20px;
+    border: none;
+    background-color: #fff;
+    border-right: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.tab:hover {
+    background-color: #e6e6e6;
+}
+
+.logout-button {
+    padding: 10px;
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.content {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    flex: 0.5;
+    width: 200px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-right: 1px solid #ccc;
+}
+
+.search-button {
+    display: block;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    background-color: #ccc;
+    border: none;
+    cursor: pointer;
+}
+
+.filter {
+    margin-bottom: 20px;
+}
+
+.filter label {
+    margin-right: 10px;
+}
+
+.main-content {
+    flex: 2;
+    padding: 20px;
+    width: 50%;
+}
+
+.user-list-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    font-weight: bold;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #ccc;
+}
+
+.user-list {
+    background-color: #f9f0ff;
+}
+
+.user-item {
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.user-details {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+}
+
+.create-user-button {
+    background-color: black;
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: 20px;
+}

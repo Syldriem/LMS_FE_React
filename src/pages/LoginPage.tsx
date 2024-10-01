@@ -1,7 +1,6 @@
-import { FormEventHandler, ReactElement, useState, useEffect } from "react";
+import { FormEventHandler, ReactElement, useState } from "react";
 import { useAuthContext } from "../hooks";
 import { Navigate, useNavigate } from "react-router-dom";
-import { hasTokenExpired } from "../utils";
 import { RenderLoginPage } from "./render/RenderLoginPage";
 import { useApiContext } from "../hooks/useApiDataContext";
 
@@ -17,7 +16,7 @@ export function LoginPage(): ReactElement {
   if (isLoggedIn && user) {
     switch (user.role.toLowerCase()) {
       case "teacher":
-        return <Navigate to="/teacherpage" replace />;
+        return <Navigate to="/userlist" replace />;
       case "student":
         return <Navigate to="/mycoursepage" replace />;
       default:
@@ -31,7 +30,7 @@ export function LoginPage(): ReactElement {
     if(user){
     switch (user.role.toLowerCase()) {
       case "teacher":
-        navigate("/teacherpage");
+        navigate("/userlist");
         break;
       case "student":
         navigate("/mycoursepage");
