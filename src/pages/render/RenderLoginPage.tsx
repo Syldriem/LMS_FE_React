@@ -35,9 +35,9 @@ export function RenderLoginPage(props: ILoginProps): ReactElement {
           <button className="sign_in" type="submit">
             Sign In
           </button>
-          <a className="forgot" href="">
+          {/* <a className="forgot" href="">
             Forgot password?
-          </a>
+          </a> */}
         </fieldset>
       </form>
     </main>
