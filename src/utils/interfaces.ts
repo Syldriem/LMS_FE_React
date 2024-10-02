@@ -48,6 +48,11 @@ export interface IUser {
   courseID: string;
 }
 
+export interface IUserCourse {
+  userName: string;
+  courseName: string;
+}
+
 export interface IUserLoggedIn {
   id: string;
   name: string;
