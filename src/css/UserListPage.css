@@ -1,68 +1,30 @@
-.container {
+.contain {
+    margin: auto;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-around;
     width: 100%;
     font-family: Arial, sans-serif;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: #f1f1f1;
-    border-bottom: 1px solid #ccc;
-}
-
-
-.tabs {
-    display: flex;
-}
-
-.tab {
-    padding: 10px 20px;
-    border: none;
-    background-color: #fff;
-    border-right: 1px solid #ccc;
-    cursor: pointer;
-}
-
-.tab:hover {
-    background-color: #e6e6e6;
-}
-
-.logout-button {
-    padding: 10px;
-    background-color: transparent;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.content {
+.sidebar {
     display: flex;
     flex: 1;
-}
-
-.sidebar {
-    flex: 0.5;
-    width: 200px;
-    padding: 20px;
     background-color: #f9f9f9;
+    justify-content: center;
     border-right: 1px solid #ccc;
 }
 
-.search-button {
+.search-input {
     display: block;
     padding: 10px 20px;
-    margin-bottom: 20px;
-    background-color: #ccc;
-    border: none;
+    margin: 20px;
     cursor: pointer;
 }
 
+
 .filter {
-    margin-bottom: 20px;
+    margin: 20px;
 }
 
 .filter label {
@@ -70,9 +32,8 @@
 }
 
 .main-content {
-    flex: 2;
+    flex: 4;
     padding: 20px;
-    width: 50%;
 }
 
 .user-list-header {
@@ -80,8 +41,6 @@
     justify-content: space-between;
     padding: 10px;
     font-weight: bold;
-    background-color: #f1f1f1;
-    border-bottom: 1px solid #ccc;
 }
 
 .user-list {
@@ -90,15 +49,18 @@
 
 .user-item {
     display: flex;
+    justify-content: space-between;
     padding: 10px;
     align-items: center;
     border-bottom: 1px solid #e0e0e0;
 }
 
 .user-details {
-    flex: 1;
     display: flex;
     justify-content: space-between;
+}
+.btn.create {
+    flex: 1;
 }
 
 .create-user-button {

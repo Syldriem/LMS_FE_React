@@ -11,7 +11,7 @@ export function UserListPage(): ReactElement {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      console.log("Test");
+      console.log("Test");      
       navigate("/login");
     }
   }, [isLoggedIn, navigate]);

@@ -16,7 +16,7 @@ export function LoginPage(): ReactElement {
   if (isLoggedIn && user) {
     switch (user.role) {
       case "teacher":
-        return <Navigate to="/userlist" replace />;
+        return <Navigate to="/teacherpage" replace />;
       case "student":
         return <Navigate to="/mycoursepage" replace />;
       default:
@@ -30,7 +30,7 @@ export function LoginPage(): ReactElement {
     if(user){
     switch (user.role) {
       case "teacher":
-        navigate("/userlist");
+        navigate("/teacherpage");
         break;
       case "student":
         navigate("/mycoursepage");

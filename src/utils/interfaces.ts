@@ -23,7 +23,7 @@ export interface ITokenObjectExtensions extends JwtPayload {
 
 export interface ICourses {
   course: IModules;
-  Id: string;
+  id: string;
   name: string;
   start: Date;
   modules: IModules[];

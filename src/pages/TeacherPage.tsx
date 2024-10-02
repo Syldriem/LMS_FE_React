@@ -23,7 +23,7 @@ export function TeacherPage(): ReactElement {
 
   return (
     <main className="main-container">
-      {/*<Header />*/}
+      <Header />
       {/*<div className="course-btn-container">
         <button className="course-btn-layout" onClick={handleOnAddCourse}>
           Add Course

@@ -73,7 +73,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
 
     try {
       const coursesData = await fetchWithToken(
-        `${BASE_URL}/courses/getCourseById${course?.Id}`
+        `${BASE_URL}/courses/getCourseById${course?.id}`
       );
       setCourse(coursesData);
     } catch (err) {
@@ -90,7 +90,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
 
     try {
       const coursesData = await fetchWithToken(
-        `${BASE_URL}/activities/moduleid/${course?.Id}`
+        `${BASE_URL}/activities/moduleid/${course?.id}`
       );
       setCourse(coursesData);
     } catch (err) {
