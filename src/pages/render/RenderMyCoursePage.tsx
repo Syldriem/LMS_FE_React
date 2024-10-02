@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 import { ICourses, IUser, IUserLoggedIn } from "../../utils";
 import { LogoutBtn } from "../../components/LogoutBtn";
 import { ModuleCard } from "../../components/ModuleCard";
@@ -14,6 +14,7 @@ export function RenderMyCoursePage({
   users,
   user,
 }: renderMyCoursePageProps): ReactElement {
+  console.log(course);
   return (
     <main className="home-section">
       <p className="title">{course?.name}</p>
@@ -25,7 +26,7 @@ export function RenderMyCoursePage({
           <p className="sub-tit">Modules List</p>
           {course && course.modules && course.modules.length > 0 ? (
             course.modules.map((module) => (
-              <ModuleCard key={module.id} module={module}  />
+              <ModuleCard key={module.id} module={module} />
             ))
           ) : (
             <p>No modules available.</p>
