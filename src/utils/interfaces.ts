@@ -1,6 +1,5 @@
 import { JwtPayload } from "jwt-decode";
 
-
 export interface IAuthContext {
   tokens: ITokens | null;
   isLoggedIn: boolean;
@@ -13,31 +12,26 @@ export interface ITokens {
   refreshToken: string;
 }
 
-
 export interface ITokenObjectExtensions extends JwtPayload {
   "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name": string;
   "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier": string;
   "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": string;
-
 }
 
 export interface ICourses {
-  course: IModules;
-  Id: string;
+  id: string;
   name: string;
   start: Date;
   modules: IModules[];
-  
 }
 
-export interface IModules{
-  id: string,
+export interface IModules {
+  id: string;
   name: string;
   description: string;
   //activities: any[];
   start: string;
   end: string;
-
 }
 
 export interface IUser {
@@ -53,7 +47,7 @@ export interface IUserLoggedIn {
   name: string;
   role: string;
 }
-export interface IActivity{
+export interface IActivity {
   id: string;
   name: string;
   description: string;

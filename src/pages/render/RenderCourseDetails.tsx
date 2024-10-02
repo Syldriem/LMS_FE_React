@@ -7,8 +7,8 @@ import { BASE_URL, CustomError } from "../../utils";
 import { useNavigate } from "react-router-dom";
 
 export function RenderCourseDetails() {
-  const { course, users, getCourseById } = useApiContext();
-  // TODO: GetCourseById
+  const { course, userList, getCourseById, fetchUsersByCourse } =
+    useApiContext();
   const { isLoggedIn } = useAuthContext();
   const navigate = useNavigate();
 
@@ -20,12 +20,13 @@ export function RenderCourseDetails() {
       await getCourseById();
     };
     getCourse();
+    fetchUsersByCourse();
   }, [isLoggedIn, navigate]);
   console.log(course);
 
   return (
     <>
-      {/*<Header />*/}
+      <Header />
       <main className="home-section">
         <p className="title">{course?.name}</p>
         <div className="doc-btn-contanier">
@@ -43,10 +44,9 @@ export function RenderCourseDetails() {
             )}
           </section>
           <section className="students-section">
-            {/*
             <p className="sub-tit">Students List</p>
-            {users && users.length > 0 ? (
-              users.map((user) => (
+            {userList && userList.length > 0 ? (
+              userList.map((user) => (
                 <StudentCard
                   key={user.id}
                   student={{
@@ -58,7 +58,7 @@ export function RenderCourseDetails() {
               ))
             ) : (
               <p>No students available.</p>
-            )}*/}
+            )}
           </section>
         </div>
         <LogoutBtn />
