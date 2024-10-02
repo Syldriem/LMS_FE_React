@@ -1,4 +1,4 @@
-import { ReactElement, useEffect } from "react";
+import { Children, ReactElement, useEffect } from "react";
 import { useAuthContext } from "../hooks";
 import { Navigate } from "react-router-dom";
 import { useApiContext } from "../hooks/useApiDataContext";
@@ -38,17 +38,14 @@ export function RequireAuth({ children }: IRequireAuthProps): ReactElement {
     return children;
   }
 
-  if ((user?.role ?? "").toLowerCase() === "student") {
+  else if ((user?.role ?? "").toLowerCase() === "student") {
     console.log("I'm a student");
     return children;
-  }
-
-  if ((user?.role ?? "").toLowerCase() === "guest") {
-    console.log("I'm an imposter");
-    return <Navigate to="/unauthorized" replace />;
+  } else{
+    
   }
   console.log(
     "roleType is not defined or empty so here is an unauthorized page"
   );
-  return <Navigate to="/unauthorized" replace />;
+  return children;
 }

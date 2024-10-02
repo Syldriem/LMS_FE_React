@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { LogoutBtn, ModuleCard, StudentCard } from "../../components";
-import { Header } from "../../components/header";
 import { useApiContext } from "../../hooks/useApiDataContext";
 import { useAuthContext, useFetchWithToken } from "../../hooks";
 import { BASE_URL, CustomError } from "../../utils";
