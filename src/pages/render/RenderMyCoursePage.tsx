@@ -1,4 +1,4 @@
-import { ReactElement, useEffect } from "react";
+import { ReactElement } from "react";
 import { ICourses, IUser, IUserLoggedIn } from "../../utils";
 import { LogoutBtn } from "../../components/LogoutBtn";
 import { ModuleCard } from "../../components/ModuleCard";
@@ -14,9 +14,8 @@ export function RenderMyCoursePage({
   users,
   user,
 }: renderMyCoursePageProps): ReactElement {
-  console.log(course);
   return (
-    <main className="home-section">
+    <main className="home-sections">
       <p className="title">{course?.name}</p>
       <div className="doc-btn-contanier">
         {/*<button className="btn-layout">Documents</button>*/}
@@ -31,6 +30,9 @@ export function RenderMyCoursePage({
           ) : (
             <p>No modules available.</p>
           )}
+        </section>
+        <section id="spinner" hidden>
+          <div className="loader"></div>
         </section>
         <section key={user?.id} className="students-section">
           <p className="sub-tit">Students List</p>

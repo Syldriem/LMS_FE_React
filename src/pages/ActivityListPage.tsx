@@ -1,42 +1,34 @@
 import { ReactElement, useEffect, useState } from "react";
-import { BASE_URL, IActivity } from "../utils";
+import { IActivity } from "../utils";
 import { ActivityCard } from "../components/ActivityCard";
-import { useParams } from "react-router-dom";
-import { fetchWithToken } from "../context/FetchWithToken";
 
+interface IActivityProps {
+    activityList : IActivity[];
+    message : string;
+}
 
-export function ActivityListPage() : ReactElement {
+export function ActivityListPage({ activityList, message } : IActivityProps) : ReactElement { 
 
-    const [activitiesList, setActivityList] = useState<IActivity[]>([]);
-    const { moduleId } = useParams();
+    const [mess, setMess] = useState<string>(message);
 
-    
-    useEffect(()=> {
-            fetchActivitiesByModuleId(moduleId!);
-    }, [fetchActivitiesByModuleId(moduleId!)]);
-
-    async function fetchActivitiesByModuleId(moduleId:string) {
-        try {
-            const response =  await fetchWithToken(`${BASE_URL}/activities/moduleid/${moduleId}`);
-            setActivityList(response);
-            //const lists = await response.json();
-        
-            //return lists;
-          } catch (error) {
-            console.log(error);
-            return;
-          }
-    }
+    useEffect(() => {
+      if (activityList.length == 0){
+        setMess("no activities planned for this module")
+      } else {
+        setMess(message);
+      }
+    }, []);
 
     return(
         <>
             <p className="sub-tit"></p>
-            {activitiesList && activitiesList.length > 0 ? (
-            activitiesList.map((activity) => (
-                <ActivityCard key={activity.id} activity={activity} />
-            ))
-          ) : (
-            <p>No activities available.</p>
+            {activityList && activityList.length > 0 ? (
+              activityList.map((act) => (
+                <ActivityCard key={act.id} activity={act} />
+              ))
+          ) : 
+          (
+            <p>{mess}</p>
           )}
         </>
     );
