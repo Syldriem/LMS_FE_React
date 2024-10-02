@@ -185,7 +185,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     if (isLoggedIn && user && user.role === "student") {
       fetchCourse();
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (isLoggedIn && user && user.role === "teacher") {

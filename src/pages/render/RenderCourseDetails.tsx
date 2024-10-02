@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { LogoutBtn, ModuleCard, StudentCard } from "../../components";
-import { Header } from "../../components/header";
+import { Header } from "../../components/Header";
 import { useApiContext } from "../../hooks/useApiDataContext";
 import { useAuthContext, useFetchWithToken } from "../../hooks";
 import { BASE_URL, CustomError } from "../../utils";
@@ -22,7 +22,6 @@ export function RenderCourseDetails() {
     getCourse();
     fetchUsersByCourse();
   }, [isLoggedIn, navigate]);
-  console.log(course);
 
   return (
     <>
