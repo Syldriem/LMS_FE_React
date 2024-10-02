@@ -74,10 +74,12 @@
 
 .info-display {
   display: flex;
+  color: var(--primary-color);
 }
 
 .title-card {
   align-items: flex-start;
+  color: var(--primary-color);
   display: flex;
   font-weight: 800;
   font-size: 1.8rem;
