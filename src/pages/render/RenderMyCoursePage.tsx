@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { ICourses, IUser, IUserLoggedIn } from "../../utils";
+import { ICourses, IUser } from "../../utils";
 import { LogoutBtn } from "../../components/LogoutBtn";
 import { ModuleCard } from "../../components/ModuleCard";
 import { StudentCard } from "../../components/StudentCard";
@@ -29,7 +29,7 @@ export function RenderMyCoursePage({
             <p>No modules available.</p>
           )}
         </section>
-        <section key={course?.Id} className="students-section">
+        <section key={course?.id} className="students-section">
           <p className="sub-tit">Students List</p>
           {users && users.length > 0 ? (
             users.map((user) => (

@@ -5,14 +5,12 @@ import {
   ICourses,
   IUserLoggedIn,
   addTokenToRequestInit,
-  ITokens,
   CustomError,
   IUserCourse,
   ICourseIds,
 } from "../utils";
 import { useAuthContext } from "../hooks";
 import { jwtDecode } from "jwt-decode";
-import { useFetchWithToken } from "../hooks/useFetchWithToken";
 
 interface IApiData {
   user: IUserLoggedIn | null;
@@ -113,6 +111,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
       const courseData = await fetchWithToken(
         `${BASE_URL}/courses/getCourseById/${courseID}` // Ensure you are formatting the URL correctly
       );
+      console.log(courseData)
       return courseData; // Make sure this includes the Id and Name
     } catch (err) {
       // Handle errors as needed
@@ -159,21 +158,6 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     }
   };
 
-  const fetchCourseIds = async () => {
-    try {
-      const response = await fetchWithToken(`${BASE_URL}/courses/course-ids`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch course IDs');
-      }
-      const courseIdsData: ICourseIds[] = await response.json();  // Expect data in the format of ICourseIds[]
-      setCourseIds(courseIdsData.length > 0 ? courseIdsData : null);  // Set courseIds correctly
-    } catch (err) {
-      console.error('Error fetching course IDs:', err);
-      setError("An error occurred while fetching course IDs.");
-      setCourseIds(null);  // Set to null in case of error
-    }
-  };
-
   const fetchUsersWithCourses = async () => {
     try {
       const response = await fetchWithToken(`${BASE_URL}/courses/usercourses`);
@@ -203,8 +187,9 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     if (!user) return;
 
     try {
-      const coursesData = await fetchWithToken(`${BASE_URL}/courses/${user.id}`);
-      setCourses(coursesData);
+      const courseData = await fetchWithToken(`${BASE_URL}/courses/${user.id}`);
+      console.log(courseData)
+      setCourse(courseData);
     } catch (err) {
       if (err instanceof CustomError) {
         setError(err.message);
@@ -234,6 +219,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   useEffect(() => {
     if (isLoggedIn && user && user.role === "student") {
       fetchCourses();
+      
     }
     if (isLoggedIn && user && user.role === "teacher") {
       fetchAllCourses();
@@ -244,14 +230,6 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   useEffect(() => {
     setLoading(!users || !course);
   }, [users, course]);
-
-  useEffect(() => {
-    const loadCourseIds = async () => {
-      fetchCourseIds();
-    };
-  
-    loadCourseIds();
-  }, []);
 
 
   return (
