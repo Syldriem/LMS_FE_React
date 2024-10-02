@@ -8,21 +8,16 @@ interface IModuleProps {
   module?: IModules;
 }
 
-
 export function ModuleCard({ module }: IModuleProps): ReactElement {
-  
-  
-  const onActivityBtnClick = (moduleID : string) => {
-
+  const onActivityBtnClick = (moduleID: string) => {
     console.log("here the module id is:", moduleID);
     let width = (screen.width - 800) / 2;
-    var dis = `status=no, width=600, height=600, left=${width}, top=0`
-    window.open(`/activitylist/${moduleID}`, 'modulelist', dis);
-  }
-
+    var dis = `status=no, width=600, height=600, left=${width}, top=0`;
+    window.open(`/activitylist/${moduleID}`, "modulelist", dis);
+  };
 
   return (
-    <div>
+    <div className="col-sm">
       <span key={module?.id} className="card-src">
         <p className="title-card-src">{module?.name}</p>
         <div className="desc">
@@ -38,8 +33,13 @@ export function ModuleCard({ module }: IModuleProps): ReactElement {
           <p className="spec-lbl">{module?.end}</p>
         </div>
         <div className="btn-container">
-            <button className="btn-layout" onClick={() => onActivityBtnClick(module!.id)}>Activities</button>
-            <button className="btn-layout">Documents</button>
+          <button
+            className="btn-layout"
+            onClick={() => onActivityBtnClick(module!.id)}
+          >
+            Activities
+          </button>
+          <button className="btn-layout">Documents</button>
         </div>
       </span>
     </div>

@@ -1,17 +1,21 @@
-card-st{
-    background-color: whitesmoke;
-    border: 0;
-    border-radius: 8px;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    height: 100px;
-    justify-content: space-around;
-    margin-bottom: 1rem;
-    margin-left: 5%;
-    min-width: 250px;
-    padding: 0.5rem;
-    position: relative;
-    width: 90%;
+.card-st {
+  background-color: whitesmoke;
+  border: 0;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  /* flex-direction: column; */
+  /* height: 100px; */
+  justify-content: space-evenly;
+  margin-bottom: 1rem;
+  margin-left: 5%;
+  /* min-width: 250px; */
+  padding: 0.5rem;
+  position: relative;
+  width: fit-content;
+}
+.desc {
+  margin-bottom: 0;
 }

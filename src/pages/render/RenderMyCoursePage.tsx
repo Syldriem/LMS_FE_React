@@ -3,6 +3,7 @@ import { ICourses, IUser, IUserLoggedIn } from "../../utils";
 import { LogoutBtn } from "../../components/LogoutBtn";
 import { ModuleCard } from "../../components/ModuleCard";
 import { StudentCard } from "../../components/StudentCard";
+import { Grid } from "../../components/Grid";
 interface renderMyCoursePageProps {
   course: ICourses | null;
   users: IUser[] | null;
@@ -18,11 +19,39 @@ export function RenderMyCoursePage({
   return (
     <main className="home-section">
       <p className="title">{course?.name}</p>
-      <div className="doc-btn-contanier">
-        {/*<button className="btn-layout">Documents</button>*/}
-      </div>
-      <div className="section-container">
-        <section className="module-section">
+      <div className="section-container text-center">
+        <Grid>
+          <div className="col-sm">
+            <p className="sub-tit">Modules List</p>
+            {course && course.modules && course.modules.length > 0 ? (
+              course.modules.map((module) => (
+                <ModuleCard key={module.id} module={module} />
+              ))
+            ) : (
+              <p>No modules available</p>
+            )}
+          </div>
+        </Grid>
+        <Grid>
+          <div className="col-sm">
+            <p className="sub-tit">Students List</p>
+            {users && users.length > 0 ? (
+              users.map((user) => (
+                <StudentCard
+                  key={user.id}
+                  student={{
+                    id: user.id,
+                    userName: user.userName,
+                    email: user.email,
+                  }}
+                />
+              ))
+            ) : (
+              <p>No students available.</p>
+            )}
+          </div>
+        </Grid>
+        {/* <section className="module-section">
           <p className="sub-tit">Modules List</p>
           {course && course.modules && course.modules.length > 0 ? (
             course.modules.map((module) => (
@@ -48,10 +77,9 @@ export function RenderMyCoursePage({
           ) : (
             <p>No students available.</p>
           )}
-        </section>
-
-        <LogoutBtn />
+        </section> */}
       </div>
+      <LogoutBtn />
     </main>
   );
 }

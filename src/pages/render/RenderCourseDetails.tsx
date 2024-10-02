@@ -5,6 +5,7 @@ import { useApiContext } from "../../hooks/useApiDataContext";
 import { useAuthContext, useFetchWithToken } from "../../hooks";
 import { BASE_URL, CustomError } from "../../utils";
 import { useNavigate } from "react-router-dom";
+import { Grid } from "../../components/Grid";
 
 export function RenderCourseDetails() {
   const { course, userList, getCourseById, fetchUsersByCourse } =
@@ -25,13 +26,45 @@ export function RenderCourseDetails() {
 
   return (
     <>
-      <Header />
       <main className="home-section">
+        {/* <main className="main-container"> */}
+        <Header />
         <p className="title">{course?.name}</p>
-        <div className="doc-btn-contanier">
-          {/*<button className="btn-layout">Documents</button>*/}
-        </div>
         <div className="section-container">
+          <Grid>
+            <div className="col-sm">
+              <p className="sub-tit">Modules List</p>
+              {course && course.modules && course.modules.length > 0 ? (
+                course.modules.map((module) => (
+                  <ModuleCard key={module.id} module={module} />
+                ))
+              ) : (
+                <p>No modules available.</p>
+              )}
+            </div>
+          </Grid>
+
+          <Grid>
+            <div className="col-sm">
+              <p className="sub-tit">Students List</p>
+              {userList && userList.length > 0 ? (
+                userList.map((user) => (
+                  <StudentCard
+                    key={user.id}
+                    student={{
+                      id: user.id,
+                      userName: user.userName,
+                      email: user.email,
+                    }}
+                  />
+                ))
+              ) : (
+                <p>No students available.</p>
+              )}
+            </div>
+          </Grid>
+        </div>
+        {/* <div className="section-container">
           <section className="module-section">
             <p className="sub-tit">Modules List</p>
             {course && course.modules && course.modules.length > 0 ? (
@@ -59,7 +92,7 @@ export function RenderCourseDetails() {
               <p>No students available.</p>
             )}
           </section>
-        </div>
+        </div> */}
         <LogoutBtn />
       </main>
     </>

@@ -31,14 +31,11 @@ export const router = createBrowserRouter(
         element={<RequireAuth children={<MyCoursePage />} />}
         path="/mycoursepage"
       ></Route>
-      <Route
+      {/*<Route
         element={<RequireAuth children={<Unauthorized />} />}
         path="/unauthorized"
-      />
-        <Route
-        element={<ActivityListPage />}
-        path="/activitylist/:moduleId"
-      />
+      />*/}
+      <Route element={<ActivityListPage />} path="/activitylist/:moduleId" />
     </>
   )
 );
