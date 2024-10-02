@@ -22,9 +22,9 @@ export interface ITokenObjectExtensions extends JwtPayload {
 }
 
 export interface ICourses {
-  course: IModules;
-  Id: string;
+  id: string;
   name: string;
+  description: string;
   start: Date;
   modules: IModules[];
   
@@ -46,6 +46,11 @@ export interface IUser {
   role: string;
   email: string;
   courseID: string;
+}
+
+export interface ICourseIds {
+  id: string; 
+  name: string;
 }
 
 export interface IUserCourse {

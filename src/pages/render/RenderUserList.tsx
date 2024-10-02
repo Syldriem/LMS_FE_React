@@ -1,9 +1,10 @@
-import { ReactElement } from "react";
-import { ICourses, IUser, IUserCourse } from "../../utils";
+import { ReactElement, useState } from "react";
+import { IUser, IUserCourse } from "../../utils";
 import { LogoutBtn } from "../../components/LogoutBtn";
+import { ModalPopupCreateUser } from "../../components/ModalPopupCreateUser";
 
 interface RenderUserListPageProps {
-  courses: IUserCourse[] | null; // Changed to ICourses[] to handle multiple courses
+  courses: IUserCourse[] | null;
   users: IUser[] | null;
 }
 
@@ -11,6 +12,12 @@ export function RenderUserListPage({
   users,
   courses,
 }: RenderUserListPageProps): ReactElement {
+  const [showModal, setShowModal] = useState(false);
+
+  const openModal = () => {
+    setShowModal(true);
+  };
+  
   return (
     <div className="container">
       <div className="header">
@@ -57,8 +64,12 @@ export function RenderUserListPage({
         </div>
       </div>
       <div>
-        <button className="create-user-button">Create User</button>
+        <button className="create-user-button" onClick={openModal}>
+          Create User
+        </button>
+
       </div>
+      <ModalPopupCreateUser show={showModal} setShow={setShowModal}></ModalPopupCreateUser>
     </div>
   );
 }

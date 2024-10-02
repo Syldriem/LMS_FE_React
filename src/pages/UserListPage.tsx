@@ -1,4 +1,4 @@
-import { ReactElement, useContext, useEffect, useState } from "react";
+import { MouseEventHandler, ReactElement, useContext, useEffect, useState } from "react";
 import { ApiDataContext } from "../context/ApiDataProvider";
 import { useAuthContext } from "../hooks";
 import "../css/UserListPage.css";
@@ -10,7 +10,6 @@ export function UserListPage(): ReactElement {
   const { users, getCourseById, userCourses } = useContext(ApiDataContext);
   const { isLoggedIn } = useAuthContext();
   const navigate = useNavigate();
-  const [fetchedCourses, setFetchedCourses] = useState<ICourses[]>([]); // Initialize as an empty array
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -22,3 +21,5 @@ export function UserListPage(): ReactElement {
   return <RenderUserListPage users={users} courses={userCourses}/>;
 
 }
+
+

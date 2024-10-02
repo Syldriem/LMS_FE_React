@@ -6,13 +6,11 @@ import { StudentCard } from "../../components/StudentCard";
 interface renderMyCoursePageProps {
   course: ICourses | null;
   users: IUser[] | null;
-  user: IUser | null;
 }
 
 export function RenderMyCoursePage({
   course,
   users,
-  user,
 }: renderMyCoursePageProps): ReactElement {
   return (
     <main className="home-section">
@@ -31,7 +29,7 @@ export function RenderMyCoursePage({
             <p>No modules available.</p>
           )}
         </section>
-        <section key={user?.id} className="students-section">
+        <section key={course?.Id} className="students-section">
           <p className="sub-tit">Students List</p>
           {users && users.length > 0 ? (
             users.map((user) => (

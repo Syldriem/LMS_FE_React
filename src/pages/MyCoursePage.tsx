@@ -16,5 +16,5 @@ export function MyCoursePage() {
     }
   }, [isLoggedIn, navigate]);
 
-  return <RenderMyCoursePage course={course} user={user} users={users} />;
+  return <RenderMyCoursePage course={course} users={users} />;
 }

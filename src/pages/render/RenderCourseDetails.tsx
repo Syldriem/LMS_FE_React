@@ -15,10 +15,6 @@ export function RenderCourseDetails() {
     if (!isLoggedIn) {
       navigate("/login");
     }
-    const getCourse = async () => {
-      await getCourseById();
-    };
-    getCourse();
   }, [isLoggedIn, navigate]);
   console.log(course);
 
