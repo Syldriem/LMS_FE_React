@@ -18,5 +18,9 @@ export function MyCoursePage() {
     fetchUsersByCourse();
   }, [isLoggedIn, navigate, course]);
 
-  return <RenderMyCoursePage course={course} user={user} users={userList} />;
+  return (
+    <>
+      <RenderMyCoursePage course={course} user={user} users={userList} />
+    </>
+  );
 }
