@@ -1,8 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { CourseCard } from "../../components";
 import { useApiContext } from "../../hooks/useApiDataContext";
-import { EventHandler, MouseEventHandler, useState } from "react";
-import { ICourses } from "../../utils";
 
 export function RenderCourseList() {
   const { courses, setCourse } = useApiContext();
@@ -24,7 +22,7 @@ export function RenderCourseList() {
           {courses && courses.length > 0 ? (
             courses.map((course) => (
               <div
-                key={course.Id}
+                key={course.id}
                 className="col-sm"
                 onClick={() => handleClick(course)}
               >
