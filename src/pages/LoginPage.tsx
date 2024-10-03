@@ -7,10 +7,10 @@ import { useApiContext } from "../hooks/useApiDataContext";
 export function LoginPage(): ReactElement {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { isLoggedIn, login } = useAuthContext();
-  const { user } = useApiContext();
+  const { isLoggedIn, login,user } = useAuthContext();
   const navigate = useNavigate();
 
+  console.log("Role", user?.role)
   // Redirect logged-in users to their respective page based on their role
   useEffect(() => {
     if (isLoggedIn && user) {
