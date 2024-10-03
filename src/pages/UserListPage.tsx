@@ -7,7 +7,7 @@ import { RenderUserListPage } from "./render/RenderUserList";
 
 
 export function UserListPage(): ReactElement {
-  const { users, getCourseById, userCourses, fetchUsers } = useContext(ApiDataContext);
+  const { users, getCourseById, userCourses, fetchUsers, courses } = useContext(ApiDataContext);
 
   useEffect(() => {
       fetchUsers();
@@ -16,6 +16,6 @@ export function UserListPage(): ReactElement {
   
   return <>
   
-  <RenderUserListPage users={users} courses={userCourses}/>
+  <RenderUserListPage users={users} courses={userCourses} course={courses} user={null}/>
   </>;
 }
