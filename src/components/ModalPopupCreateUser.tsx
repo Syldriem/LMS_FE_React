@@ -15,8 +15,7 @@ export function ModalPopupCreateUser({ show, setShow }: ModalPopupProps): ReactE
   };
 
   return (
-    <main className="main-container">
-      <Modal show={show} onHide={handleCloseModal}>
+      <Modal show={show} onHide={handleCloseModal} backdrop={false}>
         <Modal.Header closeButton>
           <Modal.Title>Add a New Course</Modal.Title>
         </Modal.Header>
@@ -24,11 +23,7 @@ export function ModalPopupCreateUser({ show, setShow }: ModalPopupProps): ReactE
           <AddUserForm />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
         </Modal.Footer>
       </Modal>
-    </main>
   );
 }

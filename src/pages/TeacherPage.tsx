@@ -1,22 +1,14 @@
 import { MouseEventHandler, ReactElement, useEffect, useState } from "react";
 import "../css/index.css";
-import { useAuthContext } from "../hooks";
-import { useNavigate } from "react-router-dom";
 import { RenderCourseList } from "./render/RenderCourseList";
 import { ModalPopup } from "../components/ModalPopup";
 import { Header } from "../components/Header";
 
 
 export function TeacherPage(): ReactElement {
-  const { isLoggedIn } = useAuthContext();
-  const navigate = useNavigate();
+
   const [showModal, setShowModal] = useState(false); // Modal visibility state
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/login");
-    }
-  }, [isLoggedIn, navigate]);
 
   const handleOnAddCourse: MouseEventHandler<HTMLButtonElement> = (): void => {
     setShowModal(true); 

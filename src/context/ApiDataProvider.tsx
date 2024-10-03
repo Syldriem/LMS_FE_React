@@ -145,6 +145,17 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     }
   };
   
+  const fetchUsersWithCourses = async () => {
+    try {
+      const response = await fetchWithToken(`${BASE_URL}/courses/usercourses`);
+
+      console.log("Fetched user courses:", response);
+      setUserCourses(response); // Assuming you have a state to hold this data
+    } catch (err) {
+      // Handle errors as needed
+      console.error("Error fetching user courses:", err);
+    }
+  };
 
   const fetchAllCourses = async () => {
     try {
@@ -228,6 +239,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
         fetchCourse();
       } else if (user.role === "teacher") {
         fetchAllCourses();
+        fetchUsersWithCourses();
       }
     }
   }, [user, isLoggedIn]);

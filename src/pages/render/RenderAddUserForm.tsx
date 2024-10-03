@@ -20,10 +20,6 @@ export function AddUserForm(): ReactElement {
       return;
     }
 
-    
-
-
-    
 
     const userData = {
       username: username,
@@ -33,7 +29,6 @@ export function AddUserForm(): ReactElement {
       courseID: courseid || "",
     };
 
-    console.log(userData)
 
 
 

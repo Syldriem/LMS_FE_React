@@ -1,6 +1,7 @@
 import React, { ReactElement } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { AddCourseForm } from "../pages/render/RenderAddCourseForm.tsx";
+import { useNavigate } from "react-router-dom";
 
 interface ModalPopupProps {
   show: boolean;
@@ -8,7 +9,6 @@ interface ModalPopupProps {
 }
 
 export function ModalPopup({ show, setShow }: ModalPopupProps): ReactElement {
-
   const handleCloseModal = () => {
     setShow(false);
     window.location.reload();

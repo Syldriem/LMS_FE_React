@@ -2,14 +2,18 @@ import { createContext, ReactElement, ReactNode, useEffect, useState } from "rea
 import { CustomError, hasTokenExpired, IAuthContext, ITokens, IUserLoggedIn, loginReq, refreshTokens, roleJsonFromToken, TOKENS } from "../utils";
 import { useLocalStorage } from "usehooks-ts";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 interface IAuthProviderProps {
   children: ReactNode;
 }
 
+
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
+
 export function AuthProvider({ children }: IAuthProviderProps): ReactElement {
+ 
   const [tokens, setTokens, clearTokens] = useLocalStorage<ITokens | null>(
     TOKENS,
     null
@@ -23,22 +27,40 @@ export function AuthProvider({ children }: IAuthProviderProps): ReactElement {
   async function login(username: string, password: string) {
     try {
       const tokens = await loginReq(username, password);
-      setTokens(tokens);
-      console.log("Login tokens received :", tokens);
-
+      setTokens(tokens);  // Save tokens in localStorage or useLocalStorage
+      console.log("Login tokens received:", tokens);
+  
+      // Check if tokens are valid (not expired, etc.)
+      if (tokens.accessToken && !hasTokenExpired(tokens.accessToken)) {
+        setIsLoggedIn(true);  // Update the logged-in state only if tokens are valid
+      } else {
+        setIsLoggedIn(false); // In case token validation fails
+      }
     } catch (error) {
       if (error instanceof CustomError) {
         console.log(error);
       }
+      setIsLoggedIn(false);  // In case of an error, ensure the user is logged out
     }
   }
   
+  useEffect(() => {
+    if (isLoggedIn===true) {
+      logout();
+      
+    }
+  }, []);
+  
   function logout() {
+    
     clearTokens();
     setIsLoggedIn(false);
+    
   }
   
+
   useEffect(() => {
+
     const handleTokenExpiry = async () => {
       if (tokens) {
         const accessTokenExpired = hasTokenExpired(tokens.accessToken);
@@ -52,7 +74,7 @@ export function AuthProvider({ children }: IAuthProviderProps): ReactElement {
               setIsLoggedIn(true);
             } catch (error) {
               console.log("Failed to refresh token:", error);
-              logout(); // Log out if token refresh fails
+              logout();
             }
           } else {
             // If no valid refresh token, log out

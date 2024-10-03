@@ -2,6 +2,7 @@ import { ReactElement, useState } from "react";
 import { IUser, IUserCourse } from "../../utils";
 import { LogoutBtn } from "../../components/LogoutBtn";
 import { ModalPopupCreateUser } from "../../components/ModalPopupCreateUser";
+import { Header } from "../../components/Header";
 
 interface RenderUserListPageProps {
   courses: IUserCourse[] | null;
@@ -21,16 +22,12 @@ export function RenderUserListPage({
   };
   
   return (
+    <>
+    <Header></Header>
     <div className="container">
-      <div className="header">
-        <div className="tabs">
-          <button className="tab">Courses</button>
-          <button className="tab">Users</button>
-        </div>
-        <LogoutBtn />
-      </div>
+      
 
-      <div className="content">
+      <div className="contain">
         <div className="sidebar">
           <button className="search-button">Search?</button>
           <div className="filter">
@@ -73,6 +70,7 @@ export function RenderUserListPage({
       </div>
       <ModalPopupCreateUser show={showModal} setShow={setShowModal}></ModalPopupCreateUser>
     </div>
+    </>
   );
 }
 

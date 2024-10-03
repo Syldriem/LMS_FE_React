@@ -1,5 +1,5 @@
 import { LogoutBtn } from "./LogoutBtn";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function Header() {
   const navigate = useNavigate();
@@ -9,15 +9,12 @@ export function Header() {
     <header className="header-container">
       <div className="navbar-container">
         <div className="navbar">
-          <a className="style active" href="/teacherpage">
+          <Link className="style active" to="/teacherpage">
             Courses
-          </a>
-          <a className="style" onClick={(e) => {
-            e.preventDefault()
-            navigate("/userlist");
-          }}>
+          </Link>
+          <Link className="style" to={'/userlist'}>
             User Admin
-          </a>
+          </Link>
         </div>
         <LogoutBtn />
       </div>
