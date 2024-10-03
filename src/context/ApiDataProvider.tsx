@@ -57,7 +57,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   const [user, setUser] = useState<IUserLoggedIn | null>(null);
   const [userCourses, setUserCourses] = useState<IUserCourse[] | null>(null);
   const { tokens, isLoggedIn } = useAuthContext();
-  const [courseIds, setCourseIds] = useState<ICourseIds[] | null>(null);
+  const [courseIds] = useState<ICourseIds[] | null>(null);
 
   const fetchWithToken = async (url: string, method: string = "GET", body?: any): Promise<any> => {
     if (!tokens) {
@@ -172,6 +172,8 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     }
   };
 
+  
+
   const fetchUsersByCourse = async () => {
     try {
       const usersData = await fetchWithToken(
@@ -223,6 +225,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
       const role = decode["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]!.toLowerCase();
 
       setUser({ id, name, role });
+      console.log("test", user)
     }
   }, [tokens]);
 
@@ -231,7 +234,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
       fetchCourse();
       
     }
-  }, [user]);
+  }, [tokens]);
 
   useEffect(() => {
     if (isLoggedIn && user) {

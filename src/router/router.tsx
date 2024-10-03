@@ -1,31 +1,22 @@
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Navigate,
-  Route,
-} from "react-router-dom";
+import { createBrowserRouter, createRoutesFromElements, Route, Navigate } from "react-router-dom";
 import { RequireAuth } from "../components";
 import { LoginPage, TeacherPage, MyCoursePage, UserListPage, Unauthorized, CourseDetails } from "../pages";
+import { AuthGuard } from "../components/AuthGuard";
 
-import { ActivityListPage } from "../pages/ActivityListPage";
-
+// Define routes with AuthGuard wrapping protected pages
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
+      {/* Public routes */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/" element={<Navigate to="/login" replace />} />
-
       <Route path="/coursedetails" element={<CourseDetails />} />
-      <Route path="/teacherpage" element={<TeacherPage />} />
 
-      <Route path="/MyCoursePage" element={<MyCoursePage />} />
-
-      <Route path="/userlist" element={<UserListPage />} />
-
-      <Route
-        element={<RequireAuth children={<Unauthorized />} />}
-        path="/unauthorized"
-      />
+      {/* Protected routes wrapped in AuthGuard */}
+        <Route path="/teacherpage" element={<AuthGuard children={<TeacherPage />} />} />
+        <Route path="/mycoursepage" element={<AuthGuard children={<MyCoursePage />} />} />
+        <Route path="/userlist" element={<AuthGuard children={<UserListPage />} />} />
+        <Route path="/unauthorized" element={<AuthGuard children={<Unauthorized />} />} />
     </>
   )
 );
