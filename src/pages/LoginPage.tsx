@@ -2,7 +2,6 @@ import { FormEventHandler, ReactElement, useEffect, useState } from "react";
 import { useAuthContext } from "../hooks";
 import { Navigate, useNavigate } from "react-router-dom";
 import { RenderLoginPage } from "./render/RenderLoginPage";
-import { useApiContext } from "../hooks/useApiDataContext";
 
 export function LoginPage(): ReactElement {
   const [username, setUsername] = useState<string>("");
