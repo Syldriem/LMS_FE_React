@@ -15,6 +15,7 @@ import { useFetchWithToken } from "../hooks/useFetchWithToken";
 interface IApiData {
   user: IUserLoggedIn | null;
   users: IUser[] | null;
+  userList: IUser[] | null;
   course: ICourses | null;
   courses: ICourses[] | null;
   loading: boolean;
@@ -22,6 +23,7 @@ interface IApiData {
   getCourseById: () => Promise<void>;
   setCourse: React.Dispatch<React.SetStateAction<ICourses | null>>;
   createCourse: (courseDetails: { name: string; description: string; startDate: string; }) => Promise<ICourses>;
+  fetchUsersByCourse: () => Promise<void>;
 }
 
 interface JwtPayload {
@@ -41,6 +43,7 @@ export const ApiDataContext = createContext<IApiData>({} as IApiData);
 
 export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   const [users, setUsers] = useState<IUser[] | null>(null);
+  const [userList, setUserList] = useState<IUser[] | null>(null);
   const [course, setCourse] = useState<ICourses | null>(null);
   const [courses, setCourses] = useState<ICourses[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -79,6 +82,16 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     } catch (error) {
       console.error("Error creating course:", error);
       throw error;
+      const coursesData = await fetchWithToken(
+        `${BASE_URL}/courses/getCourseById${course?.id}`
+      );
+      setCourse(coursesData);
+    } catch (err) {
+      if (err instanceof CustomError) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred while fetching courses.");
+      }
     }
   };
 
@@ -110,6 +123,21 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     }
   };
 
+  const fetchUsersByCourse = async () => {
+    try {
+      const usersData = await fetchWithToken(
+        `${BASE_URL}/users/courses/${course?.id}`
+      );
+      setUserList(usersData);
+    } catch (err) {
+      if (err instanceof CustomError) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred while fetching users.");
+      }
+    }
+  };
+
   const fetchUsers = async () => {
     try {
       const usersData = await fetchWithToken(`${BASE_URL}/users`);
@@ -123,12 +151,12 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     }
   };
 
-  const fetchCourses = async () => {
+  const fetchCourse = async () => {
     if (!user) return;
 
     try {
-      const coursesData = await fetchWithToken(`${BASE_URL}/courses/${user.id}`);
-      setCourses(coursesData);
+      const courseData = await fetchWithToken(`${BASE_URL}/courses/${user.id}`);
+      setCourse(courseData);
     } catch (err) {
       if (err instanceof CustomError) {
         setError(err.message);
@@ -150,10 +178,10 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   }, [tokens]);
 
   useEffect(() => {
-    if (isLoggedIn) {
-      fetchUsers();
+    if (isLoggedIn && user && user.role === "student") {
+      fetchCourse();
     }
-  }, [isLoggedIn]);
+  }, [user]);
 
   useEffect(() => {
     if (isLoggedIn && user) {
@@ -166,14 +194,15 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   }, [user, isLoggedIn]);
 
   useEffect(() => {
-    setLoading(!users || !course);
-  }, [users, course]);
+    setLoading(!userList || !course);
+  }, [userList, course]);
 
   return (
     <ApiDataContext.Provider
       value={{
         user,
         users,
+        userList,
         course,
         courses,
         loading,
@@ -181,6 +210,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
         getCourseById,
         setCourse,
         createCourse,
+        fetchUsersByCourse,
       }}
     >
       {children}

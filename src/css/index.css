@@ -1,6 +1,7 @@
 @import url("./CourseCard.css");
 @import url("./LoginPage.css");
 @import url("./LogoutBtn.css");
+@import url("./UserListPage.css");
 @import url("./ModuleCard.css");
 @import url("./MyCoursePage.css");
 @import url("./StudentCard.css");
@@ -14,4 +15,13 @@
 
 .g-container {
   padding-inline: 4rem;
+}
+
+:root {
+
+    --background: #000000;
+    --primary-color: #0B192C;
+    --secondary-color: #1E3E62;
+    --accent-color: #ff6500;
+    --text-color: #F9F9F9;
 }

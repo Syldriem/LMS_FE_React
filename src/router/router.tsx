@@ -5,13 +5,8 @@ import {
   Route,
 } from "react-router-dom";
 import { RequireAuth } from "../components";
-import {
-  LoginPage,
-  TeacherPage,
-  MyCoursePage,
-  Unauthorized,
-  CourseDetails,
-} from "../pages";
+import { LoginPage, TeacherPage, MyCoursePage, UserListPage, Unauthorized, CourseDetails } from "../pages";
+
 import { ActivityListPage } from "../pages/ActivityListPage";
 
 export const router = createBrowserRouter(
@@ -31,6 +26,12 @@ export const router = createBrowserRouter(
         element={<RequireAuth children={<MyCoursePage />} />}
         path="/mycoursepage"
       ></Route>
+      <Route
+        element={<RequireAuth children={<UserListPage/>} />}
+        path="/userlist"
+      ></Route>
+      
+
       <Route
         element={<RequireAuth children={<Unauthorized />} />}
         path="/unauthorized"

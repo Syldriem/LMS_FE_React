@@ -15,7 +15,7 @@ export function RenderMyCoursePage({
   user,
 }: renderMyCoursePageProps): ReactElement {
   return (
-    <main className="home-section">
+    <main className="home-sections">
       <p className="title">{course?.name}</p>
       <div className="doc-btn-contanier">
         {/*<button className="btn-layout">Documents</button>*/}
@@ -25,11 +25,14 @@ export function RenderMyCoursePage({
           <p className="sub-tit">Modules List</p>
           {course && course.modules && course.modules.length > 0 ? (
             course.modules.map((module) => (
-              <ModuleCard key={module.id} module={module}  />
+              <ModuleCard key={module.id} module={module} />
             ))
           ) : (
             <p>No modules available.</p>
           )}
+        </section>
+        <section id="spinner" hidden>
+          <div className="loader"></div>
         </section>
         <section key={user?.id} className="students-section">
           <p className="sub-tit">Students List</p>

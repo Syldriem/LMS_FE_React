@@ -5,6 +5,8 @@ import { useAuthContext } from "../hooks";
 import { useNavigate } from "react-router-dom";
 import { RenderCourseList } from "./render/RenderCourseList";
 import { ModalPopup } from "../components/ModalPopup";
+import { Header } from "../components/Header";
+
 
 export function TeacherPage(): ReactElement {
   const { isLoggedIn } = useAuthContext();
@@ -25,6 +27,7 @@ export function TeacherPage(): ReactElement {
 
   return (
     <main className="main-container">
+      <Header />
       <div className="course-btn-container">
         <button className="course-btn-layout" onClick={handleOnAddCourse}>
           Add Course

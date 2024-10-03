@@ -1,0 +1,73 @@
+.contain {
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.sidebar {
+    display: flex;
+    flex: 1;
+    background-color: #f9f9f9;
+    justify-content: center;
+    border-right: 1px solid #ccc;
+}
+
+.search-input {
+    display: block;
+    padding: 10px 20px;
+    margin: 20px;
+    cursor: pointer;
+}
+
+
+.filter {
+    margin: 20px;
+}
+
+.filter label {
+    margin-right: 10px;
+}
+
+.main-content {
+    flex: 4;
+    padding: 20px;
+}
+
+.user-list-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.user-list {
+    background-color: #f9f0ff;
+}
+
+.user-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.user-details {
+    display: flex;
+    justify-content: space-between;
+}
+.btn.create {
+    flex: 1;
+}
+
+.create-user-button {
+    background-color: black;
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: 20px;
+}

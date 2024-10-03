@@ -1,7 +1,6 @@
-import { FormEventHandler, ReactElement, useState, useEffect } from "react";
+import { FormEventHandler, ReactElement, useState } from "react";
 import { useAuthContext } from "../hooks";
 import { Navigate, useNavigate } from "react-router-dom";
-import { hasTokenExpired } from "../utils";
 import { RenderLoginPage } from "./render/RenderLoginPage";
 import { useApiContext } from "../hooks/useApiDataContext";
 

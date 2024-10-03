@@ -17,19 +17,20 @@
 
 /* Tooltip text */
 .logout-tip .tiptext {
-  visibility: hidden;
-  width: 120px;
   background-color: #555;
-  color: #fff;
-  text-align: center;
-  padding: 5px 0;
   border-radius: 6px;
+  color: #fff;
+  font-size: 0.7rem;
+  padding: 5px 0;
+  text-align: center;
+  visibility: hidden;
+  width: 60px;
   
   /* Position the tooltip text */
   position: absolute;
   z-index: 1;
-  bottom: 100%;
-  left: 50%;
+  bottom: 70%;
+  left: 40%;
   margin-left: -60px;
   
   /* Fade in tooltip */
@@ -57,7 +58,7 @@
 
 
 .material-symbols-outlined{
-    color: green;
+    color:var(--accent-color);
     font-size: 4rem;
     font-weight: 900;
     position:relative;
