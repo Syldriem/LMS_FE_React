@@ -36,10 +36,6 @@ export const router = createBrowserRouter(
         element={<RequireAuth children={<Unauthorized />} />}
         path="/unauthorized"
       />
-        <Route
-        element={<ActivityListPage />}
-        path="/activitylist/:moduleId"
-      />
     </>
   )
 );

@@ -82,24 +82,14 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     } catch (error) {
       console.error("Error creating course:", error);
       throw error;
-      const coursesData = await fetchWithToken(
-        `${BASE_URL}/courses/getCourseById${course?.id}`
-      );
-      setCourse(coursesData);
-    } catch (err) {
-      if (err instanceof CustomError) {
-        setError(err.message);
-      } else {
-        setError("An unexpected error occurred while fetching courses.");
-      }
     }
   };
 
   const getCourseById = async () => {
-    if (!course?.Id) return;
+    if (!course?.id) return;
 
     try {
-      const courseData = await fetchWithToken(`${BASE_URL}/courses/getCourseById/${course.Id}`);
+      const courseData = await fetchWithToken(`${BASE_URL}/courses/getCourseById/${course.id}`);
       setCourse(courseData);
     } catch (err) {
       if (err instanceof CustomError) {
@@ -186,7 +176,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   useEffect(() => {
     if (isLoggedIn && user) {
       if (user.role === "student") {
-        fetchCourses();
+        fetchCourse();
       } else if (user.role === "teacher") {
         fetchAllCourses();
       }

@@ -1,6 +1,6 @@
 import { ReactElement, useState } from "react";
 import { ICourses, IUser, IUserLoggedIn } from "../../utils";
-import { Header } from "../../components/header";
+import { Header } from "../../components/Header";
 
 interface RenderMyCoursePageProps {
     courses: ICourses[] | null;

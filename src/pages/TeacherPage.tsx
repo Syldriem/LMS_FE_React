@@ -26,6 +26,7 @@ export function TeacherPage(): ReactElement {
 
 
   return (
+    
     <main className="main-container">
       <Header />
       <div className="course-btn-container">
