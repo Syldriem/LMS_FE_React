@@ -7,15 +7,10 @@ export function Header() {
     <header className="header-container">
       <div className="navbar-container">
         <div className="navbar">
-          <a className="style active" href="#courses">
+          <a className="style active" href="/teacherpage">
             Courses
           </a>
-          <a className="style" onClick={(e) => {
-            e.preventDefault()
-            navigate("/userlist"); 
-          }}
-            href="#"
-          >
+          <a className="style" href="/UserList">
             User Admin
           </a>
         </div>

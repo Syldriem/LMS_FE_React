@@ -7,8 +7,6 @@ import {
 import { RequireAuth } from "../components";
 import { LoginPage, TeacherPage, MyCoursePage, UserListPage, Unauthorized, CourseDetails } from "../pages";
 
-import { ActivityListPage } from "../pages/ActivityListPage";
-
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <>

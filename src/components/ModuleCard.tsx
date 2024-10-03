@@ -10,7 +10,6 @@ interface IModuleProps {
   module?: IModules; 
 }
 
-
 export function ModuleCard({ module }: IModuleProps): ReactElement {
   
   

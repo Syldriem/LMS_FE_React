@@ -15,6 +15,10 @@
   border-radius: 5px;
 }
 
+.module-card {
+  margin: 5px;
+}
+
 .cat-lbl {
   padding-left: 5px;
   padding-right: 10px;

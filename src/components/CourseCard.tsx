@@ -27,8 +27,7 @@ export function CourseCard({ course }: ICourseProps): ReactElement {
           {course && course.modules && course.modules.length > 0 ? (
             course.modules.map((module) => (
               <div className="desc">
-                <p className="cat-lbl">{module.name}</p>
-                <p className="cat-lbl">{module.description}</p>
+                <li className="cat-lbl">{module.name}</li>
               </div>
             ))
           ) : (
@@ -82,8 +81,4 @@ export function CourseCard({ course }: ICourseProps): ReactElement {
           {/* <button className="course-btn-layout" onClick={handleOnExpand}>
             Expand
           </button> */
-
-
-
 }
- 

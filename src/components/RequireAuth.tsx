@@ -5,16 +5,13 @@ import { useApiContext } from "../hooks/useApiDataContext";
 
 interface IRequireAuthProps {
   children: ReactElement;
-  
 }
 
 export function RequireAuth({ children }: IRequireAuthProps): ReactElement {
-  
   console.log("selecting the page to render in RequireAuth component");
   const { isLoggedIn } = useAuthContext();
-  const {user} = useApiContext();
+  const { user } = useApiContext();
 
- 
   useEffect(() => {
     if (user?.role) {
       console.log("roleType updated/changed");
