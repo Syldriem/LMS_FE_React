@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, useState, useEffect, ReactNode } from "react";
 import {
   BASE_URL,
   IUser,
@@ -22,6 +22,7 @@ interface IApiData {
   error: string | null;
   getCourseById: () => Promise<void>;
   setCourse: React.Dispatch<React.SetStateAction<ICourses | null>>;
+  createCourse: (courseDetails: { name: string; description: string; startDate: string; }) => Promise<ICourses>;
   fetchUsersByCourse: () => Promise<void>;
 }
 
@@ -48,18 +49,20 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<IUserLoggedIn | null>(null);
+  
   const { tokens, isLoggedIn } = useAuthContext();
 
-  const fetchWithToken = async (url: string): Promise<any> => {
+  const fetchWithToken = async (url: string, method: string = "GET", body?: any): Promise<any> => {
     if (!tokens) {
       throw new CustomError(401, "No tokens available for authentication.");
     }
 
     const requestInit: RequestInit = addTokenToRequestInit(tokens.accessToken, {
-      method: "GET",
+      method,
       headers: {
         "Content-Type": "application/json",
       },
+      body: body ? JSON.stringify(body) : null, // Only include body if there's data to send
     });
 
     const response = await fetch(url, requestInit);
@@ -71,10 +74,14 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     return response.json();
   };
 
-  const getCourseById = async () => {
-    if (!user) return;
-
+  const createCourse = async (courseDetails: { name: string; description: string; startDate: string; }): Promise<ICourses> => {
+    const url = `${BASE_URL}/courses`;
     try {
+      const newCourse = await fetchWithToken(url, "POST", courseDetails);
+      return newCourse;
+    } catch (error) {
+      console.error("Error creating course:", error);
+      throw error;
       const coursesData = await fetchWithToken(
         `${BASE_URL}/courses/getCourseById${course?.id}`
       );
@@ -88,19 +95,17 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     }
   };
 
-  const getActivityById = async () => {
-    if (!user) return;
+  const getCourseById = async () => {
+    if (!course?.Id) return;
 
     try {
-      const coursesData = await fetchWithToken(
-        `${BASE_URL}/activities/moduleid/${course?.id}`
-      );
-      setCourse(coursesData);
+      const courseData = await fetchWithToken(`${BASE_URL}/courses/getCourseById/${course.Id}`);
+      setCourse(courseData);
     } catch (err) {
       if (err instanceof CustomError) {
         setError(err.message);
       } else {
-        setError("An unexpected error occurred while fetching courses.");
+        setError("An unexpected error occurred while fetching course.");
       }
     }
   };
@@ -113,7 +118,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
       if (err instanceof CustomError) {
         setError(err.message);
       } else {
-        setError("An unexpected error occurred while fetching users.");
+        setError("An unexpected error occurred while fetching courses.");
       }
     }
   };
@@ -164,18 +169,9 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   useEffect(() => {
     if (tokens) {
       const decode = jwtDecode<JwtPayload>(tokens.accessToken);
-      const id =
-        decode[
-          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
-        ]!;
-      const name =
-        decode[
-          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
-        ]!.toLowerCase();
-      const role =
-        decode[
-          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-        ]!.toLowerCase();
+      const id = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]!;
+      const name = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]!.toLowerCase();
+      const role = decode["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]!.toLowerCase();
 
       setUser({ id, name, role });
     }
@@ -188,8 +184,12 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   }, [user]);
 
   useEffect(() => {
-    if (isLoggedIn && user && user.role === "teacher") {
-      fetchAllCourses();
+    if (isLoggedIn && user) {
+      if (user.role === "student") {
+        fetchCourses();
+      } else if (user.role === "teacher") {
+        fetchAllCourses();
+      }
     }
   }, [user, isLoggedIn]);
 
@@ -209,6 +209,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
         error,
         getCourseById,
         setCourse,
+        createCourse,
         fetchUsersByCourse,
       }}
     >
