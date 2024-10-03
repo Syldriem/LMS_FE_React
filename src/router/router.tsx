@@ -12,6 +12,12 @@ export const router = createBrowserRouter(
     <>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/" element={<Navigate to="/login" replace />} />
+
+      <Route
+        element={<RequireAuth children={<Unauthorized />} />}
+        path="/unauthorized"
+      />
+      
       <Route
         element={<RequireAuth children={<CourseDetails />} />}
         path="/coursedetails"
@@ -30,10 +36,7 @@ export const router = createBrowserRouter(
       ></Route>
       
 
-      <Route
-        element={<RequireAuth children={<Unauthorized />} />}
-        path="/unauthorized"
-      />
+
     </>
   )
 );

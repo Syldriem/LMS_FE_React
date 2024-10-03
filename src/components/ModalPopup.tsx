@@ -15,7 +15,7 @@ export function ModalPopup({ show, setShow }: ModalPopupProps): ReactElement {
   };
 
   return (
-    <main className="main-container">
+    <main>
       {/* Bootstrap Modal */}
       <Modal show={show} onHide={handleCloseModal} backdrop={false}>
         <Modal.Header closeButton>

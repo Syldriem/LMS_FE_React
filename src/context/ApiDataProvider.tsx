@@ -24,6 +24,7 @@ interface IApiData {
   setCourse: React.Dispatch<React.SetStateAction<ICourses | null>>;
   createCourse: (courseDetails: { name: string; description: string; startDate: string; }) => Promise<ICourses>;
   fetchUsersByCourse: () => Promise<void>;
+  fetchUsers: () => Promise<void>;
 }
 
 interface JwtPayload {
@@ -198,6 +199,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
         loading,
         error,
         getCourseById,
+        fetchUsers,
         setCourse,
         createCourse,
         fetchUsersByCourse,

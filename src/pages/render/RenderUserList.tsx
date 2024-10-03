@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { ICourses, IUser, IUserLoggedIn } from "../../utils";
 import { Header } from "../../components/Header";
 
@@ -7,6 +7,8 @@ interface RenderMyCoursePageProps {
     users: IUser[] | null;
     user: IUserLoggedIn | null;
 }
+
+
 
 export function RenderUserListPage({
     users,

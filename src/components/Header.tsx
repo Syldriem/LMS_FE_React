@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 export function Header() {
   const navigate = useNavigate();
+
+
   return (
     <header className="header-container">
       <div className="navbar-container">
@@ -10,7 +12,10 @@ export function Header() {
           <a className="style active" href="/teacherpage">
             Courses
           </a>
-          <a className="style" href="/UserList">
+          <a className="style" onClick={(e) => {
+            e.preventDefault()
+            navigate("/userlist");
+          }}>
             User Admin
           </a>
         </div>

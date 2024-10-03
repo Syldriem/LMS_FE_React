@@ -5,16 +5,19 @@ import "../css/UserListPage.css";
 import { useNavigate } from "react-router-dom";
 import { RenderUserListPage } from "./render/RenderUserList";
 export function UserListPage(): ReactElement {
-  const {users, courses} = useContext(ApiDataContext);
+  const {users, courses, fetchUsers} = useContext(ApiDataContext);
   const { isLoggedIn } = useAuthContext();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!isLoggedIn) {
-      console.log("Test");      
+      console.log("Test");
+      fetchUsers();     
       navigate("/login");
     }
   }, [isLoggedIn, navigate]);
 
-  return <RenderUserListPage users={users} courses={courses} user={null} />;
+  return <>
+  <RenderUserListPage users={users} courses={courses} user={null} />
+  </>;
 }

@@ -26,15 +26,20 @@ export function TeacherPage(): ReactElement {
 
 
   return (
+    <>
+
     <main className="home-section">
       <Header />
-      <div className="course-btn-container">
-        <button className="course-btn-layout" onClick={handleOnAddCourse}>
+
+      <RenderCourseList />
+      <button className="course-btn-layout" onClick={handleOnAddCourse}>
           Add Course
         </button>
-      </div>
-      <RenderCourseList />
       <ModalPopup show={showModal} setShow={setShowModal} />
+      <div className="course-btn-container">
+
+      </div>
     </main>
+    </>
   );
 }
