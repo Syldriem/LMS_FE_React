@@ -1,96 +1,78 @@
-import { ReactElement, useEffect, useState } from "react";
-import { ICourses, IUser, IUserLoggedIn } from "../../utils";
-import { Header } from "../../components/Header";
+import { ReactElement, useState } from "react";
+import { IUser, IUserCourse } from "../../utils";
+import { LogoutBtn } from "../../components/LogoutBtn";
+import { ModalPopupCreateUser } from "../../components/ModalPopupCreateUser";
 
-interface RenderMyCoursePageProps {
-    courses: ICourses[] | null;
-    users: IUser[] | null;
-    user: IUserLoggedIn | null;
+interface RenderUserListPageProps {
+  courses: IUserCourse[] | null;
+  users: IUser[] | null;
 }
 
 
 
 export function RenderUserListPage({
-    users,
-    courses,
-}: RenderMyCoursePageProps): ReactElement {
-    const [searchQuery, setSearchQuery] = useState<string>('');
-    const [selectedCourse, setSelectedCourse] = useState<string>('');
+  users,
+  courses,
+}: RenderUserListPageProps): ReactElement {
+  const [showModal, setShowModal] = useState(false);
 
-    const filteredUsers = users?.filter(user => {
-        const matchesSearch = user.userName.toLowerCase().includes(searchQuery.toLowerCase());
-        const matchesCourse = selectedCourse ? user.courseID === selectedCourse : true;
-        return matchesSearch && matchesCourse;
-    }) || [];
-
-    return (
-        <div>
-            <Header />
-            <div className="contain">
-                <div className="sidebar">
-                    <div>
-                        <input
-                            type="text" 
-                            placeholder="Search by username" 
-                            value={searchQuery} 
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="search-input"
-                        />
-                        <div className="filter">
-                            <label htmlFor="filterSelect">Filter</label>
-                            <select 
-                                id="filterSelect" 
-                                value={selectedCourse} 
-                                onChange={(e) => setSelectedCourse(e.target.value)} 
-                            >
-                                <option value="">Select a course</option>
-                                {courses && courses.length > 0 ? (
-                                    courses.map((course) => (
-                                        <option key={course.id} value={course.id}>
-                                            {course.name}
-                                        </option>
-                                    ))
-                                ) : (
-                                    <option value="none">No courses available</option>
-                                )}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                
-                <div className="main-content">
-                    <div className="user-list-header">
-                        <span>Username</span>
-                        <span>Course/Module</span>
-                        <span>Role</span>
-                    </div>
-                    
-                    <div className="user-list">
-                        {filteredUsers.length > 0 ? (
-                            filteredUsers.map((user) => {
-                                const userCourse = courses?.find(
-                                    (course) => course.id === user.courseID
-                                );
-                                
-                                return (
-                                    <div key={user.id} className="user-item">
-                                        <span>{user.userName}</span>
-                                        <span>{userCourse ? userCourse.name : " "}</span>
-                                        <span>{user.role}</span>
-                                    </div>
-                                );
-                            })
-                        ) : (
-                            <p>No students available.</p>
-                        )}
-                    </div>
-
-                </div>
-                
-                <div className="btn-create">
-                    <button className="create-user-button">Create User</button>
-                </div>
-            </div>
+  const openModal = () => {
+    setShowModal(true);
+  };
+  
+  return (
+    <div className="container">
+      <div className="header">
+        <div className="tabs">
+          <button className="tab">Courses</button>
+          <button className="tab">Users</button>
         </div>
-    );
+        <LogoutBtn />
+      </div>
+
+      <div className="content">
+        <div className="sidebar">
+          <button className="search-button">Search?</button>
+          <div className="filter">
+            <label htmlFor="filterSelect">Filter</label>
+            <select id="filterSelect">
+              <option value="value">Value</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="main-content">
+          <div className="user-list-header">
+            <span>Username</span>
+            <span>Course/Module</span>
+            <span>Role</span>
+          </div>
+          <div className="user-list">
+            {users && users.length > 0 ? (
+              users.map((user) => {
+                const userCourse = courses?.find(course => course.userName === user.userName);
+                return (
+                  <div key={user.id} className="user-item">
+                    <span>{user.userName}</span>
+                    <span>{userCourse?.courseName}</span>
+                    <span>{user.role}</span>
+                  </div>
+                );
+              })
+            ) : (
+              <p>No students available.</p>
+            )}
+          </div>
+        </div>
+      </div>
+      <div>
+        <button className="create-user-button" onClick={openModal}>
+          Create User
+        </button>
+
+      </div>
+      <ModalPopupCreateUser show={showModal} setShow={setShowModal}></ModalPopupCreateUser>
+    </div>
+  );
 }
+

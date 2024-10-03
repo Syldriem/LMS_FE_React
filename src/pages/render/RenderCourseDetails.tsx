@@ -10,19 +10,12 @@ import { Grid } from "../../components/Grid";
 export function RenderCourseDetails() {
   const { course, userList, getCourseById, fetchUsersByCourse } =
     useApiContext();
-  const { isLoggedIn } = useAuthContext();
-  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/login");
-    }
-    const getCourse = async () => {
-      await getCourseById();
-    };
-    getCourse();
+       getCourseById();
+       console.log(course)
     fetchUsersByCourse();
-  }, [isLoggedIn, navigate]);
+  }, []);
 
   return (
     <>

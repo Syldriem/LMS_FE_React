@@ -5,12 +5,12 @@ import {
   ICourses,
   IUserLoggedIn,
   addTokenToRequestInit,
-  ITokens,
   CustomError,
+  IUserCourse,
+  ICourseIds,
 } from "../utils";
 import { useAuthContext } from "../hooks";
 import { jwtDecode } from "jwt-decode";
-import { useFetchWithToken } from "../hooks/useFetchWithToken";
 
 interface IApiData {
   user: IUserLoggedIn | null;
@@ -18,13 +18,18 @@ interface IApiData {
   userList: IUser[] | null;
   course: ICourses | null;
   courses: ICourses[] | null;
+  userCourses: IUserCourse[] | null;
   loading: boolean;
   error: string | null;
+  courseIds: ICourseIds[] | null;
+
   getCourseById: () => Promise<void>;
   setCourse: React.Dispatch<React.SetStateAction<ICourses | null>>;
   createCourse: (courseDetails: { name: string; description: string; startDate: string; }) => Promise<ICourses>;
   fetchUsersByCourse: () => Promise<void>;
   fetchUsers: () => Promise<void>;
+  createUser: (userDetails: { username: string; password: string; email: string; role: string; courseID: string }) => Promise<IUser>;
+  fetchAllCourses: () => Promise<void>;
 }
 
 interface JwtPayload {
@@ -50,8 +55,9 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<IUserLoggedIn | null>(null);
-  
+  const [userCourses, setUserCourses] = useState<IUserCourse[] | null>(null);
   const { tokens, isLoggedIn } = useAuthContext();
+  const [courseIds, setCourseIds] = useState<ICourseIds[] | null>(null);
 
   const fetchWithToken = async (url: string, method: string = "GET", body?: any): Promise<any> => {
     if (!tokens) {
@@ -75,10 +81,37 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     return response.json();
   };
 
+  const fetchWithToken2 = async (url: string, method: string = "GET", body?: any): Promise<any> => {
+    if (!tokens) {
+      throw new CustomError(401, "No tokens available for authentication.");
+    }
+  
+    const requestInit: RequestInit = addTokenToRequestInit(tokens.accessToken, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: body ? JSON.stringify(body) : null, // Only include body if there's data to send
+    });
+  
+    const response = await fetch(url, requestInit);
+  
+    // Check if there's content to parse
+    if (response.ok) {
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        return await response.json(); // Parse JSON response
+      }
+      return null; // No content to return
+    } else {
+      throw new CustomError(response.status, response.statusText);
+    }
+  };
+
   const createCourse = async (courseDetails: { name: string; description: string; startDate: string; }): Promise<ICourses> => {
     const url = `${BASE_URL}/courses`;
     try {
-      const newCourse = await fetchWithToken(url, "POST", courseDetails);
+      const newCourse = await fetchWithToken(url, "POST", courseDetails)
       return newCourse;
     } catch (error) {
       console.error("Error creating course:", error);
@@ -91,6 +124,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
 
     try {
       const courseData = await fetchWithToken(`${BASE_URL}/courses/getCourseById/${course.id}`);
+      console.log(courseData)
       setCourse(courseData);
     } catch (err) {
       if (err instanceof CustomError) {
@@ -99,12 +133,25 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
         setError("An unexpected error occurred while fetching course.");
       }
     }
+  }
+  const createUser = async (userDetails: { username: string; password: string; email: string; role: string; courseID: string }):  Promise<IUser>=>{
+    const url = `${BASE_URL}/authentication`;
+    try {
+      const newUser = await fetchWithToken2(url, "POST", userDetails);
+      return newUser;
+    } catch (error) {
+      console.error("Error creating user:", error);
+      throw error;
+    }
   };
+  
 
   const fetchAllCourses = async () => {
     try {
       const courseData = await fetchWithToken(`${BASE_URL}/courses`);
+      console.log(courses)
       setCourses(courseData);
+
     } catch (err) {
       if (err instanceof CustomError) {
         setError(err.message);
@@ -171,6 +218,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   useEffect(() => {
     if (isLoggedIn && user && user.role === "student") {
       fetchCourse();
+      
     }
   }, [user]);
 
@@ -188,6 +236,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     setLoading(!userList || !course);
   }, [userList, course]);
 
+
   return (
     <ApiDataContext.Provider
       value={{
@@ -196,8 +245,12 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
         userList,
         course,
         courses,
+        userCourses,
         loading,
         error,
+        courseIds,
+        createUser,
+        fetchAllCourses,
         getCourseById,
         fetchUsers,
         setCourse,

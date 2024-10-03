@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { ICourses, IUser, IUserLoggedIn } from "../../utils";
+import { ICourses, IUser } from "../../utils";
 import { LogoutBtn } from "../../components/LogoutBtn";
 import { ModuleCard } from "../../components/ModuleCard";
 import { StudentCard } from "../../components/StudentCard";
@@ -7,13 +7,11 @@ import { Grid } from "../../components/Grid";
 interface renderMyCoursePageProps {
   course: ICourses | null;
   users: IUser[] | null;
-  user: IUserLoggedIn | null;
 }
 
 export function RenderMyCoursePage({
   course,
   users,
-  user,
 }: renderMyCoursePageProps): ReactElement {
   return (
     <main className="home-sections">

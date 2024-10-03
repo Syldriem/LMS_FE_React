@@ -20,7 +20,7 @@ export function MyCoursePage() {
 
   return (
     <>
-      <RenderMyCoursePage course={course} user={user} users={userList} />
+      <RenderMyCoursePage course={course} users={userList} />
     </>
   );
 }
