@@ -6,6 +6,7 @@ import { useAuthContext, useFetchWithToken } from "../../hooks";
 import { BASE_URL, CustomError } from "../../utils";
 import { useNavigate } from "react-router-dom";
 import { Grid } from "../../components/Grid";
+import { AddModuleButton } from "../../components/AddModuleButton";
 
 export function RenderCourseDetails() {
   const { course, userList, getCourseById, fetchUsersByCourse } =
@@ -19,9 +20,11 @@ export function RenderCourseDetails() {
 
   return (
     <>
+    
       <main className="home-section">
         {/* <main className="main-container"> */}
         <Header />
+        <AddModuleButton></AddModuleButton>
         <p className="title">{course?.name}</p>
         <div className="section-container">
           <Grid>
@@ -87,6 +90,7 @@ export function RenderCourseDetails() {
           </section>
         </div> */}
         <LogoutBtn />
+
       </main>
     </>
   );
