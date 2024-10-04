@@ -18,12 +18,12 @@ export function RenderCourseList() {
       <h1 className="sub-title">Course List</h1>
 
       <section className="container">
-        <div className="row">
+        <div className="row row-cols-4">
           {courses && courses.length > 0 ? (
             courses.map((course) => (
               <div
                 key={course.id}
-                className="col-sm"
+                className="col"
                 onClick={() => handleClick(course)}
               >
                 <CourseCard course={course} />
