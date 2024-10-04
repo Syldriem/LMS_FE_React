@@ -23,7 +23,7 @@ export function RenderCourseDetails() {
         
 
           <Grid>
-          <AddModuleButton className="mb-4" />
+          <AddModuleButton />
             <div className="row">
               
               {course && course.modules && course.modules.length > 0 ? (

@@ -131,10 +131,10 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   const createModule = async (moduleDetails: { name: string; description: string; start: string; end: string; courseID: string }): Promise<IModules> => {
     const url = `${BASE_URL}/modules`;
     try {
-      const newUser = await fetchWithToken(url, "POST", moduleDetails);
-      return newUser;
+      const newModule = await fetchWithToken(url, "POST", moduleDetails);
+      return newModule;
     } catch (error) {
-      console.error("Error creating user:", error);
+      console.error("Error creating module:", error);
       throw error;
     }
   };
