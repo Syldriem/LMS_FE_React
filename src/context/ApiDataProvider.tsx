@@ -8,6 +8,7 @@ import {
   CustomError,
   IUserCourse,
   ICourseIds,
+  IModules,
 } from "../utils";
 import { useAuthContext } from "../hooks";
 import { jwtDecode } from "jwt-decode";
@@ -26,11 +27,16 @@ interface IApiData {
   getCourseByIdFromRouter: (courseId: string) => Promise<void>;
   getCourseById: () => Promise<void>;
   setCourse: React.Dispatch<React.SetStateAction<ICourses | null>>;
-  createCourse: (courseDetails: { name: string; description: string; startDate: string; }) => Promise<ICourses>;
+  createCourse: (courseDetails: {
+    name: string;
+    description: string;
+    startDate: string;
+  }) => Promise<void>;
   fetchUsersByCourse: () => Promise<void>;
   fetchUsersByCourseId: (courseId:string) => Promise<void>;
   fetchUsers: () => Promise<void>;
   createUser: (userDetails: { username: string; password: string; email: string; role: string; courseID: string }) => Promise<IUser>;
+  createModule: (moduleDetails: { name: string; description: string; start: string; end: string; courseID: string })=> Promise<IModules>;
   fetchAllCourses: () => Promise<void>;
 }
 
@@ -61,11 +67,15 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   const { tokens, isLoggedIn } = useAuthContext();
   const [courseIds] = useState<ICourseIds[] | null>(null);
 
-  const fetchWithToken = async (url: string, method: string = "GET", body?: any): Promise<any> => {
+  const fetchWithToken = async (
+    url: string,
+    method: string = "GET",
+    body?: any
+  ): Promise<any> => {
     if (!tokens) {
       throw new CustomError(401, "No tokens available for authentication.");
     }
-  
+
     const requestInit: RequestInit = addTokenToRequestInit(tokens.accessToken, {
       method,
       headers: {
@@ -73,28 +83,33 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
       },
       body: body ? JSON.stringify(body) : null, // Only include body if there's data to send
     });
-  
+
     const response = await fetch(url, requestInit);
-  
+
     if (!response.ok) {
       throw new CustomError(response.status, response.statusText);
     }
-  
+
     // Check if there's content to parse
     const contentType = response.headers.get("content-type");
     if (contentType && contentType.includes("application/json")) {
       return await response.json(); // Parse JSON response
     }
-    
+
     return null; // No content to return
   };
-  
 
-  const createCourse = async (courseDetails: { name: string; description: string; startDate: string; }): Promise<ICourses> => {
+  const createCourse = async (courseDetails: {
+    name: string;
+    description: string;
+    startDate: string;
+  }): Promise<void> => {
     const url = `${BASE_URL}/courses`;
     try {
       const newCourse = await fetchWithToken(url, "POST", courseDetails);
-      return newCourse;
+      setCourses((prevCourses) =>
+        Array.isArray(prevCourses) ? [...prevCourses, newCourse] : [newCourse]
+      );
     } catch (error) {
       console.error("Error creating course:", error);
       throw error;
@@ -105,6 +120,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     if(!course?.id) return;
 
     try {
+
       const courseData = await fetchWithToken(`${BASE_URL}/courses/getCourseById/${course?.id}`);
       console.log(courseData);
       setCourse(courseData);
@@ -121,6 +137,11 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     console.log(courseId)
     try {
       const courseData = await fetchWithToken(`${BASE_URL}/courses/getCourseById/${courseId}`);
+
+      const courseData = await fetchWithToken(
+        `${BASE_URL}/courses/getCourseById/${course.id}`
+      );
+
       console.log(courseData);
       setCourse(courseData);
     } catch (err) {
@@ -132,13 +153,30 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     }
   };
 
-  const createUser = async (userDetails: { username: string; password: string; email: string; role: string; courseID: string }): Promise<IUser> => {
+  const createUser = async (userDetails: {
+    username: string;
+    password: string;
+    email: string;
+    role: string;
+    courseID: string;
+  }): Promise<IUser> => {
     const url = `${BASE_URL}/authentication`;
     try {
       const newUser = await fetchWithToken(url, "POST", userDetails);
       return newUser;
     } catch (error) {
       console.error("Error creating user:", error);
+      throw error;
+    }
+  };
+
+  const createModule = async (moduleDetails: { name: string; description: string; start: string; end: string; courseID: string }): Promise<IModules> => {
+    const url = `${BASE_URL}/modules`;
+    try {
+      const newModule = await fetchWithToken(url, "POST", moduleDetails);
+      return newModule;
+    } catch (error) {
+      console.error("Error creating module:", error);
       throw error;
     }
   };
@@ -170,7 +208,9 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
 
   const fetchUsersByCourse = async () => {
     try {
-      const usersData = await fetchWithToken(`${BASE_URL}/users/courses/${course?.id}`);
+      const usersData = await fetchWithToken(
+        `${BASE_URL}/users/courses/${course?.id}`
+      );
       setUserList(usersData);
     } catch (err) {
       if (err instanceof CustomError) {
@@ -225,9 +265,18 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   useEffect(() => {
     if (tokens) {
       const decode = jwtDecode<JwtPayload>(tokens.accessToken);
-      const id = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]!;
-      const name = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]!.toLowerCase();
-      const role = decode["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]!.toLowerCase();
+      const id =
+        decode[
+          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+        ]!;
+      const name =
+        decode[
+          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+        ]!.toLowerCase();
+      const role =
+        decode[
+          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+        ]!.toLowerCase();
 
       setUser({ id, name, role });
     }
@@ -268,6 +317,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
         courseIds,
         createUser,
         fetchAllCourses,
+        createModule,
         getCourseById,
         fetchUsers,
         setCourse,

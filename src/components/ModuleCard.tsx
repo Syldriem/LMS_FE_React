@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useRef, useState } from "react";
 import "../css/ModuleCard.css";
 import { IActivity, IModules } from "../utils";
 
@@ -10,19 +10,20 @@ interface IModuleProps {
   module?: IModules; 
 }
 
+
 export function ModuleCard({ module }: IModuleProps): ReactElement {
   
   
   const [activitiesList, setActivityList] = useState<IActivity[]>([]); 
   
   const onActivityBtnClick = (moduleID : string) => {
-    document.getElementById("spinner")!.hidden = false;
+    document.getElementById("myModal1")!.style.display = "block";
     setTimeout(() => {
       fetchActivitiesByModuleId(moduleID).then((list: IActivity[]) => {
           setActivityList(list);
-          var modal = document.getElementById("myModal"); 
+          const modal = document.getElementById("myModal"); 
           modal!.style.display = "block";
-          document.getElementById("spinner")!.hidden = true;
+          document.getElementById("myModal1")!.style.display = "none";
       }) 
     }, 2000);
 
@@ -30,22 +31,29 @@ export function ModuleCard({ module }: IModuleProps): ReactElement {
   }
 
   const onCloseBtnClick = () => {
-    var modal = document.getElementById("myModal"); 
+    const modal = document.getElementById("myModal"); 
     modal!.style.display = "none";
     setActivityList([]);
   }
 
   return (
     <span>
+      <div id="myModal1" className="modal1">
+        <div className="modal-content1">
+          <div className="loader"></div>
+        </div>
+      </div>
       <div id="myModal" className="modal">
         <div className="modal-content">
-          <button className="close" onClick={onCloseBtnClick}>&times;</button>
-          <ActivityListPage activityList={activitiesList} message="waiting for activities..."/>
+          <div className="btn-cont">
+            <button className="close" onClick={onCloseBtnClick}>&times;</button>
+          </div>
+          <ActivityListPage activityList={activitiesList} message="no activities connected to the module"/>
         </div>
       </div>
       <div>
           <span key={module?.id}className="card-src">
-            <p className="title-card-src">{module?.name}</p>
+            <p className="title-card-st">{module?.name}</p>
             <div className="desc">
               <p className="cat-lbl">Description:</p>
               <p className="spec-lbl">{module?.description}</p>
