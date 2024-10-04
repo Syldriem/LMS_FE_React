@@ -19,22 +19,24 @@ export function CourseCard({ course }: ICourseProps): ReactElement {
   // TODO:
 
   return (
-    <section className="course-card-src">
-      <h2 className="title-card">{course.name}</h2>
-      <h4 className="module-card">Module List</h4>
-      <section className="info-display">
-        <div className="course-modules">
-          {course && course.modules && course.modules.length > 0 ? (
-            course.modules.map((module) => (
-              <div className="desc">
-                <li className="cat-lbl">{module.name}</li>
-              </div>
-            ))
-          ) : (
-            <p>No modules available.</p>
-          )}
-        </div>
-      </section>
+    <section className="card border-light mb-3">
+      <h2 className="card-header">{course.name}</h2>
+      <div className="card-body" style={{ overflowY: "hidden" }}>
+        <h4 className="card-title">Module List</h4>
+        <section>
+          <div className="course-modules">
+            {course && course.modules && course.modules.length > 0 ? (
+              course.modules.map((module) => (
+                <div className="desc">
+                  <li className="card-text">{module.name}</li>
+                </div>
+              ))
+            ) : (
+              <p>No modules available.</p>
+            )}
+          </div>
+        </section>
+      </div>
     </section>
   );
 
