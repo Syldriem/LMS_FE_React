@@ -37,20 +37,10 @@ export function RenderUserListPage({
 
   return (
     <div>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "#1E3E62",
-        }}
-      >
+      <div className="header-wrapper">
         <Header />
       </div>
-      <div
-        className="contain"
-        style={{ backgroundColor: "#1E3E62", height: "100vh" }}
-      >
+      <div className="contain">
         <div className="sidebar">
           <div>
             <input
