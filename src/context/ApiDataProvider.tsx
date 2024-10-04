@@ -24,6 +24,7 @@ interface IApiData {
   error: string | null;
   courseIds: ICourseIds[] | null;
 
+  getCourseByIdFromRouter: (courseId: string) => Promise<void>;
   getCourseById: () => Promise<void>;
   setCourse: React.Dispatch<React.SetStateAction<ICourses | null>>;
   createCourse: (courseDetails: {
@@ -32,6 +33,7 @@ interface IApiData {
     startDate: string;
   }) => Promise<void>;
   fetchUsersByCourse: () => Promise<void>;
+  fetchUsersByCourseId: (courseId:string) => Promise<void>;
   fetchUsers: () => Promise<void>;
   createUser: (userDetails: { username: string; password: string; email: string; role: string; courseID: string }) => Promise<IUser>;
   createModule: (moduleDetails: { name: string; description: string; start: string; end: string; courseID: string })=> Promise<IModules>;
@@ -115,12 +117,31 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   };
 
   const getCourseById = async () => {
-    if (!course?.id) return;
+    if(!course?.id) return;
 
     try {
+
+      const courseData = await fetchWithToken(`${BASE_URL}/courses/getCourseById/${course?.id}`);
+      console.log(courseData);
+      setCourse(courseData);
+    } catch (err) {
+      if (err instanceof CustomError) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred while fetching course.");
+      }
+    }
+  };
+
+  const getCourseByIdFromRouter = async (courseId: string) => {
+    console.log(courseId)
+    try {
+      const courseData = await fetchWithToken(`${BASE_URL}/courses/getCourseById/${courseId}`);
+
       const courseData = await fetchWithToken(
         `${BASE_URL}/courses/getCourseById/${course.id}`
       );
+
       console.log(courseData);
       setCourse(courseData);
     } catch (err) {
@@ -190,6 +211,19 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
       const usersData = await fetchWithToken(
         `${BASE_URL}/users/courses/${course?.id}`
       );
+      setUserList(usersData);
+    } catch (err) {
+      if (err instanceof CustomError) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred while fetching users.");
+      }
+    }
+  };
+
+  const fetchUsersByCourseId = async(courseId: string) => {
+    try {
+      const usersData = await fetchWithToken(`${BASE_URL}/users/courses/${courseId}`);
       setUserList(usersData);
     } catch (err) {
       if (err instanceof CustomError) {
@@ -289,6 +323,8 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
         setCourse,
         createCourse,
         fetchUsersByCourse,
+        fetchUsersByCourseId,
+        getCourseByIdFromRouter
       }}
     >
       {children}
