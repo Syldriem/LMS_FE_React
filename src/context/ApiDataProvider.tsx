@@ -33,10 +33,22 @@ interface IApiData {
     startDate: string;
   }) => Promise<void>;
   fetchUsersByCourse: () => Promise<void>;
-  fetchUsersByCourseId: (courseId:string) => Promise<void>;
+  fetchUsersByCourseId: (courseId: string) => Promise<void>;
   fetchUsers: () => Promise<void>;
-  createUser: (userDetails: { username: string; password: string; email: string; role: string; courseID: string }) => Promise<IUser>;
-  createModule: (moduleDetails: { name: string; description: string; start: string; end: string; courseID: string })=> Promise<IModules>;
+  createUser: (userDetails: {
+    username: string;
+    password: string;
+    email: string;
+    role: string;
+    courseID: string;
+  }) => Promise<IUser>;
+  createModule: (moduleDetails: {
+    name: string;
+    description: string;
+    start: string;
+    end: string;
+    courseID: string;
+  }) => Promise<IModules>;
   fetchAllCourses: () => Promise<void>;
 }
 
@@ -117,11 +129,12 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   };
 
   const getCourseById = async () => {
-    if(!course?.id) return;
+    if (!course?.id) return;
 
     try {
-
-      const courseData = await fetchWithToken(`${BASE_URL}/courses/getCourseById/${course?.id}`);
+      const courseData = await fetchWithToken(
+        `${BASE_URL}/courses/getCourseById/${course?.id}`
+      );
       console.log(courseData);
       setCourse(courseData);
     } catch (err) {
@@ -134,12 +147,10 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   };
 
   const getCourseByIdFromRouter = async (courseId: string) => {
-    console.log(courseId)
+    console.log(courseId);
     try {
-      const courseData = await fetchWithToken(`${BASE_URL}/courses/getCourseById/${courseId}`);
-
       const courseData = await fetchWithToken(
-        `${BASE_URL}/courses/getCourseById/${course.id}`
+        `${BASE_URL}/courses/getCourseById/${courseId}`
       );
 
       console.log(courseData);
@@ -170,7 +181,13 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     }
   };
 
-  const createModule = async (moduleDetails: { name: string; description: string; start: string; end: string; courseID: string }): Promise<IModules> => {
+  const createModule = async (moduleDetails: {
+    name: string;
+    description: string;
+    start: string;
+    end: string;
+    courseID: string;
+  }): Promise<IModules> => {
     const url = `${BASE_URL}/modules`;
     try {
       const newModule = await fetchWithToken(url, "POST", moduleDetails);
@@ -221,9 +238,11 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     }
   };
 
-  const fetchUsersByCourseId = async(courseId: string) => {
+  const fetchUsersByCourseId = async (courseId: string) => {
     try {
-      const usersData = await fetchWithToken(`${BASE_URL}/users/courses/${courseId}`);
+      const usersData = await fetchWithToken(
+        `${BASE_URL}/users/courses/${courseId}`
+      );
       setUserList(usersData);
     } catch (err) {
       if (err instanceof CustomError) {
@@ -324,7 +343,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
         createCourse,
         fetchUsersByCourse,
         fetchUsersByCourseId,
-        getCourseByIdFromRouter
+        getCourseByIdFromRouter,
       }}
     >
       {children}
