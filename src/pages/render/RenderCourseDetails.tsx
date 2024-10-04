@@ -4,17 +4,20 @@ import { Header } from "../../components/Header";
 import { useApiContext } from "../../hooks/useApiDataContext";
 import { useAuthContext, useFetchWithToken } from "../../hooks";
 import { BASE_URL, CustomError } from "../../utils";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Grid } from "../../components/Grid";
 
 export function RenderCourseDetails() {
-  const { course, userList, getCourseById, fetchUsersByCourse } =
+  const { courseId } = useParams<{ courseId?: string }>();
+  const { course, userList, getCourseByIdFromRouter, fetchUsersByCourseId } =
     useApiContext();
 
   useEffect(() => {
-       getCourseById();
-       console.log(course)
-    fetchUsersByCourse();
+
+    if(courseId) {
+       getCourseByIdFromRouter(courseId);
+       fetchUsersByCourseId(courseId);
+    }
   }, []);
 
   return (

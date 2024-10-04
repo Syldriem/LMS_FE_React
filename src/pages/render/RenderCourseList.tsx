@@ -5,13 +5,13 @@ import { useApiContext } from "../../hooks/useApiDataContext";
 export function RenderCourseList() {
   const { courses, setCourse } = useApiContext();
   const navigate = useNavigate();
-  const NavToCourseDetails = () => {
-    navigate("/coursedetails");
+  const NavToCourseDetails = (courseId: any) => {
+    navigate(`/coursedetails/${courseId}`);
   };
   function handleClick(course: any) {
     console.log(course.id);
     setCourse(course);
-    NavToCourseDetails();
+    NavToCourseDetails(course.id);
   }
   return (
     <>
