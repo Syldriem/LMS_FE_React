@@ -17,7 +17,7 @@ export function ModalPopupCreateUser({ show, setShow }: ModalPopupProps): ReactE
   return (
       <Modal show={show} onHide={handleCloseModal} backdrop={false}>
         <Modal.Header closeButton>
-          <Modal.Title>Add a New Course</Modal.Title>
+          <Modal.Title>Add a New User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <AddUserForm />
