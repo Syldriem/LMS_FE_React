@@ -1,24 +1,28 @@
 import { ReactElement, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
+import { AddModuleForm } from "../pages/render/RenderAddModulesForm";
+import '../css/RenderCourseDetails.css'
 
-export function AddModuleButton(): ReactElement {
+
+  export function AddModuleButton(): ReactElement {
     const [show, setShow] = useState(false);
 
-    // Handlers to open and close the modal
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setShow(false); 
+        window.location.reload(); 
+      };
     const handleShow = () => setShow(true);
     return <>
-          <Button variant="primary" onClick={handleShow}>
+          <Button variant="primary" onClick={handleShow} >
         Add Module
       </Button>
 
-      {/* Bootstrap Modal */}
-      <Modal show={show} onHide={handleClose} backdrop={false}>
+      <Modal show={show} onHide={handleClose} className="mb-4">
         <Modal.Header closeButton>
           <Modal.Title>Add Module</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          This is the content inside the modal!
+          <AddModuleForm></AddModuleForm>
         </Modal.Body>
         <Modal.Footer>
 

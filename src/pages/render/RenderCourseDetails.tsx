@@ -2,95 +2,64 @@ import { useEffect } from "react";
 import { LogoutBtn, ModuleCard, StudentCard } from "../../components";
 import { Header } from "../../components/Header";
 import { useApiContext } from "../../hooks/useApiDataContext";
-import { useAuthContext, useFetchWithToken } from "../../hooks";
-import { BASE_URL, CustomError } from "../../utils";
-import { useNavigate } from "react-router-dom";
 import { Grid } from "../../components/Grid";
 import { AddModuleButton } from "../../components/AddModuleButton";
+import '../../css/RenderCourseDetails.css'
 
 export function RenderCourseDetails() {
-  const { course, userList, getCourseById, fetchUsersByCourse } =
-    useApiContext();
+  const { course, userList, getCourseById, fetchUsersByCourse } = useApiContext();
 
   useEffect(() => {
-       getCourseById();
-       console.log(course)
+    getCourseById();
     fetchUsersByCourse();
   }, []);
 
   return (
     <>
-    
       <main className="home-section">
-        {/* <main className="main-container"> */}
         <Header />
-        <AddModuleButton></AddModuleButton>
+        
         <p className="title">{course?.name}</p>
-        <div className="section-container">
+        
+
           <Grid>
-            <div className="col-sm">
-              <p className="sub-tit">Modules List</p>
+          <AddModuleButton className="mb-4" />
+            <div className="row">
+              
               {course && course.modules && course.modules.length > 0 ? (
                 course.modules.map((module) => (
-                  <ModuleCard key={module.id} module={module} />
+                  <div key={module.id} className="col-sm-4 mb-3">
+                    <ModuleCard module={module} />
+                  </div>
                 ))
               ) : (
                 <p>No modules available.</p>
               )}
             </div>
           </Grid>
-
-          <Grid>
-            <div className="col-sm">
-              <p className="sub-tit">Students List</p>
+        
+        <Grid>
+            <div>
+              <p className="sub-tit">Students</p>
               {userList && userList.length > 0 ? (
                 userList.map((user) => (
-                  <StudentCard
-                    key={user.id}
-                    student={{
-                      id: user.id,
-                      userName: user.userName,
-                      email: user.email,
-                    }}
-                  />
+                  <div key={user.id} className="col-12 mb-3">
+                    <StudentCard
+                      student={{
+                        id: user.id,
+                        userName: user.userName,
+                        email: user.email,
+                      }}
+                    />
+                  </div>
                 ))
               ) : (
                 <p>No students available.</p>
               )}
             </div>
           </Grid>
-        </div>
-        {/* <div className="section-container">
-          <section className="module-section">
-            <p className="sub-tit">Modules List</p>
-            {course && course.modules && course.modules.length > 0 ? (
-              course.modules.map((module) => (
-                <ModuleCard key={module.id} module={module} />
-              ))
-            ) : (
-              <p>No modules available.</p>
-            )}
-          </section>
-          <section className="students-section">
-            <p className="sub-tit">Students List</p>
-            {userList && userList.length > 0 ? (
-              userList.map((user) => (
-                <StudentCard
-                  key={user.id}
-                  student={{
-                    id: user.id,
-                    userName: user.userName,
-                    email: user.email,
-                  }}
-                />
-              ))
-            ) : (
-              <p>No students available.</p>
-            )}
-          </section>
-        </div> */}
-        <LogoutBtn />
 
+        <LogoutBtn />
       </main>
     </>
   );

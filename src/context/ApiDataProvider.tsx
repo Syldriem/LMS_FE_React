@@ -8,6 +8,7 @@ import {
   CustomError,
   IUserCourse,
   ICourseIds,
+  IModules,
 } from "../utils";
 import { useAuthContext } from "../hooks";
 import { jwtDecode } from "jwt-decode";
@@ -29,6 +30,7 @@ interface IApiData {
   fetchUsersByCourse: () => Promise<void>;
   fetchUsers: () => Promise<void>;
   createUser: (userDetails: { username: string; password: string; email: string; role: string; courseID: string }) => Promise<IUser>;
+  createModule: (moduleDetails: { name: string; description: string; start: string; end: string; courseID: string })=> Promise<IModules>;
   fetchAllCourses: () => Promise<void>;
 }
 
@@ -119,6 +121,17 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     const url = `${BASE_URL}/authentication`;
     try {
       const newUser = await fetchWithToken(url, "POST", userDetails);
+      return newUser;
+    } catch (error) {
+      console.error("Error creating user:", error);
+      throw error;
+    }
+  };
+
+  const createModule = async (moduleDetails: { name: string; description: string; start: string; end: string; courseID: string }): Promise<IModules> => {
+    const url = `${BASE_URL}/modules`;
+    try {
+      const newUser = await fetchWithToken(url, "POST", moduleDetails);
       return newUser;
     } catch (error) {
       console.error("Error creating user:", error);
@@ -238,6 +251,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
         courseIds,
         createUser,
         fetchAllCourses,
+        createModule,
         getCourseById,
         fetchUsers,
         setCourse,

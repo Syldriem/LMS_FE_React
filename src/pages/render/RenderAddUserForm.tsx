@@ -8,7 +8,7 @@ export function AddUserForm(): ReactElement {
   const [role, setRole] = useState("");
   const [courseid, setCourseId] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const { courses, createUser,courseIds } = useContext(ApiDataContext);
+  const { courses, createUser } = useContext(ApiDataContext);
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -42,21 +42,6 @@ export function AddUserForm(): ReactElement {
     }
   };
   
-  const [selectedCourseName, setSelectedCourseName] = useState<string>('');
-
-  const handleCourseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const courseName = e.target.value;
-    setSelectedCourseName(courseName);
-
-    // Find the course object based on the selected name
-    const selectedCourse = courses?.find(course => course.name === courseName);
-
-    console.log(selectedCourse?.id);
-
-    // Set the ID of the selected course
-    if(selectedCourse)
-    setCourseId(selectedCourse.id);
-  };
 
 
   return (
