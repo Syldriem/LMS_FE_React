@@ -3,8 +3,9 @@ import { LogoutBtn, ModuleCard, StudentCard } from "../../components";
 import { Header } from "../../components/Header";
 import { useApiContext } from "../../hooks/useApiDataContext";
 import { Grid } from "../../components/Grid";
-import { AddModuleButton } from "../../components/AddModuleButton";
+import {  AddModuleModal } from "../../components/AddModuleModal";
 import '../../css/RenderCourseDetails.css'
+import { ModalAddNewModule } from "../../components/ModalAddNewModule";
 
 export function RenderCourseDetails() {
   const { course, userList, getCourseById, fetchUsersByCourse } = useApiContext();
@@ -23,7 +24,7 @@ export function RenderCourseDetails() {
         
 
           <Grid>
-          <AddModuleButton />
+          <AddModuleModal />
             <div className="row">
               
               {course && course.modules && course.modules.length > 0 ? (
@@ -46,7 +47,6 @@ export function RenderCourseDetails() {
                   <div key={user.id} className="col-12 mb-3">
                     <StudentCard
                       student={{
-                        id: user.id,
                         userName: user.userName,
                         email: user.email,
                       }}

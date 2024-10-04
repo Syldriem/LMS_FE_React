@@ -4,7 +4,7 @@ import { AddModuleForm } from "../pages/render/RenderAddModulesForm";
 import '../css/RenderCourseDetails.css'
 
 
-  export function AddModuleButton(): ReactElement {
+  export function AddModuleModal(): ReactElement {
     const [show, setShow] = useState(false);
 
     const handleClose = () => {
@@ -13,11 +13,11 @@ import '../css/RenderCourseDetails.css'
       };
     const handleShow = () => setShow(true);
     return <>
-          <Button variant="primary" onClick={handleShow} >
+    <Button  className="mb-4" variant="primary" onClick={handleShow} >
         Add Module
       </Button>
 
-      <Modal show={show} onHide={handleClose} className="mb-4">
+      <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Add Module</Modal.Title>
         </Modal.Header>
