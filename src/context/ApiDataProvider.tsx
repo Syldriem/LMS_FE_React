@@ -63,7 +63,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     if (!tokens) {
       throw new CustomError(401, "No tokens available for authentication.");
     }
-
+  
     const requestInit: RequestInit = addTokenToRequestInit(tokens.accessToken, {
       method,
       headers: {
@@ -71,15 +71,22 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
       },
       body: body ? JSON.stringify(body) : null, // Only include body if there's data to send
     });
-
+  
     const response = await fetch(url, requestInit);
-
+  
     if (!response.ok) {
       throw new CustomError(response.status, response.statusText);
     }
-
-    return response.json();
+  
+    // Check if there's content to parse
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      return await response.json(); // Parse JSON response
+    }
+    
+    return null; // No content to return
   };
+  
 
   const createCourse = async (courseDetails: { name: string; description: string; startDate: string; }): Promise<ICourses> => {
     const url = `${BASE_URL}/courses`;

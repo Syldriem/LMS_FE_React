@@ -10,12 +10,12 @@ export const router = createBrowserRouter(
       {/* Public routes */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="/coursedetails" element={<CourseDetails />} />
 
       {/* Protected routes wrapped in AuthGuard */}
         <Route path="/teacherpage" element={<AuthGuard children={<TeacherPage />} />} />
         <Route path="/mycoursepage" element={<AuthGuard children={<MyCoursePage />} />} />
         <Route path="/userlist" element={<AuthGuard children={<UserListPage />} />} />
+        <Route path="/coursedetails" element={<AuthGuard children={<CourseDetails />} />} />
         <Route path="/unauthorized" element={<AuthGuard children={<Unauthorized />} />} />
     </>
   )
