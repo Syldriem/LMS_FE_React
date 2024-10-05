@@ -9,6 +9,7 @@ import {
   IUserCourse,
   ICourseIds,
   IModules,
+  IActivity,
 } from "../utils";
 import { useAuthContext } from "../hooks";
 import { jwtDecode } from "jwt-decode";
@@ -24,6 +25,8 @@ interface IApiData {
   error: string | null;
   courseIds: ICourseIds[] | null;
 
+  activities: IActivity[] | null;
+
   getCourseById: () => Promise<void>;
   setCourse: React.Dispatch<React.SetStateAction<ICourses | null>>;
   createCourse: (courseDetails: {
@@ -35,7 +38,9 @@ interface IApiData {
   fetchUsers: () => Promise<void>;
   createUser: (userDetails: { username: string; password: string; email: string; role: string; courseID: string }) => Promise<IUser>;
   createModule: (moduleDetails: { name: string; description: string; start: string; end: string; courseID: string })=> Promise<IModules>;
+  createActivity: (activityDetails: { name: string; description: string; activityType: string; start: string; end: string; moduleID: string })=> Promise<void>;
   fetchAllCourses: () => Promise<void>;
+  fetchActivities: (moduleId: string) => Promise<void>;
 }
 
 interface JwtPayload {
@@ -62,8 +67,10 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<IUserLoggedIn | null>(null);
   const [userCourses, setUserCourses] = useState<IUserCourse[] | null>(null);
+  const [activities, setActivities] = useState<IActivity[] | null>(null);
   const { tokens, isLoggedIn } = useAuthContext();
   const [courseIds] = useState<ICourseIds[] | null>(null);
+  const [isModuleAdded, setIsModuleAdded] = useState(false);
 
   const fetchWithToken = async (
     url: string,
@@ -121,8 +128,8 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
       const courseData = await fetchWithToken(
         `${BASE_URL}/courses/getCourseById/${course.id}`
       );
-      console.log(courseData);
       setCourse(courseData);
+      localStorage.setItem("course", JSON.stringify(courseData));
     } catch (err) {
       if (err instanceof CustomError) {
         setError(err.message);
@@ -160,7 +167,23 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     }
   };
 
+  const createActivity = async (activityDetails: { name: string; description: string; activityType: string; start: string; end: string; moduleID: string }): Promise<void> => {
+    const url = `${BASE_URL}/activities`;
+    try {
+      const newActivity = await fetchWithToken(url, "POST", activityDetails);
+      
+      setActivities((prevActivity) =>
+        Array.isArray(prevActivity) ? [...prevActivity, newActivity] : [newActivity]
+      );
+      console.log(activities)
+    } catch (error) {
+      console.error("Error creating activity:", error);
+      throw error;
+    }
+  };
+
   const fetchUsersWithCourses = async () => {
+    if (!course || !course.id) return;
     try {
       const response = await fetchWithToken(`${BASE_URL}/courses/usercourses`);
       console.log("Fetched user courses:", response);
@@ -168,6 +191,17 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     } catch (err) {
       // Handle errors as needed
       console.error("Error fetching user courses:", err);
+    }
+  };
+
+  const fetchActivities = async (moduleId: string): Promise<void> => {
+    try {
+      const activities = await fetchWithToken(`${BASE_URL}/activities/moduleid/${moduleId}`);
+      console.log(moduleId)
+      setActivities(activities); 
+    } catch (err) {
+      console.error("Error fetching activities for module:", err);
+      setActivities([]);
     }
   };
 
@@ -190,7 +224,9 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
       const usersData = await fetchWithToken(
         `${BASE_URL}/users/courses/${course?.id}`
       );
+      
       setUserList(usersData);
+      localStorage.setItem("userList", JSON.stringify(usersData));
     } catch (err) {
       if (err instanceof CustomError) {
         setError(err.message);
@@ -255,6 +291,11 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   }, [user]);
 
   useEffect(() => {
+    getCourseById();
+    fetchUsersByCourse();
+  }, []);
+
+  useEffect(() => {
     if (isLoggedIn && user) {
       if (user.role === "student") {
         fetchCourse();
@@ -266,8 +307,40 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   }, [user, isLoggedIn]);
 
   useEffect(() => {
+    const storedCourse = localStorage.getItem("course");
+    const storedUserList = localStorage.getItem("userList");
+    
+    if (storedCourse) {
+      setCourse(JSON.parse(storedCourse));
+    }
+    
+    if (storedUserList) {
+      setUserList(JSON.parse(storedUserList));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (course?.id) {
+      fetchUsersByCourse();
+    }
+  }, [course]);
+
+  useEffect(() => {
     setLoading(!userList || !course);
   }, [userList, course]);
+
+  useEffect(() => {
+    if (isModuleAdded) {
+        // Update localStorage only if a new module has been added
+        if (course) {
+            localStorage.setItem("course", JSON.stringify(course));
+        }
+        if (userList) {
+            localStorage.setItem("userList", JSON.stringify(userList));
+        }
+        setIsModuleAdded(false); // Reset the flag after updating
+    }
+}, [isModuleAdded, course, userList]);
 
   return (
     <ApiDataContext.Provider
@@ -279,11 +352,14 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
         courses,
         userCourses,
         loading,
+        activities,
         error,
         courseIds,
         createUser,
         fetchAllCourses,
         createModule,
+        fetchActivities,
+        createActivity,
         getCourseById,
         fetchUsers,
         setCourse,

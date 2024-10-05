@@ -8,12 +8,7 @@ import '../../css/RenderCourseDetails.css'
 import { ModalAddNewModule } from "../../components/ModalAddNewModule";
 
 export function RenderCourseDetails() {
-  const { course, userList, getCourseById, fetchUsersByCourse } = useApiContext();
-
-  useEffect(() => {
-    getCourseById();
-    fetchUsersByCourse();
-  }, []);
+  const { course, userList } = useApiContext();
 
   return (
     <>
