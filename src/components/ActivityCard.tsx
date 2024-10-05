@@ -3,15 +3,16 @@ import "../css/ActivityCard.css";
 import { IActivity } from "../utils";
 
 interface IActivityProps {
-    activity: IActivity
+    activity: IActivity | null;
 }
 
+export function ActivityCard({ activity }: IActivityProps): ReactElement {
+    if (!activity) {
+        return <p>Activity data is unavailable.</p>; 
+    }
 
-
-export function ActivityCard({ activity } : IActivityProps) : ReactElement {
-
-    
     return (
+        
         <span className="card-base">
             <p className="title-card-src-a">{activity.name}</p>
             <div className="desc">
