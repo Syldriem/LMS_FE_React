@@ -40,6 +40,7 @@ export function ModuleCard({ module }: IModuleProps): ReactElement {
 
   const handleRemoveModule = async (moduleID : string) => {
     await deleteModule(moduleID);
+    window.location.reload();
   }
   const handleCloseFormModal = async () => {
     await fetchActivities(module!.id);

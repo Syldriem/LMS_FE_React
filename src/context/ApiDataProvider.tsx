@@ -65,6 +65,7 @@ interface IApiData {
   handleDeleteUser: (userId: string) => Promise<void>;
   deleteCourse: (courseId: string) => Promise<void>;
   deleteModule: (moduleId: string) => Promise<void>;
+  deleteActivity: (actId: string) => Promise<void>;
 }
 
 interface JwtPayload {
@@ -402,26 +403,53 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
 
   const deleteModule = async (moduleId: string) => {
     try {
-      // Corrected API URL to point to the module endpoint
       const url = `${BASE_URL}/modules/${moduleId}`;
-  
-      // Use fetchWithToken with the DELETE method, no body is necessary for deletion
       await fetchWithToken(url, "DELETE");
   
-      // Filter the modules for each course to remove the deleted module
       const updatedCourses = courses?.map(course => {
         const filteredModules = course.modules.filter(module => module.id !== moduleId);
-        
+        return { ...course, modules: filteredModules };
+      });
+  
+      setCourses(updatedCourses!); // Update the state with the new courses
+    } catch (error) {
+      console.error("Error deleting module:", error);
+    }
+  };
+
+  const deleteActivity = async (actId: string) => {
+    try {
+      const url = `${BASE_URL}/activities/${actId}`;
+      await fetchWithToken(url, "DELETE");
+  
+      // Update the state to remove the deleted activity
+      const updatedCourses = courses?.map(course => {
+        // Update the modules in each course
+        const updatedModules = course.modules.map(module => {
+          // Filter out the activity with the given actId
+          const filteredActivities = module.activities.filter(activity => activity.id !== actId);
+          
+          return {
+            ...module,
+            activities: filteredActivities // Update the activities in the module
+          };
+        });
+  
         return {
           ...course,
-          modules: filteredModules
+          modules: updatedModules // Update the modules in the course
         };
       });
   
-      // Update the courses state with the filtered courses
-      setCourses(updatedCourses!);
+      setCourses(updatedCourses!); // Update the state with the new courses
+  
+      // If activities are also being managed in a separate state, update it here
+      setActivities(prevActivities => 
+        prevActivities?.filter(activity => activity.id !== actId) || null
+      );
+  
     } catch (error) {
-      console.error("Error deleting module:", error);
+      console.error("Error deleting activity:", error);
       // Handle error, show a message to the user if necessary
     }
   };
@@ -500,6 +528,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
         courseIds,
         createUser,
         setmyCourse,
+        deleteActivity,
         setUserList,
         handleDeleteUser,
         fetchCourse,
