@@ -17,6 +17,41 @@
   padding-inline: 4rem;
 }
 
+.course-card-src {
+  width: 100%; /* Adjust as needed */
+  padding: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 8px;
+  background-color: whitesmoke; /* Background color for card */
+  height: 300px; /* Set a fixed height for all cards */
+  overflow: hidden; /* Hide overflow */
+  display: flex; /* Enable flex layout */
+  flex-direction: column; /* Align children vertically */
+}
+
+.course-details {
+  max-width: 70%; /* Adjust as necessary */
+}
+
+.delete-button {
+  width: 30%; /* Or any desired width */
+}
+
+
+.info-display {
+  flex: 1; /* Allow this section to grow */
+  overflow-y: auto; /* Enable vertical scrolling if needed */
+}
+
+.desc {
+  padding: 0.5rem; /* Space inside each description */
+}
+
+.cat-lbl {
+  margin: 0; /* Remove default margin for list items */
+}
+
+
 :root {
 
     --background: #000000;

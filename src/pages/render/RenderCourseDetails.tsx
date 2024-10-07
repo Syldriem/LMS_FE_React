@@ -2,13 +2,11 @@ import { useEffect } from "react";
 import { LogoutBtn, ModuleCard, StudentCard } from "../../components";
 import { Header } from "../../components/Header";
 import { useApiContext } from "../../hooks/useApiDataContext";
-import { useAuthContext, useFetchWithToken } from "../../hooks";
-import { BASE_URL, CustomError } from "../../utils";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Grid } from "../../components/Grid";
 import {  AddModuleModal } from "../../components/AddModuleModal";
 import '../../css/RenderCourseDetails.css'
-import { ModalAddNewModule } from "../../components/ModalAddNewModule";
+
 
 export function RenderCourseDetails() {
 

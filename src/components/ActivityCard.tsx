@@ -11,6 +11,19 @@ export function ActivityCard({ activity }: IActivityProps): ReactElement {
         return <p>Activity data is unavailable.</p>; 
     }
 
+    const formattedStartDate = new Date(activity.start).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+
+      
+    const formattedEndDate = new Date(activity.end).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+
     return (
         
         <span className="card-base">
@@ -20,16 +33,12 @@ export function ActivityCard({ activity }: IActivityProps): ReactElement {
                 <p className="spec-lbl">{activity.description}</p>
             </div>
             <div className="desc">
-                <p className="cat-lbl-a">Activity Type:</p>
-                <p className="spec-lbl">{activity.activityType}</p>
-            </div>
-            <div className="desc">
                 <p className="cat-lbl-a">Start Date:</p>
-                <p className="spec-lbl">{activity.start}</p>
+                <p className="spec-lbl">{formattedStartDate}</p>
             </div>
             <div className="desc">
                 <p className="cat-lbl-a">End Date:</p>
-                <p className="spec-lbl">{activity.end}</p>
+                <p className="spec-lbl">{formattedEndDate}</p>
             </div>
         </span>
     );

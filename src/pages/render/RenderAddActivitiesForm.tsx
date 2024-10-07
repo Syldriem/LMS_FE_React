@@ -21,7 +21,7 @@ export function RenderAddActivitiesForm({ show, handleClose, handleSubmit, modul
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
 
-  const { createActivity } = useContext(ApiDataContext);
+  const { createActivity, fetchActivities } = useContext(ApiDataContext);
 
   const handleFormSubmit = async () => {
     const activityDetails = {
@@ -34,10 +34,9 @@ export function RenderAddActivitiesForm({ show, handleClose, handleSubmit, modul
     };
     try {
 
-      await createActivity(activityDetails); 
-
+      await createActivity(activityDetails);  
       handleSubmit(moduleID); 
-      handleClose(); 
+      handleClose();
 
 
     } catch (error) {
@@ -73,15 +72,6 @@ export function RenderAddActivitiesForm({ show, handleClose, handleSubmit, modul
             />
           </Form.Group>
 
-          <Form.Group controlId="formField3">
-            <Form.Label>Activity Type</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter activity type"
-              value={activityType}
-              onChange={(e) => setActivityType(e.target.value)}
-            />
-          </Form.Group>
 
           <Form.Group controlId="formField4">
             <Form.Label>Start Date</Form.Label>

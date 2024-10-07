@@ -2,6 +2,7 @@ import {
   createContext,
   ReactElement,
   ReactNode,
+  useContext,
   useEffect,
   useState,
 } from "react";
@@ -16,6 +17,7 @@ import {
 } from "../utils";
 import { useLocalStorage } from "../hooks/useTokenStorage";
 import { jwtDecode } from "jwt-decode";
+import { ApiDataContext } from "./ApiDataProvider";
 
 interface IAuthProviderProps {
   children: ReactNode;
@@ -26,7 +28,8 @@ export function AuthProvider({ children }: IAuthProviderProps): ReactElement {
   const { tokens, setTokens, clearTokens } = useLocalStorage();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
-  const [user, setUser] = useState<IUserLoggedIn | null>(null);
+
+  const [user, setUser ] = useState<IUserLoggedIn | null>(null);
 
   useEffect(() => {
     if (tokens && tokens.accessToken && !hasTokenExpired(tokens.accessToken)) {
@@ -72,9 +75,11 @@ export function AuthProvider({ children }: IAuthProviderProps): ReactElement {
   };
 
   const logout = (): void => {
-    console.log("TEST");
+    localStorage.clear();
+    setUser(null);
     clearTokens();
     setIsLoggedIn(false);
+    
   };
 
   return (

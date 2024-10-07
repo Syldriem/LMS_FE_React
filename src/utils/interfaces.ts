@@ -67,7 +67,8 @@ export interface IActivity {
   id: string;
   name: string;
   description: string;
+  activityType: string;
   start: string;
   end: string;
-  activityType: string;
+  
 }

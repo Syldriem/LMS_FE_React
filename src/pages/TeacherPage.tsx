@@ -11,6 +11,8 @@ export function TeacherPage(): ReactElement {
     setShowModal(true);
   };
 
+
+
   return (
     <>
       <main className="home-section">

@@ -1,18 +1,13 @@
 import { MouseEventHandler, ReactElement } from "react";
 import "../css/index.css";
 import { ICourses } from "../utils";
-import { MyCoursePage } from "../pages";
-import { useNavigate } from "react-router-dom";
 
 interface ICourseProps {
   course: ICourses;
+  handleCourseDelete: (courseId: string) =>Promise<void>;
 }
-export function CourseCard({ course }: ICourseProps): ReactElement {
-  const navigate = useNavigate();
-  const handleOnExpand: MouseEventHandler<HTMLButtonElement> = (): void => {};
-  const handleOnListStudents: MouseEventHandler<
-    HTMLButtonElement
-  > = (): void => {};
+export function CourseCard({ course,handleCourseDelete }: ICourseProps): ReactElement {
+
   // TODO: update courseDTO to include Id so that we can use it to make getCourseById request
   // for when we click on the course card.
   // TODO: Make Teacher version of mycoursepage AKA course details page => render courses' modules and courses' students
@@ -26,8 +21,8 @@ export function CourseCard({ course }: ICourseProps): ReactElement {
         <div className="course-modules">
           {course && course.modules && course.modules.length > 0 ? (
             course.modules.map((module) => (
-              <div className="desc">
-                <li className="cat-lbl">{module.name}</li>
+              <div className="desc col-md-3">
+                <p className="cat-lbl">{module.name}</p>
               </div>
             ))
           ) : (
@@ -35,6 +30,15 @@ export function CourseCard({ course }: ICourseProps): ReactElement {
           )}
         </div>
       </section>
+      <button
+            className="btn btn-danger btn-sm ms-2"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleCourseDelete(course.id);
+            }}
+          >
+            Delete
+          </button>
     </section>
   );
 

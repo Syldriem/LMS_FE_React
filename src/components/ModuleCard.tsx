@@ -15,19 +15,34 @@ interface IModuleProps {
 
 export function ModuleCard({ module }: IModuleProps): ReactElement {
   
-  const { fetchActivities,activities,createActivity } = useContext(ApiDataContext);
+  const { fetchActivities,activities,user,deleteModule } = useContext(ApiDataContext);
   const [activitiesList, setActivityList] = useState<IActivity[]>([]); 
 
   const [showModal, setShowModal] = useState(false);
 
   const [showFormModal, setShowFormModal] = useState(false);
+
+  const formatDate = (dateString: string | undefined): string => {
+    if (!dateString) return ''; // Return an empty string if the date is undefined
+    return new Date(dateString).toLocaleDateString('se-SE', {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+    });
+  };
+
   
   const onActivityBtnClick = async (moduleID : string) => {
     await fetchActivities(moduleID);
     setActivityList(activities || []);
     setShowModal(true);
   }
-  const handleCloseFormModal = () => {
+
+  const handleRemoveModule = async (moduleID : string) => {
+    await deleteModule(moduleID);
+  }
+  const handleCloseFormModal = async () => {
+    await fetchActivities(module!.id);
     setShowFormModal(false);
     setActivityList([]);
   };
@@ -53,43 +68,43 @@ export function ModuleCard({ module }: IModuleProps): ReactElement {
 
   return (
     <span>
-      {/* Module Card */}
-      <div>
-        <span key={module?.id} className="card-src">
-          <p className="title-card-src">{module?.name}</p>
-          <div className="desc">
-            <p className="cat-lbl">Description:</p>
-            <p className="spec-lbl">{module?.description}</p>
-          </div>
-          <div className="desc">
-            <p className="cat-lbl">Start Date:</p>
-            <p className="spec-lbl">{module?.start}</p>
-          </div>
-          <div className="desc">
-            <p className="cat-lbl">End Date:</p>
-            <p className="spec-lbl">{module?.end}</p>
-          </div>
-          <div className="btn-container">
-            <button className="btn-layout" onClick={() => onActivityBtnClick(module!.id)}>
-              Activities
-            </button>
-            <button className="btn-layout" hidden>
-              Documents
-            </button>
-          </div>
-        </span>
+      <div className="card-src">
+      <p className="title-card-src">{module?.name}</p>
+      <div className="desc">
+        <p className="cat-lbl">Description:</p>
+        <p className="spec-lbl">{module?.description}</p>
       </div>
-
-      {/* Bootstrap Modal */}
+      <div className="desc">
+        <p className="cat-lbl">Start Date:</p>
+        <p className="spec-lbl">{formatDate(module?.start)}</p>
+      </div>
+      <div className="desc">
+        <p className="cat-lbl">End Date:</p>
+        <p className="spec-lbl">{formatDate(module?.end)}</p>
+      </div>
+      <div className="btn-container">
+        <button className="btn-layout" onClick={() => onActivityBtnClick(module?.id!)}>
+          Activities
+        </button>
+        <button className="btn-layout" onClick={() => handleRemoveModule(module?.id!)}>
+          Delete
+        </button>
+        <button className="btn-layout" hidden>
+          Documents
+        </button>
+      </div>
+    </div>
       <Modal show={showModal} onHide={onCloseBtnClick} backdrop={false}>
         <Modal.Header closeButton>
           <Modal.Title>Module Activities</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <ActivityListPage activityList={activitiesList} message="No activities connected to the module" />
+          {user?.role === 'teacher' && (
           <Button variant="primary" onClick={handleOpenFormModal}>
             Add Activity
-      </Button>
+          </Button>
+      )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onCloseBtnClick}>
