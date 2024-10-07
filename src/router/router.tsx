@@ -15,7 +15,7 @@ export const router = createBrowserRouter(
         <Route path="/teacherpage" element={<AuthGuard children={<TeacherPage />} />} />
         <Route path="/mycoursepage" element={<AuthGuard children={<MyCoursePage />} />} />
         <Route path="/userlist" element={<AuthGuard children={<UserListPage />} />} />
-        <Route path="/coursedetails" element={<AuthGuard children={<CourseDetails />} />} />
+        <Route path="/coursedetails/:courseId" element={<AuthGuard children={<CourseDetails />} />} />
         <Route path="/unauthorized" element={<AuthGuard children={<Unauthorized />} />} />
     </>
   )

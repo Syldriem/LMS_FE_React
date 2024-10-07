@@ -3,6 +3,7 @@
   /* background-repeat:no-repeat;
   background-size:cover;
   background-image: url(src/assets/background_pic2.jpg); */
+  justify-content: center;
   background-color: var(--secondary-color); 
   display: flex;
   flex-direction: column;

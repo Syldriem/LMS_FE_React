@@ -1,6 +1,9 @@
 import { BASE_URL, CustomError, ITokens } from ".";
 
-export async function loginReq(username: string, password: string): Promise<ITokens> {
+export async function loginReq(
+  username: string,
+  password: string
+): Promise<ITokens | CustomError> {
   const url = `${BASE_URL}/authentication/login`;
 
   const response: Response = await fetch(url, {
@@ -12,13 +15,16 @@ export async function loginReq(username: string, password: string): Promise<ITok
   });
 
   if (response.ok === false) {
-    throw new CustomError(response.status, "Could not login");
+    return new CustomError(response.status, "Could not login");
   }
 
   return (await response.json()) as ITokens;
 }
 
-export async function refreshTokens(accessToken: string, refreshToken: string): Promise<ITokens> {
+export async function refreshTokens(
+  accessToken: string,
+  refreshToken: string
+): Promise<ITokens> {
   const url: string = `${BASE_URL}/token/refresh`;
 
   try {
@@ -46,7 +52,6 @@ export async function refreshTokens(accessToken: string, refreshToken: string): 
       accessToken: data.accessToken,
       refreshToken: data.refreshToken,
     };
-
   } catch (error) {
     // Handle any errors that occurred during the fetch
     console.error("Failed to refresh token:", error);

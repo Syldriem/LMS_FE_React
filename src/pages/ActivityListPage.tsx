@@ -14,7 +14,7 @@ export function ActivityListPage({ activityList, message } : IActivityProps) : R
           <p></p>
             {activityList && activityList.length > 0 ? (
               activityList.map((act) => (
-                <ActivityCard key={act.id} activity={act} />
+                <ActivityCard activity={act} />
               ))
           ) : 
           (

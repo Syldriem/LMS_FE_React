@@ -6,10 +6,11 @@ import { RenderLoginPage } from "./render/RenderLoginPage";
 export function LoginPage(): ReactElement {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { isLoggedIn, login,user } = useAuthContext();
+  const [error, setError] = useState<string>("");
+  const { isLoggedIn, login, user } = useAuthContext();
   const navigate = useNavigate();
 
-  console.log("Role", user?.role)
+  console.log("Role", user?.role);
   // Redirect logged-in users to their respective page based on their role
   useEffect(() => {
     if (isLoggedIn && user) {
@@ -30,7 +31,10 @@ export function LoginPage(): ReactElement {
 
   const handleOnSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    await login(username, password); // Perform login action
+    const errorMessage = await login(username, password); // Perform login action
+    if (errorMessage && "message" in errorMessage) {
+      setError(errorMessage.message);
+    }
 
     // After login, redirect the user based on their role
     if (isLoggedIn && user) {
@@ -50,7 +54,11 @@ export function LoginPage(): ReactElement {
 
   // If user is already logged in, skip the login form and redirect to the appropriate page
   if (isLoggedIn && user) {
-    return <Navigate to={user.role === "teacher" ? "/teacherpage" : "/mycoursepage"} />;
+    return (
+      <Navigate
+        to={user.role === "teacher" ? "/teacherpage" : "/mycoursepage"}
+      />
+    );
   }
 
   return (
@@ -60,6 +68,7 @@ export function LoginPage(): ReactElement {
       setPassword={setPassword}
       setUsername={setUsername}
       username={username}
+      error={error}
     />
   );
 }

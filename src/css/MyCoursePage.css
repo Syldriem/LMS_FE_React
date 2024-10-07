@@ -1,10 +1,10 @@
-.home-section{
-    align-items: center;
-    background-color: var(--secondary-color);
-    display: flex;
-    flex-direction: column;
-    height:100vh;
-
+.home-section {
+  align-items: center;
+  background-color: var(--secondary-color); /* Main background color */
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full height of the viewport */
+  overflow: auto; /* Allows scrolling if needed */
 }
 
 .title {
@@ -25,33 +25,39 @@
   text-align: center;
 }
 
-.doc-btn-contanier {
+.doc-btn-container {
   margin-bottom: 3rem;
   justify-content: left;
   width: 1040px;
   margin-left: 5px;
-  min-width: 300;
+  min-width: 300px;
 }
 
 .section-container {
   display: flex;
-  justify-content: baseline;
-  width: 1200px;
-  min-width: 300;
+  justify-content: center; /* Center content horizontally */
+  width: 100%; /* Full width */
   margin-bottom: 4.5rem;
+  flex-wrap: wrap; /* Allows wrapping of children */
 }
 
-.section-container .module-section {
+.module-section {
   width: 40%;
-  height: 90%;
-  margin-left: 5%;
-  justify-content: baseline;
+  height: auto; /* Adjusted to fit content */
+  margin-left: 5%; /* Spacing */
+  margin-bottom: 1rem; /* Space between module sections */
 }
 
-.section-container .students-section {
+.students-section {
   width: 40%;
-  height: 90%;
-  margin-right: 5%;
+  height: auto; /* Adjusted to fit content */
+  margin-right: 5%; /* Spacing */
   margin-left: 10%;
-  justify-content: baseline;
+  margin-bottom: 1rem; /* Space between student sections */
+}
+
+/* Optional: Remove additional background if applied */
+.student-list-section,
+.module-list-section {
+  background-color: transparent; /* Ensure no extra background */
 }

@@ -11,12 +11,11 @@ interface ModalPopupProps {
 export function ModalPopup({ show, setShow }: ModalPopupProps): ReactElement {
   const handleCloseModal = () => {
     setShow(false);
-    window.location.reload();
+    //window.location.reload();
   };
 
   return (
     <main>
-      {/* Bootstrap Modal */}
       <Modal show={show} onHide={handleCloseModal} backdrop={false}>
         <Modal.Header closeButton>
           <Modal.Title>Add a New Course</Modal.Title>

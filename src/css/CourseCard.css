@@ -36,14 +36,16 @@
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  height: 200px;
+  height: fit-content;
+  max-height: 200px;
+  overflow-y: hidden;
   justify-content: Left;
   margin-bottom: 1rem;
   margin-left: 1%;
-  min-width: 100%;
+  /* min-width: 100%; */
   padding: 0.5rem;
   position: relative;
-  width: 90%;
+  /* width: 10rem; */
 }
 
 .course-btn-layout {

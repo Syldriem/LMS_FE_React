@@ -1,9 +1,13 @@
 import { JwtPayload } from "jwt-decode";
+import { CustomError } from "./classes";
 
 export interface IAuthContext {
   tokens: ITokens | null;
   isLoggedIn: boolean;
-  login: (username: string, password: string) => Promise<void>;
+  login: (
+    username: string,
+    password: string
+  ) => Promise<ITokens | CustomError | undefined>;
   logout: () => void;
   user: IUserLoggedIn | null;
 }
@@ -18,7 +22,6 @@ export interface ITokenObjectExtensions extends JwtPayload {
   "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier": string;
   "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": string;
 }
-
 
 export interface ICourses {
   id: string;
@@ -46,7 +49,7 @@ export interface IUser {
 }
 
 export interface ICourseIds {
-  id: string; 
+  id: string;
   name: string;
 }
 
