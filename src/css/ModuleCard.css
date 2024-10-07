@@ -1,28 +1,25 @@
-.card-src{
+.card-src {
   padding: 0.5rem;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 8px;
   border: 0;
   position: relative;
-  width: 90%;
-  min-width: 250px;
-  height: 235px;
+  width: 100%; 
+  min-width: 300px;
+  height: 235px;  /* Keep as is or adjust */
   background-color: whitesmoke;
   margin-bottom: 1rem;
-  margin-left: 5%;
+  margin-left: 0; /* Centering the card in its column */
   display: flex;
   flex-direction: column;
-  justify-content: Left;
+  justify-content: flex-start; /* Changed from Left to flex-start for better CSS */
 }
 
 .title-card-st{
-  margin: 5px;
-  font-weight: 800;
-  font-size: 25px;
-  font-style: normal;
-  text-align: left;
-  padding-left: 5px;
-  padding-bottom: 2rem;
+  overflow: hidden;  /* Prevent overflow */
+  text-overflow: ellipsis;  /* Use ellipsis if text overflows */
+  white-space: nowrap;  /* Prevents wrapping; you can adjust this as needed */
+  width: 100%;  /* Ensure text takes full width */
 }
 
 .desc{
@@ -45,13 +42,6 @@
  height: 20px;
  font-weight: light;
  
-}
-.btn-container{
-  margin-top: 1rem;
-  margin-left: 5px;
-  margin-right: 5px;
-  display: flex;
-  justify-content: space-between;
 }
 .btn-layout {
   height: 30px;
@@ -143,6 +133,19 @@
   cursor: pointer;
 }
 
+.title-card-src {
+  font-size: 1.25rem; /* Adjust font size */
+  font-weight: bold; /* Bold title */
+}
+
+.desc {
+  margin: 10px 0; /* Spacing between description elements */
+}
+.btn-container{
+  justify-content: center;
+  text-align: center;
+  display: flex;
+}
 /* HTML: <div class="loader"></div> */
 .loader {
 width: 65px;

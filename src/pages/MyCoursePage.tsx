@@ -1,20 +1,19 @@
 import { useContext, useEffect } from "react";
 import { ApiDataContext } from "../context/ApiDataProvider";
 import { RenderMyCoursePage } from "./render/RenderMyCoursePage";
+import { Header } from "../components/Header";
 
 export function MyCoursePage() {
-  const { userList, course, fetchUsersByCourse } =
+  const { myCourse,user,myCourseuserList } =
     useContext(ApiDataContext);
-
-    /*
-
-  useEffect(() => {
-    fetchUsersByCourse();
-  }, []);*/
+    
 
   return (
     <>
-      <RenderMyCoursePage course={course} users={userList} user={null} />
+    <div className="home-section">
+    <Header></Header>
+      <RenderMyCoursePage course={myCourse} users={myCourseuserList} user={user} />
+    </div>
     </>
   );
 }

@@ -16,7 +16,6 @@ export const AuthGuard = ({ children, redirectPath = "/login" }: AuthGuardProps)
   useEffect(() => {
     const checkToken = () => {
       if ((tokens && hasTokenExpired(tokens.accessToken))) {
-        console.log(tokens?.accessToken)
         logout();
         navigate(redirectPath);
       }

@@ -18,11 +18,6 @@ export function AddCourseForm(): ReactElement {
     };
     
     createCourse(courseData);
-
-    
-
-    console.log("Course data to submit:", courseData);
-
   };
 
   return (

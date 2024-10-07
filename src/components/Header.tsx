@@ -1,22 +1,41 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { LogoutBtn } from "./LogoutBtn";
+import { useContext } from "react";
+import { ApiDataContext } from "../context/ApiDataProvider";
 
 export function Header() {
-
-
-  return (
-    <header className="header-container">
-      <div className="navbar-container">
-        <div className="navbar">
-          <Link className="style active" to="/teacherpage">
-            Courses
-          </Link>
-          <Link className="style" to={'/userlist'}>
-            User Admin
-          </Link>
+  const { user } = useContext(ApiDataContext);
+  
+  if (user?.role === "teacher") {
+    return (
+      <header className="header-container">
+        <div className="navbar-container">
+          <div className="navbar">
+            <NavLink 
+              className={({ isActive }) => isActive ? 'style active' : 'style'} 
+              to="/teacherpage"
+            >
+              Courses
+            </NavLink>
+            <NavLink 
+              className={({ isActive }) => isActive ? 'style active' : 'style'} 
+              to="/mycoursepage"
+            >
+              My Course
+            </NavLink>
+            <NavLink 
+              className={({ isActive }) => isActive ? 'style active' : 'style'} 
+              to="/userlist"
+            >
+              User Admin
+            </NavLink>
+          </div>
+          <LogoutBtn />
         </div>
-        <LogoutBtn />
-      </div>
-    </header>
-  );
+      </header>
+    );
+  }
+
+  // Return null or an empty fragment if the user doesn't have access
+  return null;
 }

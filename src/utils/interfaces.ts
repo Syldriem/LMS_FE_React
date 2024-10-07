@@ -35,9 +35,9 @@ export interface IModules {
   id: string;
   name: string;
   description: string;
-  //activities: any[];
   start: string;
   end: string;
+  activities: IActivity[];
 }
 
 export interface IUser {
@@ -67,7 +67,8 @@ export interface IActivity {
   id: string;
   name: string;
   description: string;
+  activityType: string;
   start: string;
   end: string;
-  activityType: string;
+  
 }

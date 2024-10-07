@@ -18,7 +18,9 @@ interface IApiData {
   user: IUserLoggedIn | null;
   users: IUser[] | null;
   userList: IUser[] | null;
+  myCourseuserList: IUser[] | null;
   course: ICourses | null;
+  myCourse: ICourses | null;
   courses: ICourses[] | null;
   userCourses: IUserCourse[] | null;
   loading: boolean;
@@ -27,7 +29,8 @@ interface IApiData {
 
   getCourseByIdFromRouter: (courseId: string) => Promise<void>;
   activities: IActivity[] | null;
-
+  setmyCourse: (course: ICourses | null) => void;
+  setUserList: (users: IUser[]) => void;
   getCourseById: () => Promise<void>;
   setCourse: React.Dispatch<React.SetStateAction<ICourses | null>>;
   createCourse: (courseDetails: {
@@ -36,8 +39,9 @@ interface IApiData {
     startDate: string;
   }) => Promise<void>;
   fetchUsersByCourse: () => Promise<void>;
+  fetchUsersMyCourse: (id: string) => Promise<void>;
   fetchUsersByCourseId: (courseId: string) => Promise<void>;
-  fetchUsers: () => Promise<void>;
+  fetchUsers: () => Promise<IUser[]>;
   createUser: (userDetails: {
     username: string;
     password: string;
@@ -54,7 +58,14 @@ interface IApiData {
   }) => Promise<IModules>;
   createActivity: (activityDetails: { name: string; description: string; activityType: string; start: string; end: string; moduleID: string })=> Promise<void>;
   fetchAllCourses: () => Promise<void>;
+  fetchCourse: (id: string) => Promise<void>;
+  fetchUsersWithCourses: () => Promise<IUserCourse[]>;
+  
   fetchActivities: (moduleId: string) => Promise<void>;
+  handleDeleteUser: (userId: string) => Promise<void>;
+  deleteCourse: (courseId: string) => Promise<void>;
+  deleteModule: (moduleId: string) => Promise<void>;
+  deleteActivity: (actId: string) => Promise<void>;
 }
 
 interface JwtPayload {
@@ -75,7 +86,9 @@ export const ApiDataContext = createContext<IApiData>({} as IApiData);
 export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
   const [users, setUsers] = useState<IUser[] | null>(null);
   const [userList, setUserList] = useState<IUser[] | null>(null);
+  const [myCourseuserList, myCoursesetUserList] = useState<IUser[] | null>(null);
   const [course, setCourse] = useState<ICourses | null>(null);
+  const [myCourse, setmyCourse] = useState<ICourses | null>(null);
   const [courses, setCourses] = useState<ICourses[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -129,8 +142,9 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
       setCourses((prevCourses) =>
         Array.isArray(prevCourses) ? [...prevCourses, newCourse] : [newCourse]
       );
+      alert("Course added");
     } catch (error) {
-      console.error("Error creating course:", error);
+      alert("Error creating course:" + error);
       throw error;
     }
   };
@@ -181,6 +195,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     const url = `${BASE_URL}/authentication`;
     try {
       const newUser = await fetchWithToken(url, "POST", userDetails);
+      alert("User added")
       return newUser;
     } catch (error) {
       console.error("Error creating user:", error);
@@ -213,22 +228,32 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
       setActivities((prevActivity) =>
         Array.isArray(prevActivity) ? [...prevActivity, newActivity] : [newActivity]
       );
-      console.log(activities)
+      alert("activities added")
     } catch (error) {
       console.error("Error creating activity:", error);
       throw error;
     }
   };
 
-  const fetchUsersWithCourses = async () => {
-    if (!course || !course.id) return;
+  const fetchUsersWithCourses = async (): Promise<IUserCourse[]> => {
+    if (!course || !course.id) return []; // Return an empty array instead of void
+  
     try {
       const response = await fetchWithToken(`${BASE_URL}/courses/usercourses`);
       console.log("Fetched user courses:", response);
-      setUserCourses(response); // Assuming you have a state to hold this data
+  
+      // Ensure the response is of the expected type before setting the state
+      if (Array.isArray(response)) {
+        setUserCourses(response); // Assuming you have a state to hold this data
+        return response; // Return the valid response
+      } else {
+        console.error("Unexpected response format:", response);
+        return []; // Return an empty array in case of unexpected format
+      }
     } catch (err) {
       // Handle errors as needed
       console.error("Error fetching user courses:", err);
+      return []; // Return an empty array in case of error
     }
   };
 
@@ -274,6 +299,24 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     }
   };
 
+
+  const fetchUsersMyCourse = async (id: string) => {
+    try {
+      const usersData = await fetchWithToken(
+        `${BASE_URL}/users/courses/${id}`
+      );
+      
+      setUserList(usersData); // Ensure you have a state setter for userList
+      localStorage.setItem("userList", JSON.stringify(usersData));
+    } catch (err) {
+      if (err instanceof CustomError) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred while fetching users.");
+      }
+    }
+  };
+
   const fetchUsersByCourseId = async (courseId: string) => {
     try {
       const usersData = await fetchWithToken(
@@ -289,25 +332,31 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
     }
   };
 
-  const fetchUsers = async () => {
+  const fetchUsers = async (): Promise<IUser[]> => {
     try {
       const usersData = await fetchWithToken(`${BASE_URL}/users`);
-      setUsers(usersData);
+      setUsers(usersData); // Update the state with fetched users
+      return usersData; // Return the fetched data
     } catch (err) {
+      // Handle error and set the error state
       if (err instanceof CustomError) {
         setError(err.message);
       } else {
         setError("An unexpected error occurred while fetching users.");
       }
+      return []; // Ensure that the return type is consistent
     }
   };
 
-  const fetchCourse = async () => {
-    if (!user) return;
+
+  const fetchCourse = async (id: string) => {
 
     try {
-      const courseData = await fetchWithToken(`${BASE_URL}/courses/${user.id}`);
-      setCourse(courseData);
+      const courseData = await fetchWithToken(`${BASE_URL}/courses/${id}`);
+      setmyCourse(courseData);
+      if(!courseData){
+        setmyCourse(null);
+      }
     } catch (err) {
       if (err instanceof CustomError) {
         setError(err.message);
@@ -316,6 +365,95 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
       }
     }
   };
+
+  const handleDeleteUser = async (userId: string) => {
+    try {
+      // Corrected API URL to point to the user endpoint
+      const url = `${BASE_URL}/users/${userId}`;
+  
+      // Use fetchWithToken with the DELETE method, no body is necessary for deletion
+      await fetchWithToken(url, "DELETE");
+  
+      // Remove the user from the list on success
+      const updatedUsers = users?.filter((user) => user.id !== userId);
+
+      setUsers(updatedUsers!);
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      // Handle error, show a message to the user if necessary
+    }
+  };
+  const deleteCourse = async (courseId: string) => {
+    try {
+      // Corrected API URL to point to the user endpoint
+      const url = `${BASE_URL}/courses/${courseId}`;
+  
+      // Use fetchWithToken with the DELETE method, no body is necessary for deletion
+      await fetchWithToken(url, "DELETE");
+  
+      // Remove the user from the list on success
+      const updatedCourses = courses?.filter((course) => course.id !== courseId);
+
+      setCourses(updatedCourses!);
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      // Handle error, show a message to the user if necessary
+    }
+  };
+
+  const deleteModule = async (moduleId: string) => {
+    try {
+      const url = `${BASE_URL}/modules/${moduleId}`;
+      await fetchWithToken(url, "DELETE");
+  
+      const updatedCourses = courses?.map(course => {
+        const filteredModules = course.modules.filter(module => module.id !== moduleId);
+        return { ...course, modules: filteredModules };
+      });
+  
+      setCourses(updatedCourses!); // Update the state with the new courses
+    } catch (error) {
+      console.error("Error deleting module:", error);
+    }
+  };
+
+  const deleteActivity = async (actId: string) => {
+    try {
+      const url = `${BASE_URL}/activities/${actId}`;
+      await fetchWithToken(url, "DELETE");
+  
+      // Update the state to remove the deleted activity
+      const updatedCourses = courses?.map(course => {
+        // Update the modules in each course
+        const updatedModules = course.modules.map(module => {
+          // Filter out the activity with the given actId
+          const filteredActivities = module.activities.filter(activity => activity.id !== actId);
+          
+          return {
+            ...module,
+            activities: filteredActivities // Update the activities in the module
+          };
+        });
+  
+        return {
+          ...course,
+          modules: updatedModules // Update the modules in the course
+        };
+      });
+  
+      setCourses(updatedCourses!); // Update the state with the new courses
+  
+      // If activities are also being managed in a separate state, update it here
+      setActivities(prevActivities => 
+        prevActivities?.filter(activity => activity.id !== actId) || null
+      );
+  
+    } catch (error) {
+      console.error("Error deleting activity:", error);
+      // Handle error, show a message to the user if necessary
+    }
+  };
+  
 
   useEffect(() => {
     if (tokens) {
@@ -332,7 +470,7 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
         decode[
           "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
         ]!.toLowerCase();
-
+      console.log(id)
       setUser({ id, name, role });
     }
   }, [tokens]);
@@ -342,22 +480,6 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
       console.log("User:", user); // Log user after it has been updated
     }
   }, [user]);
-
-  useEffect(() => {
-    getCourseById();
-    fetchUsersByCourse();
-  }, []);
-
-  useEffect(() => {
-    if (isLoggedIn && user) {
-      if (user.role === "student") {
-        fetchCourse();
-      } else if (user.role === "teacher") {
-        fetchAllCourses();
-        fetchUsersWithCourses();
-      }
-    }
-  }, [user, isLoggedIn]);
 
   useEffect(() => {
     const storedCourse = localStorage.getItem("course");
@@ -371,12 +493,6 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
       setUserList(JSON.parse(storedUserList));
     }
   }, []);
-
-  useEffect(() => {
-    if (course?.id) {
-      fetchUsersByCourse();
-    }
-  }, [course]);
 
   useEffect(() => {
     setLoading(!userList || !course);
@@ -402,24 +518,35 @@ export const ApiDataProvider = ({ children }: ApiDataProviderProps) => {
         users,
         userList,
         course,
+        myCourse,
         courses,
+        myCourseuserList,
         userCourses,
         loading,
         activities,
         error,
         courseIds,
         createUser,
+        setmyCourse,
+        deleteActivity,
+        setUserList,
+        handleDeleteUser,
+        fetchCourse,
         fetchAllCourses,
         createModule,
+        fetchUsersMyCourse,
         fetchActivities,
         createActivity,
+        deleteModule,
         getCourseById,
+        fetchUsersWithCourses,
         fetchUsers,
         setCourse,
         createCourse,
         fetchUsersByCourse,
         fetchUsersByCourseId,
         getCourseByIdFromRouter,
+        deleteCourse
       }}
     >
       {children}

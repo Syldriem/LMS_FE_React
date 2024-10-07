@@ -1,45 +1,44 @@
 import { MouseEventHandler, ReactElement } from "react";
 import "../css/index.css";
 import { ICourses } from "../utils";
-import { MyCoursePage } from "../pages";
-import { useNavigate } from "react-router-dom";
 
 interface ICourseProps {
   course: ICourses;
+  handleCourseDelete: (courseId: string) =>Promise<void>;
 }
-export function CourseCard({ course }: ICourseProps): ReactElement {
-  const navigate = useNavigate();
-  const handleOnExpand: MouseEventHandler<HTMLButtonElement> = (): void => {};
-  const handleOnListStudents: MouseEventHandler<
-    HTMLButtonElement
-  > = (): void => {};
+export function CourseCard({ course,handleCourseDelete }: ICourseProps): ReactElement {
+
   // TODO: update courseDTO to include Id so that we can use it to make getCourseById request
   // for when we click on the course card.
   // TODO: Make Teacher version of mycoursepage AKA course details page => render courses' modules and courses' students
   // TODO:
 
   return (
-    <section
-      className="card border-light mb-3"
-      style={{ cursor: "pointer", overflowY: "hidden" }}
-    >
-      <h2 className="card-header">{course.name}</h2>
-      <div className="card-body" style={{ overflowY: "hidden" }}>
-        <h4 className="card-title">Module List</h4>
-        <section>
-          <div className="course-modules">
-            {course && course.modules && course.modules.length > 0 ? (
-              course.modules.map((module) => (
-                <div className="desc">
-                  <li className="card-text">{module.name}</li>
-                </div>
-              ))
-            ) : (
-              <p>No modules available.</p>
-            )}
-          </div>
-        </section>
-      </div>
+    <section className="course-card-src">
+      <h2 className="title-card">{course.name}</h2>
+      <h4 className="module-card">Module List</h4>
+      <section className="info-display">
+        <div className="course-modules">
+          {course && course.modules && course.modules.length > 0 ? (
+            course.modules.map((module) => (
+              <div className="desc col-md-3">
+                <p className="cat-lbl">{module.name}</p>
+              </div>
+            ))
+          ) : (
+            <p>No modules available.</p>
+          )}
+        </div>
+      </section>
+      <button
+            className="btn btn-danger btn-sm ms-2"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleCourseDelete(course.id);
+            }}
+          >
+            Delete
+          </button>
     </section>
   );
 

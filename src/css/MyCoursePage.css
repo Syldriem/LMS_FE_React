@@ -5,6 +5,7 @@
   flex-direction: column;
   height: 100vh; /* Full height of the viewport */
   overflow: auto; /* Allows scrolling if needed */
+  width: 100%;
 }
 
 .title {
@@ -54,6 +55,10 @@
   margin-right: 5%; /* Spacing */
   margin-left: 10%;
   margin-bottom: 1rem; /* Space between student sections */
+}
+.module-card{
+  width: auto;
+  height: auto;
 }
 
 /* Optional: Remove additional background if applied */

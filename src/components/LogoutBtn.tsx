@@ -1,15 +1,21 @@
-import { ReactElement, useEffect } from "react";
+import { ReactElement, useContext, useEffect } from "react";
 import { useAuthContext } from "../hooks";
 import { LoginPage } from "../pages";
 import { useNavigate } from "react-router-dom";
+import { ApiDataContext } from "../context/ApiDataProvider";
 
 export function LogoutBtn(): ReactElement {
   const { logout } = useAuthContext();
   const navigate = useNavigate();  // Get the navigate function
 
+  const { setmyCourse, setUserList } = useContext(ApiDataContext);
+
   const handleLogout = () => {
     logout();  // Call logout
+    setmyCourse(null);
+    setUserList([]);
     navigate("/login");  // Redirect to login after logout
+    alert("You have logged out")
   };
   
   return (
