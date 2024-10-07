@@ -19,7 +19,10 @@ export function CourseCard({ course }: ICourseProps): ReactElement {
   // TODO:
 
   return (
-    <section className="card border-light mb-3">
+    <section
+      className="card border-light mb-3"
+      style={{ cursor: "pointer", overflowY: "hidden" }}
+    >
       <h2 className="card-header">{course.name}</h2>
       <div className="card-body" style={{ overflowY: "hidden" }}>
         <h4 className="card-title">Module List</h4>
