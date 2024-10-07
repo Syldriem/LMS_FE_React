@@ -10,7 +10,6 @@ export function AddUserForm(): ReactElement {
   const [error, setError] = useState<string | null>(null);
   const { courses, createUser } = useContext(ApiDataContext);
 
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -20,7 +19,6 @@ export function AddUserForm(): ReactElement {
       return;
     }
 
-
     const userData = {
       username: username,
       password: password,
@@ -28,9 +26,6 @@ export function AddUserForm(): ReactElement {
       role: role,
       courseID: courseid || "",
     };
-
-
-
 
     try {
       await createUser(userData);
@@ -41,8 +36,6 @@ export function AddUserForm(): ReactElement {
       console.error("Error creating user:", err);
     }
   };
-  
-
 
   return (
     <>
@@ -57,7 +50,7 @@ export function AddUserForm(): ReactElement {
             id="formGroupExampleInput"
             placeholder="User Name"
             value={username}
-            onChange={(e) => setUsername(e.target.value)} 
+            onChange={(e) => setUsername(e.target.value)}
           />
         </div>
 
@@ -69,7 +62,7 @@ export function AddUserForm(): ReactElement {
             id="InputPassword"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)} 
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
@@ -81,7 +74,7 @@ export function AddUserForm(): ReactElement {
             id="emailinput"
             placeholder="name@example.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)} 
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
@@ -100,31 +93,31 @@ export function AddUserForm(): ReactElement {
         </div>
 
         <div className="form-group">
-  <label htmlFor="inputState">Course</label>
-  <select
-    id="inputState"
-    className="form-control"
-    value={courseid}  // The selected courseId from state
-    onChange={(e) => {
-      const selectedCourseId = e.target.value;  // Get the selected course ID
-      setCourseId(selectedCourseId);  // Update the courseId in state
-      console.log("Selected Course ID:", selectedCourseId);  // Log the course ID
-    }}
-  >
-    <option value="">Select a course</option>
-    {courses?.map((course) => (
-      <option key={course.id} value={course.id}>
-        {course.name}  {/* Display course name in dropdown */}
-      </option>
-    ))}
-  </select>
-</div>
+          <label htmlFor="inputState">Course</label>
+          <select
+            id="inputState"
+            className="form-control"
+            value={courseid} // The selected courseId from state
+            onChange={(e) => {
+              const selectedCourseId = e.target.value; // Get the selected course ID
+              setCourseId(selectedCourseId); // Update the courseId in state
+              console.log("Selected Course ID:", selectedCourseId); // Log the course ID
+            }}
+          >
+            <option value="">Select a course</option>
+            {courses?.map((course) => (
+              <option key={course.id} value={course.id}>
+                {course.name} {/* Display course name in dropdown */}
+              </option>
+            ))}
+          </select>
+        </div>
 
-{courseid && (
+        {/*courseid && (
   <div>
     <p>Selected Course ID: {courseid}</p>
   </div>
-)}
+)*/}
 
         <button type="submit" className="btn btn-primary">
           Add User
